@@ -1,6 +1,6 @@
 export type Student = {
-  ano: 1 | 2 | 3 | 4 | 5 | 6;
-  division: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+  ano: (typeof YEARS)[number];
+  division: number;
   apellido: string;
   nombre: string;
   dni: number;
@@ -44,3 +44,10 @@ type MateriasPendientes = {
   cantGenerales: number;
   detalleGenerales: string;
 };
+
+const YEARS = [1, 2, 3, 4, 5, 6, false] as const;
+
+export function formatValidYear(numberString: string): Student["ano"] {
+  const number = Number(numberString) as Student["ano"];
+  return YEARS.includes(number) && number
+}

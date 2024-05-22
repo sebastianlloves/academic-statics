@@ -1,37 +1,114 @@
-import { type Student } from "../types/types";
+import { type Student, formatValidYear } from "../types";
 
 export function formatData(text: string): Student[] {
+  console.log(text);
   const stringData = text.split("\r\n").map((row) => row.split("\t"));
   const header = stringData[0];
-  const studentsData = stringData.slice(1).map((row) => {
-    const student = {};
-    row.forEach((value, index) => {
-      if (!header[index].includes(".")) {
-        student[header[index]] = formatValue(value);
-      } else {
-        const rootPropertie = header[index].split(".")[0];
-        const internalPropertie = header[index].split(".")[1];
-        student[rootPropertie] = {
-          ...student[rootPropertie],
-          [internalPropertie]: formatValue(value),
+  const studentsData = stringData
+    .slice(1)
+    .map(
+      ([
+        anoValue,
+        divisionValue,
+        apellidoValue,
+        nombreValue,
+        dniValue,
+        correoValue,
+        codigoMiEscuelaValue,
+        generoValue,
+        fechaNacimientoValue,
+        paisNacimientoValue,
+        lugarNacimientoValue,
+        cudValue,
+        adulResp1_apellidoValue,
+        adulResp1_nombreValue,
+        adulResp1_dniValue,
+        adulResp1_telefonoValue,
+        adulResp1_correoValue,
+        adulResp1_nacionalidadValue,
+        adulResp2_apellidoValue,
+        adulResp2_nombreValue,
+        adulResp2_dniValue,
+        adulResp2_telefonoValue,
+        adulResp2_correoValue,
+        adulResp2_nacionalidadValue,
+        numLegajoValue,
+        anoIngresoValue,
+        repitencia1Value,
+        repitencia2Value,
+        repitencia3Value,
+        movilidadValue,
+        anoCursado2020Value,
+        materiasPendientes_cantTotalValue,
+        materiasPendientes_cantTroncalesValue,
+        materiasPendientes_detalleTroncalesValue,
+        materiasPendientes_cantGeneralesValue,
+        materiasPendientes_detalleGeneralesValue,
+        materiasEnProceso2020_cantidadValue,
+        materiasEnProceso2020_detalleValue,
+      ]): Student => {
+        return {
+          ano: formatValidYear(anoValue.split("")[0]),
+          division: Number(divisionValue.split("")[0]),
+          apellido: apellidoValue.toUpperCase().trim(),
+          nombre: capitalizeWords(nombreValue),
+          dni: Number(dniValue),
+          correo: correoValue,
+          codigoMiEscuela: undefined,
+          genero: undefined,
+          fechaNacimiento: undefined,
+          paisNacimiento: undefined,
+          lugarNacimiento: undefined,
+          cud: undefined,
+          adulResp1: undefined,
+          adulResp2: undefined,
+          numLegajo: undefined,
+          anoIngreso: undefined,
+          repitencia2: undefined,
+          repitencia3: undefined,
+          repitencia1: undefined,
+          movilidad: undefined,
+          anoCursado2020: undefined,
+          materiasPendientes: undefined,
+          materiasEnProceso2020: undefined,
         };
       }
-    });
-    return student;
-  });
+    );
   studentsData.forEach((obj) => console.log(obj));
   return studentsData.filter(
     (student) => student.dni !== undefined && student.apellido !== undefined
   );
 }
 
+function capitalizeWords(words: string) {
+  return words
+    .toLowerCase()
+    .trim()
+    .split(" ")
+    .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
+    .join(" ");
+}
+
+/* function isValidYear(number: number): number is Exclude<Student['ano'], false> {
+  return (
+    Number(number) === 1 ||
+    Number(number) === 2 ||
+    Number(number) === 3 ||
+    Number(number) === 4 ||
+    Number(number) === 5 ||
+    Number(number) === 6
+  );
+} */
+
 function formatValue(value) {
   if (value === "" || value === "-") return undefined;
   if (value === "FALSE") return false;
   if (value === "TRUE") return true;
+  if (value === "M") return "Masculino";
+  if (value === "M") return "Femenino";
   if (!isNaN(value)) return Number(value);
   if (!isNaN(Date.parse(value))) return new Date(value);
-  return value
+  return value;
 }
 
 /* ["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],
