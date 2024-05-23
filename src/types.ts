@@ -3,9 +3,9 @@ import { ANIOS, DIVISIONES, GENEROS, MOVILIDAD_VALUES } from "./utils/formatData
 export type Student = {
   anio?: (typeof ANIOS)[number];
   division?: (typeof DIVISIONES)[number];
-  apellido: string;
-  nombre: string;
-  dni: number;
+  apellido?: string;
+  nombre?: string;
+  dni?: number;
   correo?: string;
   codigoMiEscuela?: string;
   genero?: typeof GENEROS[number];
@@ -16,7 +16,7 @@ export type Student = {
   adulResp1: AdulResp;
   adulResp2: AdulResp;
   numLegajo?: number;
-  anioIngreso: number;
+  anioIngreso?: number;
   repitencia1?: Student["anio"] | false;
   repitencia2?: Student["anio"] | false;
   repitencia3?: Student["anio"] | false;

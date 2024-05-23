@@ -53,64 +53,71 @@ export function formatData(text: string): Student[] {
         return {
           anio: formatValidCourse(ANIOS, anioValue.split("")[0]),
           division: formatValidCourse(DIVISIONES, divisionValue.split("")[0]),
-          apellido: apellidoValue.toUpperCase().trim(),
-          nombre: capitalizeWords(nombreValue),
-          dni: Number(dniValue) || 0,
-          correo: correoValue,
-          codigoMiEscuela: codigoMiEscuelaValue,
+          apellido: apellidoValue.toUpperCase().trim() || undefined,
+          nombre: capitalizeWords(nombreValue) || undefined,
+          dni: parseInt(dniValue) || undefined,
+          correo: correoValue || undefined,
+          codigoMiEscuela: codigoMiEscuelaValue || undefined,
           genero: defineGender(generoValue),
           fechaNacimiento: !isNaN(Date.parse(fechaNacimientoValue))
             ? new Date(fechaNacimientoValue)
             : undefined,
-          paisNacimiento: paisNacimientoValue,
-          lugarNacimiento: lugarNacimientoValue,
+          paisNacimiento: paisNacimientoValue || undefined,
+          lugarNacimiento: lugarNacimientoValue || undefined,
           cud: defineCUD(cudValue),
           adulResp1: {
-            apellido: adulResp1_apellidoValue,
-            nombre: adulResp1_nombreValue,
-            dni: Number(adulResp1_dniValue),
-            telefono: Number(adulResp1_telefonoValue),
-            correo: adulResp1_correoValue,
-            nacionalidad: adulResp1_nacionalidadValue,
+            apellido: adulResp1_apellidoValue || undefined,
+            nombre: adulResp1_nombreValue || undefined,
+            dni: parseInt(adulResp1_dniValue) || undefined,
+            telefono: parseInt(adulResp1_telefonoValue) || undefined,
+            correo: adulResp1_correoValue || undefined,
+            nacionalidad: adulResp1_nacionalidadValue || undefined,
           },
           adulResp2: {
-            apellido: adulResp2_apellidoValue,
-            nombre: adulResp2_nombreValue,
-            dni: Number(adulResp2_dniValue),
-            telefono: Number(adulResp2_telefonoValue),
-            correo: adulResp2_correoValue,
-            nacionalidad: adulResp2_nacionalidadValue,
+            apellido: adulResp2_apellidoValue || undefined,
+            nombre: adulResp2_nombreValue || undefined,
+            dni: parseInt(adulResp2_dniValue) || undefined,
+            telefono: parseInt(adulResp2_telefonoValue) || undefined,
+            correo: adulResp2_correoValue || undefined,
+            nacionalidad: adulResp2_nacionalidadValue || undefined,
           },
-          numLegajo: Number(numLegajoValue),
-          anioIngreso: Number(anioIngresoValue),
+          numLegajo: parseInt(numLegajoValue) || undefined,
+          anioIngreso: parseInt(anioIngresoValue) || undefined,
           repitencia1: defineRepitencia(repitencia1Value),
           repitencia2: defineRepitencia(repitencia2Value),
           repitencia3: defineRepitencia(repitencia3Value),
           movilidad: defineMovilidad(movilidadValue),
           anioCursado2020:
-            Number(anioCursado2020Value) > 2020
-              ? Number(anioCursado2020Value)
-              : undefined,
+            parseInt(anioCursado2020Value.split("")[0]) || undefined,
           materiasPendientes: {
-            cantTotal: Number(materiasPendientes_cantTotalValue) || undefined,
+            cantTotal:
+              parseInt(materiasPendientes_cantTotalValue) >= 0
+                ? parseInt(materiasPendientes_cantTotalValue)
+                : undefined,
             cantTroncales:
-              Number(materiasPendientes_cantTroncalesValue) || undefined,
+              parseInt(materiasPendientes_cantTroncalesValue) >= 0
+                ? parseInt(materiasPendientes_cantTroncalesValue)
+                : undefined,
             detalleTroncales: materiasPendientes_detalleTroncalesValue,
             cantGenerales:
-              Number(materiasPendientes_cantGeneralesValue) || undefined,
+              parseInt(materiasPendientes_cantGeneralesValue) >= 0
+                ? parseInt(materiasPendientes_cantGeneralesValue)
+                : undefined,
             detalleGenerales: materiasPendientes_detalleGeneralesValue,
           },
           materiasEnProceso2020: {
-            cantidad: Number(materiasEnProceso2020_cantidadValue) || undefined,
+            cantidad:
+              parseInt(materiasEnProceso2020_cantidadValue) >= 0
+                ? parseInt(materiasEnProceso2020_cantidadValue)
+                : undefined,
             detalle: materiasEnProceso2020_detalleValue,
           },
         };
       }
     );
   studentsData.forEach((obj) => console.log(obj));
-  return studentsData.filter(student => student.dni === 0);
+  return studentsData.filter((student) => student.dni === 0);
 }
-
 
 
 
@@ -138,8 +145,7 @@ const defineGender = (genderValue: string): Student["genero"] => {
 
 const defineCUD = (cudValue: string): Student["cud"] => {
   if (cudValue === "TRUE") return true;
-  if (cudValue === "FALSE") return false;
-  return;
+  if (cudValue === "FALSE" || !cudValue) return false;
 };
 
 const defineRepitencia = (repitencia: string): Student["repitencia1"] => {
@@ -152,9 +158,6 @@ const defineMovilidad = (movilidad: string): Student["movilidad"] => {
   if (movilidad === "Adeuda" || movilidad === "No adeuda") return movilidad;
   return;
 };
-
-
-
 
 /* ["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],
 ["","","Año","Div","APELLIDO","NOMBRE","DNI","Correo Alumno/a","Código miEscuela","Género","Fecha de Nacimiento","País de Nacimiento","Lugar de Nacimiento","CUD","Adulto Responsable 1","","","","","","Adulto Responsable 2","","","","","","Nº de Legajo","Año de Ingreso","Repitencia","","","Movilidad","Año cursado en 2020","Materias PENDIENTES","","","","","Materias EN PROCESO (2020)","","1º año","","","","","","","","","","","2º año","","","","","","","","","","","3º año","","","","","","","","","","","","","","4º año","","","","","","","","","","","","","","","","","5º año","","","","","","","","","","","","","","","6º año","","","","","","","","","","","","","",""],
