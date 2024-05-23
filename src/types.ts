@@ -1,25 +1,27 @@
+import { ANIOS, DIVISIONES } from "./utils/formatData";
+
 export type Student = {
-  ano: (typeof YEARS)[number];
-  division: number;
+  anio?: (typeof ANIOS)[number];
+  division?: (typeof DIVISIONES)[number];
   apellido: string;
   nombre: string;
   dni: number;
-  correo?: `${string}@${string}.${string}`;
+  correo?: string;
   codigoMiEscuela?: string;
   genero?: "Masculino" | "Femenino";
   fechaNacimiento?: Date;
   paisNacimiento?: string;
   lugarNacimiento?: string;
   cud?: boolean;
-  adulResp1?: AdulResp;
-  adulResp2?: AdulResp;
+  adulResp1: AdulResp;
+  adulResp2: AdulResp;
   numLegajo?: number;
-  anoIngreso: number;
-  repitencia2?: Student["ano"] | false;
-  repitencia3?: Student["ano"] | false;
-  repitencia1?: Student["ano"] | false;
-  movilidad: "Adeuda" | "No adeuda" | false;
-  anoCursado2020: number;
+  anioIngreso: number;
+  repitencia1?: Student["anio"] | false;
+  repitencia2?: Student["anio"] | false;
+  repitencia3?: Student["anio"] | false;
+  movilidad?: "Adeuda" | "No adeuda" | false;
+  anioCursado2020: number;
   materiasPendientes: MateriasPendientes;
   materiasEnProceso2020: MateriasEnProceso2020;
 };
@@ -27,8 +29,9 @@ export type Student = {
 type AdulResp = {
   apellido?: string;
   nombre?: string;
+  dni?: number,
   telefono?: number;
-  correo?: `${string}@${string}.${string}`;
+  correo?: string;
   nacionalidad?: string;
 };
 
@@ -45,9 +48,3 @@ type MateriasPendientes = {
   detalleGenerales: string;
 };
 
-const YEARS = [1, 2, 3, 4, 5, 6, false] as const;
-
-export function formatValidYear(numberString: string): Student["ano"] {
-  const number = Number(numberString) as Student["ano"];
-  return YEARS.includes(number) && number
-}

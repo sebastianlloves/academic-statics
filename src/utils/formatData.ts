@@ -1,14 +1,17 @@
-import { type Student, formatValidYear } from "../types";
+import { type Student } from "../types";
+
+export const ANIOS = [1, 2, 3, 4, 5, 6] as const;
+export const DIVISIONES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
 
 export function formatData(text: string): Student[] {
   console.log(text);
   const stringData = text.split("\r\n").map((row) => row.split("\t"));
-  const header = stringData[0];
+  // const header = stringData[0];
   const studentsData = stringData
     .slice(1)
     .map(
       ([
-        anoValue,
+        anioValue,
         divisionValue,
         apellidoValue,
         nombreValue,
@@ -33,12 +36,12 @@ export function formatData(text: string): Student[] {
         adulResp2_correoValue,
         adulResp2_nacionalidadValue,
         numLegajoValue,
-        anoIngresoValue,
+        anioIngresoValue,
         repitencia1Value,
         repitencia2Value,
         repitencia3Value,
         movilidadValue,
-        anoCursado2020Value,
+        anioCursado2020Value,
         materiasPendientes_cantTotalValue,
         materiasPendientes_cantTroncalesValue,
         materiasPendientes_detalleTroncalesValue,
@@ -48,27 +51,43 @@ export function formatData(text: string): Student[] {
         materiasEnProceso2020_detalleValue,
       ]): Student => {
         return {
-          ano: formatValidYear(anoValue.split("")[0]),
-          division: Number(divisionValue.split("")[0]),
+          anio: formatValidCourse(ANIOS, anioValue.split("")[0]),
+          division: formatValidCourse(DIVISIONES, divisionValue.split("")[0]),
           apellido: apellidoValue.toUpperCase().trim(),
           nombre: capitalizeWords(nombreValue),
           dni: Number(dniValue),
           correo: correoValue,
-          codigoMiEscuela: undefined,
-          genero: undefined,
-          fechaNacimiento: undefined,
-          paisNacimiento: undefined,
-          lugarNacimiento: undefined,
-          cud: undefined,
-          adulResp1: undefined,
-          adulResp2: undefined,
-          numLegajo: undefined,
-          anoIngreso: undefined,
-          repitencia2: undefined,
-          repitencia3: undefined,
-          repitencia1: undefined,
+          codigoMiEscuela: codigoMiEscuelaValue,
+          genero: defineGender(generoValue),
+          fechaNacimiento: !isNaN(Date.parse(fechaNacimientoValue))
+            ? new Date(fechaNacimientoValue)
+            : undefined,
+          paisNacimiento: paisNacimientoValue,
+          lugarNacimiento: lugarNacimientoValue,
+          cud: defineCUD(cudValue),
+          adulResp1: {
+            apellido: adulResp1_apellidoValue,
+            nombre: adulResp1_nombreValue,
+            dni: Number(adulResp1_dniValue),
+            telefono: Number(adulResp1_telefonoValue),
+            correo: adulResp1_correoValue,
+            nacionalidad: adulResp1_nacionalidadValue,
+          },
+          adulResp2: {
+            apellido: adulResp2_apellidoValue,
+            nombre: adulResp2_nombreValue,
+            dni: Number(adulResp2_dniValue),
+            telefono: Number(adulResp2_telefonoValue),
+            correo: adulResp2_correoValue,
+            nacionalidad: adulResp2_nacionalidadValue,
+          },
+          numLegajo: Number(numLegajoValue),
+          anioIngreso: Number(anioIngresoValue),
+          repitencia1: defineRepitencia(repitencia1Value),
+          repitencia2: defineRepitencia(repitencia2Value),
+          repitencia3: defineRepitencia(repitencia3Value),
           movilidad: undefined,
-          anoCursado2020: undefined,
+          anioCursado2020: undefined,
           materiasPendientes: undefined,
           materiasEnProceso2020: undefined,
         };
@@ -80,27 +99,40 @@ export function formatData(text: string): Student[] {
   );
 }
 
-function capitalizeWords(words: string) {
-  return words
+const capitalizeWords = (words: string) =>
+  words
     .toLowerCase()
     .trim()
     .split(" ")
     .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
     .join(" ");
+
+const formatValidCourse = <T>(
+  arrOptions: Readonly<T[]>,
+  numberString: string
+): T | undefined => {
+  const number = Number(numberString) as T;
+  return arrOptions.includes(number) ? number : undefined;
+};
+
+const defineGender = (genderValue: string): Student["genero"] => {
+  if (genderValue === "M") return "Masculino";
+  if (genderValue === "F") return "Femenino";
+  return;
+};
+
+const defineCUD = (cudValue: string): Student["cud"] => {
+  if (cudValue === "TRUE") return true;
+  if (cudValue === "FALSE") return false;
+  return;
+};
+
+const defineRepitencia = (repitencia: string): Student['repitencia1'] => {
+  if(repitencia === "-") return false
+  return formatValidCourse(ANIOS, repitencia.split("")[0]);
 }
 
-/* function isValidYear(number: number): number is Exclude<Student['ano'], false> {
-  return (
-    Number(number) === 1 ||
-    Number(number) === 2 ||
-    Number(number) === 3 ||
-    Number(number) === 4 ||
-    Number(number) === 5 ||
-    Number(number) === 6
-  );
-} */
-
-function formatValue(value) {
+/* function formatValue(value) {
   if (value === "" || value === "-") return undefined;
   if (value === "FALSE") return false;
   if (value === "TRUE") return true;
@@ -109,7 +141,7 @@ function formatValue(value) {
   if (!isNaN(value)) return Number(value);
   if (!isNaN(Date.parse(value))) return new Date(value);
   return value;
-}
+} */
 
 /* ["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],
 ["","","Año","Div","APELLIDO","NOMBRE","DNI","Correo Alumno/a","Código miEscuela","Género","Fecha de Nacimiento","País de Nacimiento","Lugar de Nacimiento","CUD","Adulto Responsable 1","","","","","","Adulto Responsable 2","","","","","","Nº de Legajo","Año de Ingreso","Repitencia","","","Movilidad","Año cursado en 2020","Materias PENDIENTES","","","","","Materias EN PROCESO (2020)","","1º año","","","","","","","","","","","2º año","","","","","","","","","","","3º año","","","","","","","","","","","","","","4º año","","","","","","","","","","","","","","","","","5º año","","","","","","","","","","","","","","","6º año","","","","","","","","","","","","","",""],
