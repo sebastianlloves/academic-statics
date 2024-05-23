@@ -2,11 +2,11 @@ import { type Student } from "../types";
 
 export const ANIOS = [1, 2, 3, 4, 5, 6] as const;
 export const DIVISIONES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
+export const GENEROS = ["Masculino", "Femenino"] as const;
+export const MOVILIDAD_VALUES = ["Adeuda", "No adeuda", false] as const;
 
 export function formatData(text: string): Student[] {
-  console.log(text);
   const stringData = text.split("\r\n").map((row) => row.split("\t"));
-  // const header = stringData[0];
   const studentsData = stringData
     .slice(1)
     .map(
@@ -55,7 +55,7 @@ export function formatData(text: string): Student[] {
           division: formatValidCourse(DIVISIONES, divisionValue.split("")[0]),
           apellido: apellidoValue.toUpperCase().trim(),
           nombre: capitalizeWords(nombreValue),
-          dni: Number(dniValue),
+          dni: Number(dniValue) || 0,
           correo: correoValue,
           codigoMiEscuela: codigoMiEscuelaValue,
           genero: defineGender(generoValue),
@@ -86,18 +86,33 @@ export function formatData(text: string): Student[] {
           repitencia1: defineRepitencia(repitencia1Value),
           repitencia2: defineRepitencia(repitencia2Value),
           repitencia3: defineRepitencia(repitencia3Value),
-          movilidad: undefined,
-          anioCursado2020: undefined,
-          materiasPendientes: undefined,
-          materiasEnProceso2020: undefined,
+          movilidad: defineMovilidad(movilidadValue),
+          anioCursado2020:
+            Number(anioCursado2020Value) > 2020
+              ? Number(anioCursado2020Value)
+              : undefined,
+          materiasPendientes: {
+            cantTotal: Number(materiasPendientes_cantTotalValue) || undefined,
+            cantTroncales:
+              Number(materiasPendientes_cantTroncalesValue) || undefined,
+            detalleTroncales: materiasPendientes_detalleTroncalesValue,
+            cantGenerales:
+              Number(materiasPendientes_cantGeneralesValue) || undefined,
+            detalleGenerales: materiasPendientes_detalleGeneralesValue,
+          },
+          materiasEnProceso2020: {
+            cantidad: Number(materiasEnProceso2020_cantidadValue) || undefined,
+            detalle: materiasEnProceso2020_detalleValue,
+          },
         };
       }
     );
   studentsData.forEach((obj) => console.log(obj));
-  return studentsData.filter(
-    (student) => student.dni !== undefined && student.apellido !== undefined
-  );
+  return studentsData.filter(student => student.dni === 0);
 }
+
+
+
 
 const capitalizeWords = (words: string) =>
   words
@@ -127,21 +142,19 @@ const defineCUD = (cudValue: string): Student["cud"] => {
   return;
 };
 
-const defineRepitencia = (repitencia: string): Student['repitencia1'] => {
-  if(repitencia === "-") return false
+const defineRepitencia = (repitencia: string): Student["repitencia1"] => {
+  if (repitencia === "-") return false;
   return formatValidCourse(ANIOS, repitencia.split("")[0]);
-}
+};
 
-/* function formatValue(value) {
-  if (value === "" || value === "-") return undefined;
-  if (value === "FALSE") return false;
-  if (value === "TRUE") return true;
-  if (value === "M") return "Masculino";
-  if (value === "M") return "Femenino";
-  if (!isNaN(value)) return Number(value);
-  if (!isNaN(Date.parse(value))) return new Date(value);
-  return value;
-} */
+const defineMovilidad = (movilidad: string): Student["movilidad"] => {
+  if (movilidad === "-") return false;
+  if (movilidad === "Adeuda" || movilidad === "No adeuda") return movilidad;
+  return;
+};
+
+
+
 
 /* ["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],
 ["","","Año","Div","APELLIDO","NOMBRE","DNI","Correo Alumno/a","Código miEscuela","Género","Fecha de Nacimiento","País de Nacimiento","Lugar de Nacimiento","CUD","Adulto Responsable 1","","","","","","Adulto Responsable 2","","","","","","Nº de Legajo","Año de Ingreso","Repitencia","","","Movilidad","Año cursado en 2020","Materias PENDIENTES","","","","","Materias EN PROCESO (2020)","","1º año","","","","","","","","","","","2º año","","","","","","","","","","","3º año","","","","","","","","","","","","","","4º año","","","","","","","","","","","","","","","","","5º año","","","","","","","","","","","","","","","6º año","","","","","","","","","","","","","",""],
