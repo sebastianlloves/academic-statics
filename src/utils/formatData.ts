@@ -115,11 +115,9 @@ export function formatData(text: string): Student[] {
         };
       }
     );
-  studentsData.forEach((obj) => console.log(obj));
-  return studentsData.filter((student) => student.dni === 0);
+  // studentsData.forEach((obj) => console.log(obj));
+  return studentsData.filter((student) => student.dni);
 }
-
-
 
 const capitalizeWords = (words: string) =>
   words

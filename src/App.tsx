@@ -1,14 +1,14 @@
 import "./App.css";
-import { Button } from "./components/ui/button";
-import useStudentsData from "./hooks/useStudentsData";
+import StudentsTable from "./app/students/page";
+import { ModeToggle } from "./components/mode-toggle";
+import { ThemeProvider } from "./components/theme-provider";
 
 function App() {
-  const { data/* , loading, error */ } = useStudentsData();
-
   return (
-    <>
-      <Button variant={"secondary"}>Hola</Button>
-    </>
+    <ThemeProvider>
+      <ModeToggle />
+      <StudentsTable />
+    </ThemeProvider>
   );
 }
 
