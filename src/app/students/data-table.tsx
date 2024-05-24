@@ -28,9 +28,10 @@ export function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+  console.log(table.getCoreRowModel())
 
   return (
-    <div className='rounded-md border'>
+    <div className='rounded-sm max-w-fit'>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

@@ -7,7 +7,7 @@ function App() {
   return (
     <ThemeProvider>
       <ModeToggle />
-      <StudentsTable />
+      <StudentsTable/>
     </ThemeProvider>
   );
 }
