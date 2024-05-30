@@ -1,30 +1,4 @@
-import { ANIOS, DIVISIONES, GENEROS, MOVILIDAD_VALUES } from "./utils/formatData";
-
-export type Student = {
-  anio?: (typeof ANIOS)[number];
-  division?: (typeof DIVISIONES)[number];
-  apellido?: string;
-  nombre?: string;
-  dni?: number;
-  correo?: string;
-  codigoMiEscuela?: string;
-  genero?: typeof GENEROS[number];
-  fechaNacimiento?: Date;
-  paisNacimiento?: string;
-  lugarNacimiento?: string;
-  cud?: boolean;
-  adulResp1: AdulResp;
-  adulResp2: AdulResp;
-  numLegajo?: number;
-  anioIngreso?: number;
-  repitencia1?: Student["anio"] | false;
-  repitencia2?: Student["anio"] | false;
-  repitencia3?: Student["anio"] | false;
-  movilidad?: typeof MOVILIDAD_VALUES[number];
-  anioCursado2020?: number;
-  materiasPendientes: MateriasPendientes;
-  materiasEnProceso2020: MateriasEnProceso2020;
-};
+import { ANIOS, DIVISIONES, GENEROS, MOVILIDAD_VALUES } from './utils/formatData'
 
 type AdulResp = {
   apellido?: string;
@@ -48,3 +22,28 @@ type MateriasPendientes = {
   detalleGenerales?: string;
 };
 
+export type Student = {
+  anio?: (typeof ANIOS)[number];
+  division?: (typeof DIVISIONES)[number];
+  apellido?: string;
+  nombre?: string;
+  dni?: number;
+  correo?: string;
+  codigoMiEscuela?: string;
+  genero?: typeof GENEROS[keyof typeof GENEROS];
+  fechaNacimiento?: Date;
+  paisNacimiento?: string;
+  lugarNacimiento?: string;
+  cud?: boolean;
+  adulResp1: AdulResp;
+  adulResp2: AdulResp;
+  numLegajo?: number;
+  anioIngreso?: number;
+  repitencia1?: Student['anio'] | false;
+  repitencia2?: Student['anio'] | false;
+  repitencia3?: Student['anio'] | false;
+  movilidad?: typeof MOVILIDAD_VALUES[keyof typeof MOVILIDAD_VALUES];
+  anioCursado2020?: number;
+  materiasPendientes: MateriasPendientes;
+  materiasEnProceso2020: MateriasEnProceso2020;
+};
