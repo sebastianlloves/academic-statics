@@ -1,4 +1,4 @@
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper } from '@tanstack/react-table'
 
 type Person = {
   firstName: string;
@@ -9,60 +9,60 @@ type Person = {
   progress: number;
 };
 
-const columnHelper = createColumnHelper<Person>();
+const columnHelper = createColumnHelper<Person>()
 
 // Make some columns!
 export const defaultColumns = [
   // Grouping Column
   columnHelper.group({
-    header: "Name",
+    header: 'Name',
     footer: (props) => props.column.id,
     columns: [
       // Accessor Column
-      columnHelper.accessor("firstName", {
+      columnHelper.accessor('firstName', {
         cell: (info) => info.getValue(),
-        footer: (props) => props.column.id,
+        footer: (props) => props.column.id
       }),
       // Accessor Column
       columnHelper.accessor((row) => row.lastName, {
-        id: "lastName",
+        id: 'lastName',
         cell: (info) => info.getValue(),
         header: () => <span>Last Name</span>,
-        footer: (props) => props.column.id,
-      }),
-    ],
+        footer: (props) => props.column.id
+      })
+    ]
   }),
   // Grouping Column
   columnHelper.group({
-    header: "Info",
+    header: 'Info',
     footer: (props) => props.column.id,
     columns: [
       // Accessor Column
-      columnHelper.accessor("age", {
-        header: () => "Age",
-        footer: (props) => props.column.id,
+      columnHelper.accessor('age', {
+        header: () => 'Age',
+        footer: (props) => props.column.id
       }),
       // Grouping Column
       columnHelper.group({
-        header: "More Info",
+        header: 'More Info',
         columns: [
           // Accessor Column
-          columnHelper.accessor("visits", {
+          columnHelper.accessor('visits', {
             header: () => <span>Visits</span>,
-            footer: (props) => props.column.id,
+            footer: (props) => props.column.id
           }),
           // Accessor Column
-          columnHelper.accessor("status", {
-            header: "Status",
-            footer: (props) => props.column.id,
+          columnHelper.accessor('status', {
+            header: 'Status',
+            footer: (props) => props.column.id
           }),
           // Accessor Column
-          columnHelper.accessor("progress", {
-            header: "Profile Progress",
-            footer: (props) => props.column.id,
-          }),
-        ],
-      }),
-    ],
-  }),
-];
+          columnHelper.accessor('progress', {
+            header: 'Profile Progress',
+            footer: (props) => props.column.id
+          })
+        ]
+      })
+    ]
+  })
+]

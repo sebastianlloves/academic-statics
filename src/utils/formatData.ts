@@ -111,7 +111,7 @@ const formatValidCourse = <T>(arrOptions: Readonly<T[]>, numberString: string): 
   return arrOptions.includes(number) ? number : undefined
 }
 
-const isValidGenderKey = (genderValue: string) : genderValue is keyof typeof GENEROS => GENEROS[genderValue as keyof typeof GENEROS] !== undefined
+const isValidGenderKey = (genderValue: string): genderValue is keyof typeof GENEROS => GENEROS[genderValue as keyof typeof GENEROS] !== undefined
 
 const defineCUD = (cudValue: string): Student['cud'] => {
   if (cudValue === 'TRUE') return true
@@ -123,6 +123,4 @@ const defineRepitencia = (repitencia: string): Student['repitencia1'] => {
   return formatValidCourse(ANIOS, repitencia.split('')[0])
 }
 
-const isValidRepitenciaValue = (repValue: number) : repValue is Student['anio']
-
-const isValidMovilidadValue = (movilidadValue : string) : movilidadValue is keyof typeof MOVILIDAD_VALUES => MOVILIDAD_VALUES[movilidadValue as keyof typeof MOVILIDAD_VALUES] !== undefined
+const isValidMovilidadValue = (movilidadValue: string): movilidadValue is keyof typeof MOVILIDAD_VALUES => MOVILIDAD_VALUES[movilidadValue as keyof typeof MOVILIDAD_VALUES] !== undefined
