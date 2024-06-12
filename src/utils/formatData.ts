@@ -100,7 +100,7 @@ export function formatData (text: string): Student[] {
         }
       }
     )
-  // studentsData.forEach((obj) => console.log(obj));
+    // studentsData.forEach((obj) => console.log(obj));
   return studentsData.filter(student => student.dni)
 }
 
@@ -124,3 +124,53 @@ const defineRepitencia = (repitencia: string): Student['repitencia1'] => {
 }
 
 const isValidMovilidadValue = (movilidadValue: string): movilidadValue is keyof typeof MOVILIDAD_VALUES => MOVILIDAD_VALUES[movilidadValue as keyof typeof MOVILIDAD_VALUES] !== undefined
+
+export const LOADING_DATA = Array.from({ length: 10 }, () => {
+  return {
+    anio: 'loading',
+    division: 'loading',
+    apellido: 'loading',
+    nombre: 'loading',
+    dni: 'loading',
+    correo: 'loading',
+    codigoMiEscuela: 'loading',
+    genero: 'loading',
+    fechaNacimiento: 'loading',
+    paisNacimiento: 'loading',
+    lugarNacimiento: 'loading',
+    cud: 'loading',
+    adulResp1: {
+      nombre: 'loading',
+      dni: 'loading',
+      telefono: 'loading',
+      correo: 'loading',
+      nacionalidad: 'loading'
+    },
+    adulResp2: {
+      apellido: 'loading',
+      nombre: 'loading',
+      dni: 'loading',
+      telefono: 'loading',
+      correo: 'loading',
+      nacionalidad: 'loading'
+    },
+    numLegajo: 'loading',
+    anioIngreso: 'loading',
+    repitencia1: 'loading',
+    repitencia2: 'loading',
+    repitencia3: 'loading',
+    movilidad: 'loading',
+    anioCursado2020: 'loading',
+    materiasPendientes: {
+      cantTotal: 'loading',
+      cantTroncales: 'loading',
+      detalleTroncales: 'loading',
+      cantGenerales: 'loading',
+      detalleGenerales: 'loading'
+    },
+    materiasEnProceso2020: {
+      cantidad: 'loading',
+      detalle: 'loading'
+    }
+  }
+})

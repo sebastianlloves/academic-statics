@@ -1,15 +1,15 @@
-import "./App.css";
-import StudentsTable from "./app/students/page";
-import { ModeToggle } from "./components/mode-toggle";
-import { ThemeProvider } from "./components/theme-provider";
+import './App.css'
+import StudentsTable from './app/table/page'
+import { ModeToggle } from './components/mode-toggle'
+import { ThemeProvider } from './components/theme-provider'
 
-function App() {
+function App () {
   return (
-    <ThemeProvider>
+    <ThemeProvider defaultTheme='system' storageKey='ui-theme'>
       <ModeToggle />
-      <StudentsTable/>
+      <StudentsTable />
     </ThemeProvider>
-  );
+  )
 }
 
-export default App;
+export default App
