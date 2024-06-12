@@ -125,7 +125,7 @@ const defineRepitencia = (repitencia: string): Student['repitencia1'] => {
 
 const isValidMovilidadValue = (movilidadValue: string): movilidadValue is keyof typeof MOVILIDAD_VALUES => MOVILIDAD_VALUES[movilidadValue as keyof typeof MOVILIDAD_VALUES] !== undefined
 
-export const LOADING_DATA = Array.from({ length: 10 }, () => {
+export const LOADING_DATA = Array.from({ length: 25 }, () => {
   return {
     anio: 'loading',
     division: 'loading',
