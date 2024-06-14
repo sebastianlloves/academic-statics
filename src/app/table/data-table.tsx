@@ -22,24 +22,39 @@ export function DataTable<TData, TValue> ({ columns, data }: DataTableProps<TDat
       pagination
     }
   })
-  console.log(table.getCanPreviousPage())
+  // console.log(table.getHeaderGroups())
 
   return (
     <>
       <div className='border rounded-md'>
         <Table>
-          <TableHeader className='bg-background/90'>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow headerRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+          <TableHeader className='bg-background/95'>
+            <TableRow key={table.getHeaderGroups()[1].id}>
+              {table.getHeaderGroups()[0].headers.map((header, index) => {
+                console.log(header)
+                if (header.isPlaceholder) {
+                  const header = table.getHeaderGroups()[1].headers[index]
                   return (
-                    <TableHead key={header.id} className='text-foreground'>
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                    <TableHead key={header.id} colSpan={header.colSpan} className='text-foreground text-center'>
+                      {flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   )
-                })}
-              </TableRow>
-            ))}
+                } else {
+                  console.log(header.getLeafHeaders().filter(obj => obj.depth === 2))
+                  return (
+                    <TableHead key={header.id} colSpan={header.colSpan} className='text-foreground  h-min'>
+                      <div className=' grid grid-cols-2 grid-rows-2'>
+                        <p className=' col-span-2 flex justify-center'>{flexRender(header.column.columnDef.header, header.getContext())}</p>
+                        {header.getLeafHeaders().filter(obj => obj.depth === 2).map(header => (
+                          <p key={header.id} className=' text-xs h-min font-normal flex justify-center'>{flexRender(header.column.columnDef.header, header.getContext())}</p>
+                        ))}
+                      </div>
+                    </TableHead>
+                  )
+                }
+              })}
+
+            </TableRow>
           </TableHeader>
           <TableBody className=''>
             {table.getRowModel().rows?.length
@@ -47,7 +62,7 @@ export function DataTable<TData, TValue> ({ columns, data }: DataTableProps<TDat
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className=' even:bg-muted/45 dark:even:bg-muted/30'>
                   {row.getVisibleCells().map((cell) => (
 
-                    <TableCell key={cell.id} className={cn(`w-[${cell.column.getSize()}px]`)}>
+                    <TableCell key={cell.id} align='center'>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
