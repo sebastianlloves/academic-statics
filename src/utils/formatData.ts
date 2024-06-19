@@ -1,9 +1,5 @@
+import { ANIOS, DIVISIONES, GENEROS, MOVILIDAD_VALUES } from '@/constants'
 import { type Student } from '../types'
-
-export const ANIOS = [1, 2, 3, 4, 5, 6] as const
-export const DIVISIONES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const
-export const GENEROS = { M: 'Masculino', F: 'Femenino' } as const
-export const MOVILIDAD_VALUES = { Adeuda: 'adeuda', 'No adeuda': 'noAdeuda', '-': false } as const
 
 export function formatData (text: string): Student[] {
   const stringData = text.split('\r\n').map((row) => row.split('\t'))
@@ -124,53 +120,3 @@ const defineRepitencia = (repitencia: string): Student['repitencia1'] => {
 }
 
 const isValidMovilidadValue = (movilidadValue: string): movilidadValue is keyof typeof MOVILIDAD_VALUES => MOVILIDAD_VALUES[movilidadValue as keyof typeof MOVILIDAD_VALUES] !== undefined
-
-export const LOADING_DATA = Array.from({ length: 25 }, () => {
-  return {
-    anio: 'loading',
-    division: 'loading',
-    apellido: 'loading',
-    nombre: 'loading',
-    dni: 'loading',
-    correo: 'loading',
-    codigoMiEscuela: 'loading',
-    genero: 'loading',
-    fechaNacimiento: 'loading',
-    paisNacimiento: 'loading',
-    lugarNacimiento: 'loading',
-    cud: 'loading',
-    adulResp1: {
-      nombre: 'loading',
-      dni: 'loading',
-      telefono: 'loading',
-      correo: 'loading',
-      nacionalidad: 'loading'
-    },
-    adulResp2: {
-      apellido: 'loading',
-      nombre: 'loading',
-      dni: 'loading',
-      telefono: 'loading',
-      correo: 'loading',
-      nacionalidad: 'loading'
-    },
-    numLegajo: 'loading',
-    anioIngreso: 'loading',
-    repitencia1: 'loading',
-    repitencia2: 'loading',
-    repitencia3: 'loading',
-    movilidad: 'loading',
-    anioCursado2020: 'loading',
-    materiasPendientes: {
-      cantTotal: 'loading',
-      cantTroncales: 'loading',
-      detalleTroncales: 'loading',
-      cantGenerales: 'loading',
-      detalleGenerales: 'loading'
-    },
-    materiasEnProceso2020: {
-      cantidad: 'loading',
-      detalle: 'loading'
-    }
-  }
-})

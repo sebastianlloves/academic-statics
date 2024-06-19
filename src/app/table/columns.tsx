@@ -2,7 +2,7 @@ import { ColumnDef, Row } from '@tanstack/react-table'
 import { type Student } from '@/types'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { LOADING_DATA } from '@/utils/formatData'
+import { LOADING_DATA } from '@/constants'
 
 export const columns: ColumnDef<Student | typeof LOADING_DATA[number]>[] = [
   {
@@ -51,13 +51,11 @@ export const columns: ColumnDef<Student | typeof LOADING_DATA[number]>[] = [
           )
       )
     },
-    filterFn: (row: Row<Student | typeof LOADING_DATA[number]>, filterValue: string | number[]) => {
-      console.log(filterValue)
+    filterFn: (row: Row<Student | typeof LOADING_DATA[number]>, _columnID, filterValue: string | number[]) => {
       const { cantTroncales } = row.original.materiasPendientes
       if (cantTroncales) return cantTroncales >= filterValue[0] && cantTroncales <= filterValue[1]
       return false
     },
-    enableColumnFilter: true,
     size: 400
   }
 ]

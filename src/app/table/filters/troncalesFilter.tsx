@@ -1,30 +1,26 @@
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Slider } from '@/components/ui/slider'
-import { type Student } from '@/types'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { Table } from '@tanstack/react-table'
 import { useState } from 'react'
 
-interface FiltersHeadProps<TData> {
+interface TroncalesFilterProps<TData> {
   table: Table<TData>
 }
 
-function FiltersHead<TData> ({ table } : FiltersHeadProps<TData>) {
-  /* const maxCantTroncales = table.getCoreRowModel().rows.reduce((acc, newValue) => newValue.original.materiasPendientes.cantTroncales || acc - 1 > acc ? newValue.original.materiasPendientes.cantTroncales || acc : acc, 0)
-  const minCantTroncales = table.getCoreRowModel().rows.reduce((acc, newValue) => newValue.original.materiasPendientes.cantTroncales || (acc + 1) < acc ? newValue.original.materiasPendientes.cantTroncales : acc, maxCantTroncales) */
+function TroncalesFilter<TData> ({ table } : TroncalesFilterProps<TData>) {
   const [cantTroncales, setCantTroncales] = useState([0, 15])
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant='outline' className='font-normal'>Troncales<CaretSortIcon className='ml-2 h-4 w-4 opacity-50' /></Button>
+      <DropdownMenuTrigger asChild className='w-fit'>
+        <Button variant='outline' className='font-normal'>Troncales<CaretSortIcon className='ml-3 h-4 w-4 opacity-50' /></Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='center' className='p-3 flex justify-between space-x-2'>
+      <DropdownMenuContent align='start' className='p-3 flex justify-between space-x-2'>
         <span className='w-16 font-light text-sm text-center'>{cantTroncales[0]}</span>
         <Slider
           defaultValue={cantTroncales}
           onValueChange={(value) => {
-            console.log(value)
             setCantTroncales(value)
             table.getColumn('troncales')?.setFilterValue(value)
           }}
@@ -39,4 +35,4 @@ function FiltersHead<TData> ({ table } : FiltersHeadProps<TData>) {
   )
 }
 
-export default FiltersHead
+export default TroncalesFilter

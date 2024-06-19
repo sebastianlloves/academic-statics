@@ -1,8 +1,8 @@
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable, getPaginationRowModel, getFilteredRowModel, ColumnFiltersState } from '@tanstack/react-table'
+import { ColumnDef, flexRender, getCoreRowModel, useReactTable, getPaginationRowModel, getFilteredRowModel } from '@tanstack/react-table'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
-import FiltersHead from './filters/filtersHead'
-import { useState } from 'react'
+import TroncalesFilter from './filters/troncalesFilter'
+import CursoFilter from './filters/cursosFilter'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -10,25 +10,23 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue> ({ columns, data }: DataTableProps<TData, TValue>) {
-  const [filter, setFilter] = useState<ColumnFiltersState>([])
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnFiltersChange: setFilter,
     initialState: {
       pagination: { pageIndex: 0, pageSize: 100 }
-    },
-    state: {
-      columnFilters: filter
     }
   })
 
   return (
     <>
-      <FiltersHead table={table} />
+      <div className='flex items-center gap-x-3'>
+        <TroncalesFilter table={table} />
+        <CursoFilter table={table} />
+      </div>
       <div className='border rounded-md'>
         <Table>
           <TableHeader>
@@ -54,38 +52,14 @@ export function DataTable<TData, TValue> ({ columns, data }: DataTableProps<TDat
               </TableRow>
             ))}
           </TableHeader>
-          {/* <TableHeader className='bg-background/95'>
-            <TableRow key={table.getHeaderGroups()[0].id}>
-              {table.getHeaderGroups()[0].headers.map((header, index) => {
-                console.log(table.getAllLeafColumns())
-                if (table.getHeaderGroups()[1].headers[index].isPlaceholder) {
-                  const header = table.getHeaderGroups()[1].headers[index]
-                  return (
-                    <TableHead key={header.id} colSpan={header.colSpan} className='text-foreground text-center'>
-                      {flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  )
-                } else {
-                  console.log(header.getLeafHeaders().filter(obj => obj.depth === 2))
-                  return (
-                    <TableHead key={header.id} colSpan={header.colSpan} className='text-foreground  h-min'>
-                      <div className=' grid grid-cols-2 grid-rows-2'>
-                        <p className=' col-span-2 flex justify-center'>{flexRender(header.column.columnDef.header, header.getContext())}</p>
-                        {header.getLeafHeaders().filter(obj => obj.depth === 2).map(header => (
-                          <p key={header.id} className=' text-xs h-min font-normal flex justify-center'>{flexRender(header.column.columnDef.header, header.getContext())}</p>
-                        ))}
-                      </div>
-                    </TableHead>
-                  )
-                }
-              })}
 
-            </TableRow>
-          </TableHeader> */}
           <TableBody className=''>
             {table.getRowModel().rows?.length
               ? (table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className=' even:bg-muted/45 dark:even:bg-muted/30'>
+                <TableRow
+                  key={row.id} data-state={row.getIsSelected() && 'selected'}
+                  className=' even:bg-muted/45 dark:even:bg-muted/30'
+                >
                   {row.getVisibleCells().map((cell) => (
 
                     <TableCell key={cell.id} align='center'>
