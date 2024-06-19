@@ -3,13 +3,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button'
 import TroncalesFilter from './filters/troncalesFilter'
 import CursoFilter from './filters/cursosFilter'
+import { Student } from '@/types'
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+interface DataTableProps< TValue> {
+  columns: ColumnDef<Student, TValue>[]
+  data: Student[]
 }
 
-export function DataTable<TData, TValue> ({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TValue> ({ columns, data }: DataTableProps< TValue>) {
   const table = useReactTable({
     data,
     columns,

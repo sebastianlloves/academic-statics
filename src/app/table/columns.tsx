@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { type Student } from '@/types'
 import { Badge } from '@/components/ui/badge'
@@ -53,8 +54,7 @@ export const columns: ColumnDef<Student | typeof LOADING_DATA[number]>[] = [
     },
     filterFn: (row: Row<Student | typeof LOADING_DATA[number]>, _columnID, filterValue: string | number[]) => {
       const { cantTroncales } = row.original.materiasPendientes
-      if (cantTroncales) return cantTroncales >= filterValue[0] && cantTroncales <= filterValue[1]
-      return false
+      return cantTroncales !== undefined && cantTroncales >= filterValue[0] && cantTroncales <= filterValue[1]
     },
     size: 400
   }

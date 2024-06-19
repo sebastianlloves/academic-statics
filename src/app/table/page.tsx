@@ -8,7 +8,7 @@ function StudentsTable () {
 
   return (
     <div className='grid gap-y-4 justify-center'>
-      <DataTable columns={columns} data={loading ? LOADING_DATA : data} />
+      <DataTable columns={columns} data={data} />
     </div>
   )
 }

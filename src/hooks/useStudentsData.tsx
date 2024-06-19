@@ -3,7 +3,7 @@ import { formatData } from '../utils/formatData'
 import { Student } from '@/types'
 
 function useStudentsData () {
-  const [data, setData] = useState<Student[]>([])
+  const [data, setData] = useState<Student[] >([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 

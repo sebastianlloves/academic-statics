@@ -1,4 +1,4 @@
-import { ANIOS, DIVISIONES, GENEROS, MOVILIDAD_VALUES } from './utils/formatData'
+import { ANIOS, DIVISIONES, GENEROS, MOVILIDAD_VALUES } from './constants'
 
 type AdulResp = {
   apellido?: string;
