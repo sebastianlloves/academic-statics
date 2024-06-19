@@ -1,4 +1,4 @@
-import { ColumnDef } from '@tanstack/react-table'
+import { ColumnDef, Row } from '@tanstack/react-table'
 import { type Student } from '@/types'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -7,10 +7,11 @@ import { LOADING_DATA } from '@/utils/formatData'
 export const columns: ColumnDef<Student | typeof LOADING_DATA[number]>[] = [
   {
     id: 'curso',
-    header: () => <div className='text-center font-bold mx-6'>Curso</div>,
+    header: () => <div className='text-center font-bold'>Curso</div>,
     cell: ({ row: { original } }) => original.dni === 'loading'
       ? <Skeleton className='h-[26px] m-0 p-0' />
-      : <Badge variant='outline'>{`${original.anio}° ${original.division}°`}</Badge>
+      : <Badge variant='outline' className='mx-6'>{`${original.anio}° ${original.division}°`}</Badge>,
+    size: 120
   },
   {
     id: 'estudiante',
@@ -20,9 +21,10 @@ export const columns: ColumnDef<Student | typeof LOADING_DATA[number]>[] = [
     cell: ({ row: { original } }) => {
       return (original.apellido === 'loading'
         ? <Skeleton className='h-[26px] m-0 p-0' />
-        : <p className='text-left'>{`${original.apellido}, ${original.nombre}`}</p>
+        : <p className='text-left mx-6'>{`${original.apellido}, ${original.nombre}`}</p>
       )
-    }
+    },
+    size: 300
   },
   {
     id: 'dni',
@@ -30,36 +32,33 @@ export const columns: ColumnDef<Student | typeof LOADING_DATA[number]>[] = [
     cell: ({ row }) => {
       return (row.original.dni === 'loading'
         ? <Skeleton className='h-[26px] m-0 p-0' />
-        : <p className='text-right'>{row.original.dni}</p>
+        : <p className='text-center mx-6'>{row.original.dni}</p>
       )
-    }
+    },
+    size: 80
   },
   {
     id: 'troncales',
     header: () => <div className='text-center font-bold'>Troncales</div>,
-    columns: [
-      {
-        id: 'cantTroncales',
-        header: () => <div className='text-center'>Cantidad</div>,
-        cell: ({ row }) => {
-          return (row.original.dni === 'loading'
-            ? <Skeleton className='h-[26px] m-0 p-0' />
-            : <p className='text-center w-full border'>{row.original.materiasPendientes.cantTroncales}</p>
+    cell: ({ row }) => {
+      return (row.original.dni === 'loading'
+        ? <Skeleton className='h-[26px] m-0 p-0' />
+        : (
+          <div className='flex items-center space-x-4 mx-6'>
+            <Badge variant='outline'>{row.original.materiasPendientes.cantTroncales}</Badge>
+            <p className='text-left text-nowrap'>{row.original.materiasPendientes.detalleTroncales}</p>
+          </div>
           )
-        }
-      },
-      {
-        id: 'detalleTroncales',
-        header: () => <div className='text-center'>Detalle</div>,
-        cell: ({ row }) => {
-          return (row.original.dni === 'loading'
-            ? <Skeleton className='h-[26px] m-0 p-0' />
-            : <p className='text-right'>{row.original.materiasPendientes.detalleTroncales}</p>
-          )
-        }
-      }
-    ]
-
+      )
+    },
+    filterFn: (row: Row<Student | typeof LOADING_DATA[number]>, filterValue: string | number[]) => {
+      console.log(filterValue)
+      const { cantTroncales } = row.original.materiasPendientes
+      if (cantTroncales) return cantTroncales >= filterValue[0] && cantTroncales <= filterValue[1]
+      return false
+    },
+    enableColumnFilter: true,
+    size: 400
   }
 ]
 
