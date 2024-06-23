@@ -1,19 +1,30 @@
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable, getPaginationRowModel, getFilteredRowModel } from '@tanstack/react-table'
+import { flexRender, getCoreRowModel, useReactTable, getPaginationRowModel, getFilteredRowModel } from '@tanstack/react-table'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { columns } from './columns'
 import { Button } from '@/components/ui/button'
 import TroncalesFilter from './filters/troncalesFilter'
 import CursoFilter from './filters/cursosFilter'
 import { Student } from '@/types'
+import { useMemo } from 'react'
+import { Skeleton } from '@/components/ui/skeleton'
 
-interface DataTableProps< TValue> {
-  columns: ColumnDef<Student, TValue>[]
-  data: Student[]
+interface DataTableProps {
+  data: Student[],
+  loading: boolean
 }
 
-export function DataTable<TValue> ({ columns, data }: DataTableProps< TValue>) {
+export function DataTable ({ data, loading }: DataTableProps) {
+  const columnsTable = useMemo(() => loading
+    ? columns.map(column => { return { ...column, cell: () => <Skeleton className='h-6 rounded-md' /> } })
+    : columns,
+  [loading])
+  const dataTable = useMemo(() => loading
+    ? Array(30)
+    : data,
+  [loading, data])
   const table = useReactTable({
-    data,
-    columns,
+    data: dataTable,
+    columns: columnsTable,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -63,7 +74,12 @@ export function DataTable<TValue> ({ columns, data }: DataTableProps< TValue>) {
                 >
                   {row.getVisibleCells().map((cell) => (
 
-                    <TableCell key={cell.id} align='center'>
+                    <TableCell
+                      key={cell.id} align='center' style={{
+                        width: cell.column.getSize(),
+                        maxWidth: cell.column.getSize()
+                      }}
+                    >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
