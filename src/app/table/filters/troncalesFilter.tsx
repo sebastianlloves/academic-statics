@@ -11,18 +11,18 @@ interface TroncalesFilterProps {
 }
 
 function TroncalesFilter ({ table } : TroncalesFilterProps) {
+  const data = table.getCoreRowModel().rows
   const [cantTroncales, setCantTroncales] = useState([0, 0])
   const maxCantTroncales = useMemo(() => {
-    const data = table.getCoreRowModel().rows
     const value = data.length > 0
       ? data.reduce((prevValue, newValue) => {
-        const newCantTotal = newValue.original.materiasPendientes.cantTroncales ?? 0
-        return newCantTotal > prevValue ? newCantTotal : prevValue
+        const newCantTotal = newValue?.original?.materiasPendientes?.cantTroncales
+        return newCantTotal && newCantTotal > prevValue ? newCantTotal : prevValue
       }, 0)
       : 0
     setCantTroncales([0, value])
     return value
-  }, [table])
+  }, [data])
 
   return (
     <DropdownMenu>

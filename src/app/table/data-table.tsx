@@ -22,6 +22,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
     ? Array(30)
     : data,
   [loading, data])
+
   const table = useReactTable({
     data: dataTable,
     columns: columnsTable,
@@ -44,23 +45,11 @@ export function DataTable ({ data, loading }: DataTableProps) {
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead
-                      className='py-2' style={{
-                        width: header.column.getSize(),
-                        maxWidth: header.column.getSize()
-                      }} key={header.id}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    </TableHead>
-                  )
-                })}
+                {headerGroup.headers.map(header => (
+                  <TableHead className='py-2' style={{ width: header.column.getSize(), maxWidth: header.column.getSize() }} key={header.id}>
+                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>)
+                )}
               </TableRow>
             ))}
           </TableHeader>
@@ -68,18 +57,9 @@ export function DataTable ({ data, loading }: DataTableProps) {
           <TableBody className=''>
             {table.getRowModel().rows?.length
               ? (table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id} data-state={row.getIsSelected() && 'selected'}
-                  className=' even:bg-muted/45 dark:even:bg-muted/30'
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className=' even:bg-muted/45 dark:even:bg-muted/30'>
                   {row.getVisibleCells().map((cell) => (
-
-                    <TableCell
-                      key={cell.id} align='center' style={{
-                        width: cell.column.getSize(),
-                        maxWidth: cell.column.getSize()
-                      }}
-                    >
+                    <TableCell key={cell.id} align='center' style={{ width: cell.column.getSize(), maxWidth: cell.column.getSize() }}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
@@ -89,7 +69,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
               : (
                 <TableRow>
                   <TableCell colSpan={columns.length} className='h-24 text-center'>
-                    No results.
+                    No se hallaron resultados.
                   </TableCell>
                 </TableRow>
                 )}
