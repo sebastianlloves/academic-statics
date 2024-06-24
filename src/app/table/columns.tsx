@@ -1,5 +1,6 @@
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { type Student } from '@/types'
+import { pendientesFilterValueState } from '@/app/table/filters/troncalesFilter'
 import { Badge } from '@/components/ui/badge'
 
 export const columns: ColumnDef<Student>[] = [
@@ -27,22 +28,28 @@ export const columns: ColumnDef<Student>[] = [
     id: 'troncales',
     header: () => <div className='text-center font-bold'>Troncales</div>,
     cell: ({ row }) => <p className='text-center mx-6'>{row.original.materiasPendientes.cantTroncales}</p>,
-    filterFn: (row: Row<Student>, _columnID, filterValue: number[]) => {
-      const { cantTroncales } = row.original.materiasPendientes
-      return cantTroncales !== undefined && cantTroncales >= filterValue[0] && cantTroncales <= filterValue[1]
-    },
+    filterFn: pendientesFilterFn,
     size: 100
   },
   {
     id: 'generales',
     header: () => <div className='text-center font-bold'>Generales</div>,
     cell: ({ row }) => <p className='text-center mx-6'>{row.original.materiasPendientes.cantGenerales}</p>,
-    filterFn: (row: Row<Student>, _columnID, filterValue: number[] | 'repite') => {
-      const { cantTroncales, cantGenerales } = row.original.materiasPendientes
-      if (cantTroncales === undefined || cantGenerales === undefined) return false
-      if (filterValue === 'repite') return cantTroncales > 2 || cantTroncales + cantGenerales > 4
-      return cantGenerales >= filterValue[0] && cantGenerales <= filterValue[1]
-    },
+    filterFn: pendientesFilterFn,
     size: 100
   }
 ]
+
+function pendientesFilterFn (row: Row<Student>, _columnID: string, filterValue: pendientesFilterValueState) : boolean {
+  const { cantTroncales, cantGenerales } = row.original.materiasPendientes
+  if (cantTroncales === undefined || cantGenerales === undefined) return false
+  const isInTroncalesRange = cantTroncales >= filterValue.troncalesRange[0] && cantTroncales <= filterValue.troncalesRange[1]
+  const isInGeneralesRange = cantGenerales >= filterValue.generalesRange[0] && cantGenerales <= filterValue.generalesRange[1]
+  const isValidPromotedCondition = filterValue.promotedAndRepetears === 'onlyPromoted'
+    ? cantTroncales <= 2 && cantTroncales + cantGenerales <= 4
+    : filterValue.promotedAndRepetears === 'onlyRepeaters'
+      ? cantTroncales > 2 || cantTroncales + cantGenerales > 4
+      : true
+
+  return isInTroncalesRange && isInGeneralesRange && isValidPromotedCondition
+}
