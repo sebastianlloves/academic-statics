@@ -22,6 +22,7 @@ interface filterValueState {
 - que los dos memos actualicen este estado filterValue
 - que los onChekedChange y onValueChange de los inputs establezcan el filtro en la columna que corresponda con este nuevo estado filterValue
 - en la definición de columnas, definir una sóla vez la función pendientesFilterFn y pasársela como filterFn a las columnas de troncales y generales
+- "Sólo permanencia..."
 */
 
 function TroncalesFilter ({ table } : TroncalesFilterProps) {
