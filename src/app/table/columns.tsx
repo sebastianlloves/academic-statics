@@ -32,5 +32,17 @@ export const columns: ColumnDef<Student>[] = [
       return cantTroncales !== undefined && cantTroncales >= filterValue[0] && cantTroncales <= filterValue[1]
     },
     size: 100
+  },
+  {
+    id: 'generales',
+    header: () => <div className='text-center font-bold'>Generales</div>,
+    cell: ({ row }) => <p className='text-center mx-6'>{row.original.materiasPendientes.cantGenerales}</p>,
+    filterFn: (row: Row<Student>, _columnID, filterValue: number[] | 'repite') => {
+      const { cantTroncales, cantGenerales } = row.original.materiasPendientes
+      if (cantTroncales === undefined || cantGenerales === undefined) return false
+      if (filterValue === 'repite') return cantTroncales > 2 || cantTroncales + cantGenerales > 4
+      return cantGenerales >= filterValue[0] && cantGenerales <= filterValue[1]
+    },
+    size: 100
   }
 ]
