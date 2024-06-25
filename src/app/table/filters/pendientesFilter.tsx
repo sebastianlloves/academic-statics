@@ -8,7 +8,7 @@ import { CaretSortIcon } from '@radix-ui/react-icons'
 import { Table } from '@tanstack/react-table'
 import { useMemo, useState } from 'react'
 
-interface TroncalesFilterProps {
+interface PendientesFilterProps {
   table: Table<Student>
 }
 
@@ -22,7 +22,7 @@ export interface pendientesFilterValueState {
 - en la definición de columnas, definir una sóla vez la función pendientesFilterFn y pasársela como filterFn a las columnas de troncales y generales
 */
 
-function TroncalesFilter ({ table } : TroncalesFilterProps) {
+function PendientesFilter ({ table } : PendientesFilterProps) {
   const data = table.getCoreRowModel().rows
   const [pendientesFilterValue, setPendientesFilterValue] = useState<pendientesFilterValueState>({
     troncalesRange: [0, 0],
@@ -143,4 +143,4 @@ function TroncalesFilter ({ table } : TroncalesFilterProps) {
   )
 }
 
-export default TroncalesFilter
+export default PendientesFilter

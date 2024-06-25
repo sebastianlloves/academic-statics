@@ -3,49 +3,50 @@ export const DIVISIONES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const
 
 export const CURSOS = {
   1: [
-    { division: 1, orientacion: 'Ciclo Básico', turno: 'Mañana' },
-    { division: 2, orientacion: 'Ciclo Básico', turno: 'Mañana' },
-    { division: 3, orientacion: 'Ciclo Básico', turno: 'Mañana' },
-    { division: 4, orientacion: 'Ciclo Básico', turno: 'Tarde' },
-    { division: 5, orientacion: 'Ciclo Básico', turno: 'Tarde' },
-    { division: 6, orientacion: 'Ciclo Básico', turno: 'Tarde' }
+    { nombre: '1° 1°', division: 1, orientacion: 'Ciclo Básico', turno: 'Mañana' },
+    { nombre: '1° 2°', division: 2, orientacion: 'Ciclo Básico', turno: 'Mañana' },
+    { nombre: '1° 3°', division: 3, orientacion: 'Ciclo Básico', turno: 'Mañana' },
+    { nombre: '1° 4°', division: 4, orientacion: 'Ciclo Básico', turno: 'Tarde' },
+    { nombre: '1° 5°', division: 5, orientacion: 'Ciclo Básico', turno: 'Tarde' },
+    { nombre: '1° 6°', division: 6, orientacion: 'Ciclo Básico', turno: 'Tarde' }
   ],
   2: [
-    { division: 1, orientacion: 'Ciclo Básico', turno: 'Mañana' },
-    { division: 2, orientacion: 'Ciclo Básico', turno: 'Mañana' },
-    { division: 3, orientacion: 'Ciclo Básico', turno: 'Mañana' },
-    { division: 4, orientacion: 'Ciclo Básico', turno: 'Tarde' },
-    { division: 5, orientacion: 'Ciclo Básico', turno: 'Tarde' },
-    { division: 6, orientacion: 'Ciclo Básico', turno: 'Tarde' }
+    { nombre: '2° 1°', division: 1, orientacion: 'Ciclo Básico', turno: 'Mañana' },
+    { nombre: '2° 2°', division: 2, orientacion: 'Ciclo Básico', turno: 'Mañana' },
+    { nombre: '2° 3°', division: 3, orientacion: 'Ciclo Básico', turno: 'Mañana' },
+    { nombre: '2° 4°', division: 4, orientacion: 'Ciclo Básico', turno: 'Tarde' },
+    { nombre: '2° 5°', division: 5, orientacion: 'Ciclo Básico', turno: 'Tarde' },
+    { nombre: '2° 6°', division: 6, orientacion: 'Ciclo Básico', turno: 'Tarde' }
   ],
   3: [
-    { division: 1, orientacion: 'Producción Multimedial', turno: 'Mañana' },
-    { division: 2, orientacion: 'TICs', turno: 'Mañana' },
-    { division: 3, orientacion: 'TICs', turno: 'Mañana' },
-    { division: 4, orientacion: 'Producción Multimedial', turno: 'Tarde' },
-    { division: 5, orientacion: 'Producción Multimedial', turno: 'Tarde' },
-    { division: 6, orientacion: 'TICs', turno: 'Tarde' }
+    { nombre: '3° 1°', division: 1, orientacion: 'Producción Multimedial', turno: 'Mañana' },
+    { nombre: '3° 2°', division: 2, orientacion: 'TICs', turno: 'Mañana' },
+    { nombre: '3° 3°', division: 3, orientacion: 'TICs', turno: 'Mañana' },
+    { nombre: '3° 4°', division: 4, orientacion: 'Producción Multimedial', turno: 'Tarde' },
+    { nombre: '3° 5°', division: 5, orientacion: 'Producción Multimedial', turno: 'Tarde' },
+    { nombre: '3° 6°', division: 6, orientacion: 'TICs', turno: 'Tarde' }
   ],
   4: [
-    { division: 1, orientacion: 'Producción Multimedial', turno: 'Mañana' },
-    { division: 2, orientacion: 'TICs', turno: 'Mañana' },
-    { division: 3, orientacion: 'Producción Multimedial', turno: 'Tarde' },
-    { division: 4, orientacion: 'TICs', turno: 'Tarde' }
+    { nombre: '4° 1°', division: 1, orientacion: 'Producción Multimedial', turno: 'Mañana' },
+    { nombre: '4° 2°', division: 2, orientacion: 'TICs', turno: 'Mañana' },
+    { nombre: '4° 3°', division: 3, orientacion: 'Producción Multimedial', turno: 'Tarde' },
+    { nombre: '4° 4°', division: 4, orientacion: 'TICs', turno: 'Tarde' }
   ],
   5: [
-    { division: 1, orientacion: 'Producción Multimedial', turno: 'Mañana' },
-    { division: 2, orientacion: 'TICs', turno: 'Mañana' },
-    { division: 3, orientacion: 'Producción Multimedial', turno: 'Tarde' },
-    { division: 4, orientacion: 'TICs', turno: 'Tarde' }
+    { nombre: '5° 1°', division: 1, orientacion: 'Producción Multimedial', turno: 'Mañana' },
+    { nombre: '5° 2°', division: 2, orientacion: 'TICs', turno: 'Mañana' },
+    { nombre: '5° 3°', division: 3, orientacion: 'Producción Multimedial', turno: 'Tarde' },
+    { nombre: '5° 4°', division: 4, orientacion: 'TICs', turno: 'Tarde' }
   ],
   6: [
-    { division: 1, orientacion: 'Producción Multimedial', turno: 'Mañana' },
-    { division: 2, orientacion: 'TICs', turno: 'Mañana' }
+    { nombre: '6° 1°', division: 1, orientacion: 'Producción Multimedial', turno: 'Mañana' },
+    { nombre: '6° 2°', division: 2, orientacion: 'TICs', turno: 'Mañana' }
   ]
 } as const
 
 export type ANOS = keyof(typeof CURSOS)
 export type DIV = typeof CURSOS[ANOS][number]['division']
+export type CURSO = typeof CURSOS[ANOS][number]['nombre']
 export type ORIENTACIONES = typeof CURSOS[ANOS][number]['orientacion']
 export type TURNOS = typeof CURSOS[ANOS][number]['turno']
 export const GENEROS = { M: 'Masculino', F: 'Femenino' } as const

@@ -2,7 +2,7 @@ import { flexRender, getCoreRowModel, useReactTable, getPaginationRowModel, getF
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { columns } from './columns'
 import { Button } from '@/components/ui/button'
-import TroncalesFilter from './filters/troncalesFilter'
+import PendientesFilter from './filters/pendientesFilter'
 import CursoFilter from './filters/cursosFilter'
 import { Student } from '@/types'
 import { useMemo } from 'react'
@@ -37,14 +37,14 @@ export function DataTable ({ data, loading }: DataTableProps) {
   return (
     <>
       <div className='flex items-center gap-x-3'>
-        <TroncalesFilter table={table} />
+        <PendientesFilter table={table} />
         <CursoFilter table={table} />
       </div>
-      <div className='border rounded-md'>
-        <Table>
+      <div>
+        <Table className='relative'>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow className='sticky top-0 bg-background shadow-sm shadow-primary/30' key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
                   <TableHead className='py-2' style={{ width: header.column.getSize(), maxWidth: header.column.getSize() }} key={header.id}>
                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}

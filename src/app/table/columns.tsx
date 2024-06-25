@@ -1,6 +1,6 @@
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { type Student } from '@/types'
-import { pendientesFilterValueState } from '@/app/table/filters/troncalesFilter'
+import { pendientesFilterValueState } from '@/app/table/filters/pendientesFilter'
 import { Badge } from '@/components/ui/badge'
 
 export const columns: ColumnDef<Student>[] = [
