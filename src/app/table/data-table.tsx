@@ -44,7 +44,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
         <Table className='relative'>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className='sticky top-0 bg-background shadow-sm shadow-primary/30' key={headerGroup.id}>
+              <TableRow className='sticky top-0 bg-background outline outline-1 outline-primary/50' key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
                   <TableHead className='py-2' style={{ width: header.column.getSize(), maxWidth: header.column.getSize() }} key={header.id}>
                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
