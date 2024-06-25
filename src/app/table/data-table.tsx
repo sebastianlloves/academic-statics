@@ -7,6 +7,7 @@ import CursoFilter from './filters/cursosFilter'
 import { Student } from '@/types'
 import { useMemo } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 interface DataTableProps {
   data: Student[],
@@ -40,13 +41,13 @@ export function DataTable ({ data, loading }: DataTableProps) {
         <PendientesFilter table={table} />
         <CursoFilter table={table} />
       </div>
-      <div>
+      <ScrollArea className='h-[80vh] rounded-md'>
         <Table className='relative'>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className='sticky top-0 bg-background outline outline-1 outline-primary/50' key={headerGroup.id}>
+              <TableRow className='sticky top-0 bg-background outline outline-1 outline-primary/50 hover:bg-background' key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
-                  <TableHead className='py-2' style={{ width: header.column.getSize(), maxWidth: header.column.getSize() }} key={header.id}>
+                  <TableHead className='py-2 text-foreground' style={{ width: header.column.getSize(), maxWidth: header.column.getSize() }} key={header.id}>
                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>)
                 )}
@@ -75,7 +76,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
                 )}
           </TableBody>
         </Table>
-      </div>
+      </ScrollArea>
       <div className='flex justify-center gap-4'>
         <Button variant='outline' disabled={!table.getCanPreviousPage()} onClick={() => table.previousPage()}>Anterior</Button>
         <Button variant='outline' disabled={!table.getCanNextPage()} onClick={() => table.nextPage()}>Siguiente</Button>

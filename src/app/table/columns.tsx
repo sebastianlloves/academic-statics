@@ -2,13 +2,19 @@ import { ColumnDef, Row } from '@tanstack/react-table'
 import { type Student } from '@/types'
 import { pendientesFilterValueState } from '@/app/table/filters/pendientesFilter'
 import { Badge } from '@/components/ui/badge'
+import { CURSO } from '@/constants'
 
 export const columns: ColumnDef<Student>[] = [
   {
     id: 'curso',
     header: () => <div className='text-center font-bold'>Curso</div>,
     cell: ({ row: { original } }) => <Badge variant='outline' className='mx-6'>{`${original.anio}° ${original.division}°`}</Badge>,
-    size: 120
+    size: 120,
+    filterFn: (row: Row<Student>, _columnID: string, filterValue: CURSO[]) => {
+      const { anio, division } = row.original
+      const curso = `${anio}° ${division}°`
+      return filterValue.includes(curso as CURSO)
+    }
   },
   {
     id: 'estudiante',
