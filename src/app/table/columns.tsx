@@ -7,15 +7,11 @@ import { CURSO } from '@/constants'
 export const columns: ColumnDef<Student>[] = [
   {
     id: 'curso',
-    accessorFn: originalRow => [originalRow.anio, originalRow.division],
+    accessorFn: ({ anio, division }) => `${anio}° ${division}°`,
     header: () => <div className='text-center font-bold'>Curso</div>,
-    cell: ({ row: { original } }) => <Badge variant='outline' className='mx-6'>{`${original.anio}° ${original.division}°`}</Badge>,
+    cell: ({ cell }) => <Badge variant='outline' className='mx-6'>{cell.getValue() as string}</Badge>,
     size: 120,
-    filterFn: (row: Row<Student>, _columnID: string, filterValue: CURSO[]) => {
-      const { anio, division } = row.original
-      const curso = `${anio}° ${division}°`
-      return filterValue.includes(curso as CURSO)
-    },
+    filterFn: (row: Row<Student>, columnID: string, filterValue: CURSO[]) => filterValue.includes(row.getValue(columnID) as CURSO),
     sortingFn: (rowA, rowB) => {
       const anioA = rowA.original.anio ?? 0
       const anioB = rowB.original.anio ?? 0
@@ -26,10 +22,18 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     id: 'estudiante',
+    accessorFn: ({ apellido, nombre }) => {
+      const capitalizeApellido = apellido?.split(' ').map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ')
+      const capitalizeNombre = nombre?.split(' ').map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ')
+      return `${capitalizeApellido}, ${capitalizeNombre}`
+    },
     header: () => (
       <div className='text-center font-bold'>Estudiante</div>
     ),
-    cell: ({ row: { original } }) => <p className='text-left mx-6'>{`${original.apellido}, ${original.nombre}`}</p>,
+    cell: ({ cell }) => {
+      const [apellido, nombre] = `${cell.getValue()}`.split(', ')
+      return <p className='text-left mx-6'><span className='font-normal'>{apellido}</span>, <span className='font-light'>{nombre}</span></p>
+    },
     size: 300
   },
   {

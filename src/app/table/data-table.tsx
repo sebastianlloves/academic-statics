@@ -1,11 +1,11 @@
-import { flexRender, getCoreRowModel, useReactTable, getPaginationRowModel, getFilteredRowModel, getSortedRowModel, SortingState } from '@tanstack/react-table'
+import { flexRender, getCoreRowModel, useReactTable, getPaginationRowModel, getFilteredRowModel, getSortedRowModel } from '@tanstack/react-table'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { columns } from './columns'
 import { Button } from '@/components/ui/button'
 import PendientesFilter from './filters/pendientesFilter'
 import CursoFilter from './filters/cursosFilter'
 import { Student } from '@/types'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
@@ -15,13 +15,12 @@ interface DataTableProps {
 }
 
 export function DataTable ({ data, loading }: DataTableProps) {
-  const [sorting, setSorting] = useState<SortingState>([])
   const columnsTable = useMemo(() => loading
     ? columns.map(column => { return { ...column, cell: () => <Skeleton className='h-6 rounded-md' /> } })
     : columns,
   [loading])
   const dataTable = useMemo(() => loading
-    ? Array(30)
+    ? Array(30).fill({})
     : data,
   [loading, data])
 
@@ -32,13 +31,9 @@ export function DataTable ({ data, loading }: DataTableProps) {
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
-    state: {
-      sorting
-    },
     initialState: {
-      pagination: { pageIndex: 0, pageSize: 100 }/* ,
-      sorting: [{ id: 'curso', desc: true }] */
+      pagination: { pageIndex: 0, pageSize: 100 },
+      sorting: [{ id: 'curso', desc: true }]
     }
   })
 
