@@ -1,11 +1,11 @@
-import { flexRender, getCoreRowModel, useReactTable, getPaginationRowModel, getFilteredRowModel } from '@tanstack/react-table'
+import { flexRender, getCoreRowModel, useReactTable, getPaginationRowModel, getFilteredRowModel, getSortedRowModel, SortingState } from '@tanstack/react-table'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { columns } from './columns'
 import { Button } from '@/components/ui/button'
 import PendientesFilter from './filters/pendientesFilter'
 import CursoFilter from './filters/cursosFilter'
 import { Student } from '@/types'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
@@ -15,6 +15,7 @@ interface DataTableProps {
 }
 
 export function DataTable ({ data, loading }: DataTableProps) {
+  const [sorting, setSorting] = useState<SortingState>([])
   const columnsTable = useMemo(() => loading
     ? columns.map(column => { return { ...column, cell: () => <Skeleton className='h-6 rounded-md' /> } })
     : columns,
@@ -30,8 +31,14 @@ export function DataTable ({ data, loading }: DataTableProps) {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
+    state: {
+      sorting
+    },
     initialState: {
-      pagination: { pageIndex: 0, pageSize: 100 }
+      pagination: { pageIndex: 0, pageSize: 100 }/* ,
+      sorting: [{ id: 'curso', desc: true }] */
     }
   })
 
@@ -40,6 +47,11 @@ export function DataTable ({ data, loading }: DataTableProps) {
       <div className='flex items-center gap-x-3'>
         <PendientesFilter table={table} />
         <CursoFilter table={table} />
+        <Button
+          variant='ghost'
+          onClick={() => console.log(table.getColumn('curso')?.toggleSorting())}
+        >Ordenar
+        </Button>
       </div>
       <ScrollArea className='h-[80vh] rounded-md'>
         <Table className='relative'>
