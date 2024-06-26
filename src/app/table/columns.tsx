@@ -34,7 +34,8 @@ export const columns: ColumnDef<Student>[] = [
       const [apellido, nombre] = `${cell.getValue()}`.split(', ')
       return <p className='text-left mx-6'><span className='font-normal'>{apellido}</span>, <span className='font-light'>{nombre}</span></p>
     },
-    size: 300
+    size: 300,
+    sortingFn: 'text'
   },
   {
     id: 'dni',
@@ -45,7 +46,7 @@ export const columns: ColumnDef<Student>[] = [
     sortingFn: (rowA, rowB) => {
       const dniA = rowA.original.dni ?? 0
       const dniB = rowB.original.dni ?? 0
-      return dniA - dniB /* !== 0 ? anioA - anioB : divisionA - divisionB */
+      return dniA - dniB
     }
   },
   {

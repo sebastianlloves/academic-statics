@@ -44,7 +44,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
         <CursoFilter table={table} />
         <Button
           variant='ghost'
-          onClick={() => console.log(table.getColumn('curso')?.toggleSorting())}
+          onClick={() => console.log(table.getColumn('estudiante')?.toggleSorting())}
         >Ordenar
         </Button>
       </div>
