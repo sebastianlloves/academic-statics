@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Slider } from '@/components/ui/slider'
@@ -56,75 +56,78 @@ function PendientesFilter ({ table } : PendientesFilterProps) {
       <DropdownMenuTrigger asChild className='w-fit'>
         <Button variant='outline' className='font-normal'>Pendientes<CaretSortIcon className='ml-3 h-4 w-4 opacity-50' /></Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='start' className='p-3'>
-        <DropdownMenuLabel asChild>
-          <h4 className='text-center text-accent-foreground font-medium tracking-tight'>Troncales</h4>
+      <DropdownMenuContent align='start' className='px-3'>
+        <DropdownMenuLabel className='text-center text-accent-foreground font-medium tracking-tight'>
+          Troncales
         </DropdownMenuLabel>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className='p-2 flex justify-between space-x-2 my-2'>
-                <span className='w-8 font-light text-sm text-center'>{pendientesFilterValue.troncalesRange[0]}</span>
-                <Slider
-                  defaultValue={pendientesFilterValue.troncalesRange}
-                  onValueChange={(value) => {
-                    const newState = { ...pendientesFilterValue, troncalesRange: value }
-                    setPendientesFilterValue(newState)
-                    table.getColumn('troncales')?.setFilterValue(newState)
-                    table.getColumn('generales')?.setFilterValue(newState)
-                  }}
-                  max={maxCantTroncales}
-                  step={1}
-                  className='w-80'
-                  color='bg-primary'
-                />
-                <span className='w-8 font-light text-sm text-center'>{pendientesFilterValue.troncalesRange[1]}</span>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side='bottom' className='bg-background border rounded-md w-fit p-3'>
-              <p className='text-sm text-center text-muted-foreground'>{pendientesFilterValue.troncalesRange[0] === pendientesFilterValue.troncalesRange[1]
-                ? `Estudiantes que tengan ${pendientesFilterValue.troncalesRange[1]} materias troncales`
-                : `Estudiantes que tengan entre ${pendientesFilterValue.troncalesRange[0]} y ${pendientesFilterValue.troncalesRange[1]} materias troncales`}
-              </p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild onSelect={(e) => e.preventDefault()}>
+            <div className='flex justify-between space-x-2 py-1'>
+              <span className='w-8 font-light text-sm text-center'>{pendientesFilterValue.troncalesRange[0]}</span>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Slider
+                      defaultValue={pendientesFilterValue.troncalesRange}
+                      onValueChange={(value) => {
+                        const newState = { ...pendientesFilterValue, troncalesRange: value }
+                        setPendientesFilterValue(newState)
+                        table.getColumn('troncales')?.setFilterValue(newState)
+                        table.getColumn('generales')?.setFilterValue(newState)
+                      }}
+                      max={maxCantTroncales}
+                      step={1}
+                      className='w-80'
+                      color='bg-primary'
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent side='bottom' className='bg-background border rounded-md w-fit p-3'>
+                    <p className='text-sm text-center text-muted-foreground'>{pendientesFilterValue.troncalesRange[0] === pendientesFilterValue.troncalesRange[1]
+                      ? `Estudiantes que tengan ${pendientesFilterValue.troncalesRange[1]} materias troncales`
+                      : `Estudiantes que tengan entre ${pendientesFilterValue.troncalesRange[0]} y ${pendientesFilterValue.troncalesRange[1]} materias troncales`}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <span className='w-8 font-light text-sm text-center'>{pendientesFilterValue.troncalesRange[1]}</span>
+            </div>
+          </DropdownMenuItem>
 
-        <DropdownMenuSeparator className='my-3' />
-        <DropdownMenuLabel asChild>
-          <h4 className='text-center text-foreground'>Generales</h4>
-        </DropdownMenuLabel>
+          <DropdownMenuSeparator />
 
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className='p-2 flex justify-between space-x-2 my-2'>
-                <span className='w-8 font-light text-sm text-center'>{pendientesFilterValue.generalesRange[0]}</span>
-                <Slider
-                  defaultValue={pendientesFilterValue.generalesRange}
-                  onValueChange={(value) => {
-                    const newState = { ...pendientesFilterValue, generalesRange: value }
-                    setPendientesFilterValue(newState)
-                    table.getColumn('troncales')?.setFilterValue(newState)
-                    table.getColumn('generales')?.setFilterValue(newState)
-                  }}
-                  max={maxCantGenerales}
-                  step={1}
-                  className='w-80'
-                  color='bg-primary'
-                />
-                <span className='w-8 font-light text-sm text-center'>{pendientesFilterValue.generalesRange[1]}</span>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side='bottom' className='bg-background border rounded-md w-fit p-3'>
-              <p className='text-sm text-center text-muted-foreground'>{pendientesFilterValue.generalesRange[0] === pendientesFilterValue.generalesRange[1]
-                ? `Estudiantes que tengan ${pendientesFilterValue.generalesRange[1]} materias generales`
-                : `Estudiantes que tengan entre ${pendientesFilterValue.generalesRange[0]} y ${pendientesFilterValue.generalesRange[1]} materias generales`}
-              </p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
+          <DropdownMenuLabel className='text-center text-accent-foreground font-medium tracking-tight'>
+            Generales
+          </DropdownMenuLabel>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className='p-2 flex justify-between space-x-2 my-2'>
+                  <span className='w-8 font-light text-sm text-center'>{pendientesFilterValue.generalesRange[0]}</span>
+                  <Slider
+                    defaultValue={pendientesFilterValue.generalesRange}
+                    onValueChange={(value) => {
+                      const newState = { ...pendientesFilterValue, generalesRange: value }
+                      setPendientesFilterValue(newState)
+                      table.getColumn('troncales')?.setFilterValue(newState)
+                      table.getColumn('generales')?.setFilterValue(newState)
+                    }}
+                    max={maxCantGenerales}
+                    step={1}
+                    className='w-80'
+                    color='bg-primary'
+                  />
+                  <span className='w-8 font-light text-sm text-center'>{pendientesFilterValue.generalesRange[1]}</span>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side='bottom' className='bg-background border rounded-md w-fit p-3'>
+                <p className='text-sm text-center text-muted-foreground'>{pendientesFilterValue.generalesRange[0] === pendientesFilterValue.generalesRange[1]
+                  ? `Estudiantes que tengan ${pendientesFilterValue.generalesRange[1]} materias generales`
+                  : `Estudiantes que tengan entre ${pendientesFilterValue.generalesRange[0]} y ${pendientesFilterValue.generalesRange[1]} materias generales`}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator className='my-3' />
         <div className='flex flex-col space-y-3 px-4 pb-3'>
           <DropdownMenuLabel asChild>

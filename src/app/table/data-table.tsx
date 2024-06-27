@@ -42,17 +42,12 @@ export function DataTable ({ data, loading }: DataTableProps) {
       <div className='flex items-center gap-x-3'>
         <PendientesFilter table={table} />
         <CursoFilter table={table} />
-        <Button
-          variant='ghost'
-          onClick={() => console.log(table.getColumn('estudiante')?.toggleSorting())}
-        >Ordenar
-        </Button>
       </div>
-      <ScrollArea className='h-[80vh] rounded-md'>
+      <ScrollArea className='h-[80vh] rounded-md w-max'>
         <Table className='relative'>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className='sticky top-0 bg-background outline outline-1 outline-primary/50 hover:bg-background' key={headerGroup.id}>
+              <TableRow className='sticky top-0 bg-background border-b-0 outline outline-1 outline-primary/50 hover:bg-background' key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
                   <TableHead className='py-2 text-foreground' style={{ width: header.column.getSize(), maxWidth: header.column.getSize() }} key={header.id}>
                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
@@ -65,7 +60,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
           <TableBody className=''>
             {table.getRowModel().rows?.length
               ? (table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className=' even:bg-muted/45 dark:even:bg-muted/30'>
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className=''>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} align='center' style={{ width: cell.column.getSize(), maxWidth: cell.column.getSize() }}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

@@ -3,12 +3,15 @@ import { type Student } from '@/types'
 import { pendientesFilterValueState } from '@/app/table/filters/pendientesFilter'
 import { Badge } from '@/components/ui/badge'
 import { CURSO } from '@/constants'
+import SortingHeader from './sortingHeader'
 
 export const columns: ColumnDef<Student>[] = [
   {
     id: 'curso',
     accessorFn: ({ anio, division }) => `${anio}° ${division}°`,
-    header: () => <div className='text-center font-bold'>Curso</div>,
+    header: ({ column }) => (
+      <SortingHeader title='Curso' column={column} />
+    ),
     cell: ({ cell }) => <Badge variant='outline' className='mx-6'>{cell.getValue() as string}</Badge>,
     size: 120,
     filterFn: (row: Row<Student>, columnID: string, filterValue: CURSO[]) => filterValue.includes(row.getValue(columnID) as CURSO),
@@ -27,8 +30,8 @@ export const columns: ColumnDef<Student>[] = [
       const capitalizeNombre = nombre?.split(' ').map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ')
       return `${capitalizeApellido}, ${capitalizeNombre}`
     },
-    header: () => (
-      <div className='text-center font-bold'>Estudiante</div>
+    header: ({ column }) => (
+      <SortingHeader title='Estudiante' column={column} />
     ),
     cell: ({ cell }) => {
       const [apellido, nombre] = `${cell.getValue()}`.split(', ')
@@ -40,28 +43,34 @@ export const columns: ColumnDef<Student>[] = [
   {
     id: 'dni',
     accessorKey: 'dni',
-    header: () => <div className='text-center font-bold'>DNI</div>,
-    cell: ({ row }) => <p className='text-center mx-6'>{row.original.dni}</p>,
+    header: ({ column }) => (
+      <SortingHeader title='DNI' column={column} />
+    ),
+    cell: ({ row }) => <p className='text-center text-xs text-muted-foreground mx-6'>{row.original.dni}</p>,
     size: 150,
-    sortingFn: (rowA, rowB) => {
-      const dniA = rowA.original.dni ?? 0
-      const dniB = rowB.original.dni ?? 0
-      return dniA - dniB
-    }
+    sortingFn: 'basic'
   },
   {
     id: 'troncales',
-    header: () => <div className='text-center font-bold'>Troncales</div>,
-    cell: ({ row }) => <p className='text-center mx-6'>{row.original.materiasPendientes.cantTroncales}</p>,
+    accessorKey: 'materiasPendientes.cantTroncales',
+    header: ({ column }) => (
+      <SortingHeader title='Troncales' column={column} />
+    ),
+    cell: ({ cell }) => <p className='text-center font-medium text-muted-foreground'>{`${cell.getValue() ?? ''}`}</p>,
     filterFn: pendientesFilterFn,
-    size: 100
+    sortingFn: 'basic',
+    size: 150
   },
   {
     id: 'generales',
-    header: () => <div className='text-center font-bold'>Generales</div>,
-    cell: ({ row }) => <p className='text-center mx-6'>{row.original.materiasPendientes.cantGenerales}</p>,
+    accessorKey: 'materiasPendientes.cantGenerales',
+    header: ({ column }) => (
+      <SortingHeader title='Generales' column={column} />
+    ),
+    cell: ({ cell }) => <p className='text-center font-medium text-muted-foreground'>{`${cell.getValue() ?? ''}`}</p>,
     filterFn: pendientesFilterFn,
-    size: 100
+    sortingFn: 'basic',
+    size: 150
   }
 ]
 
