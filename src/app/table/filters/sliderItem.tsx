@@ -12,11 +12,11 @@ interface SliderItemProps {
 function SliderItem ({ rangeValues, maxCant, handleValueChange, materiaType } : SliderItemProps) {
   return (
     <>
-      <DropdownMenuLabel className='capitalize text-center text-accent-foreground font-medium tracking-tight'>
+      <DropdownMenuLabel className='capitalize text-center text-accent-foreground font-normal tracking-tight pb-0 mt-2'>
         {materiaType}
       </DropdownMenuLabel>
       <DropdownMenuItem asChild onSelect={(e) => e.preventDefault()}>
-        <div className='flex justify-between space-x-2 py-1'>
+        <div className='flex justify-between space-x-2 pb-1'>
           <span className='w-8 font-light text-sm text-center'>{rangeValues[0]}</span>
           <TooltipProvider>
             <Tooltip>
@@ -26,7 +26,7 @@ function SliderItem ({ rangeValues, maxCant, handleValueChange, materiaType } : 
                   onValueChange={handleValueChange}
                   max={maxCant}
                   step={1}
-                  className='w-80'
+                  className='w-52'
                   color='bg-primary'
                 />
               </TooltipTrigger>

@@ -1,98 +1,85 @@
 import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Slider } from '@/components/ui/slider'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Student } from '@/types'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { Table } from '@tanstack/react-table'
 import { useMemo, useState } from 'react'
 import SliderItem from './sliderItem'
 
-interface PendientesFilterProps {
+interface MateriasFilterProps {
   table: Table<Student>
 }
 
-export interface pendientesFilterValueState {
+export interface materiasFilterValueState {
   troncalesRange: [number, number],
   generalesRange: [number, number],
+  enProceso2020Range: [number, number],
   promotedAndRepetears: 'all' | 'onlyRepeaters' | 'onlyPromoted'
 }
 
-function MateriasFilter ({ table } : PendientesFilterProps) {
+function MateriasFilter ({ table } : MateriasFilterProps) {
   const data = table.getCoreRowModel().rows
-  const [pendientesFilterValue, setPendientesFilterValue] = useState<pendientesFilterValueState>({
+  const [materiasFilterValue, setMateriasFilterValue] = useState<materiasFilterValueState>({
     troncalesRange: [0, 0],
     generalesRange: [0, 0],
+    enProceso2020Range: [0, 0],
     promotedAndRepetears: 'all'
   })
-  const maxCantTroncales = useMemo(() => {
-    const value = data.length > 0
+  const [maxCantTroncales, maxCantGenerales, maxCantEnProceso2020] = useMemo(() => {
+    const [maxCantTroncales, maxCantGenerales, maxCantEnProceso2020] = data.length > 0
       ? data.reduce((prevValue, newValue) => {
-        const newCantTotal = newValue?.original?.materiasPendientes?.cantTroncales
-        return newCantTotal && newCantTotal > prevValue ? newCantTotal : prevValue
-      }, 0)
-      : 0
-    setPendientesFilterValue((prevState) => {
-      return { ...prevState, troncalesRange: [0, value] }
+        const [accCantTroncales, accCantGenerales, accCantEnProceso2020] = prevValue
+        const newCantTroncales = newValue?.original?.materiasPendientes?.cantTroncales ?? 0
+        const newCantGenerales = newValue?.original?.materiasPendientes?.cantGenerales ?? 0
+        const newCantEnProceso2020 = newValue?.original?.materiasEnProceso2020?.cantidad ?? 0
+        return [
+          newCantTroncales > accCantTroncales ? newCantTroncales : accCantTroncales,
+          newCantGenerales > accCantGenerales ? newCantGenerales : accCantGenerales,
+          newCantEnProceso2020 > accCantEnProceso2020 ? newCantEnProceso2020 : accCantEnProceso2020
+        ]
+      }, [0, 0, 0])
+      : [0, 0, 0]
+    setMateriasFilterValue((prevState) => {
+      return { ...prevState, troncalesRange: [0, maxCantTroncales], generalesRange: [0, maxCantGenerales], enProceso2020Range: [0, maxCantEnProceso2020] }
     })
-    return value
-  }, [data])
-  const maxCantGenerales = useMemo(() => {
-    const value = data.length > 0
-      ? data.reduce((prevValue, newValue) => {
-        const newCantTotal = newValue?.original?.materiasPendientes?.cantGenerales
-        return newCantTotal && newCantTotal > prevValue ? newCantTotal : prevValue
-      }, 0)
-      : 0
-    setPendientesFilterValue((prevState) => {
-      return { ...prevState, generalesRange: [0, value] }
-    })
-    return value
+    return [maxCantTroncales, maxCantGenerales, maxCantEnProceso2020]
   }, [data])
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className='w-fit'>
-        <Button variant='outline' className='font-normal'>Pendientes<CaretSortIcon className='ml-3 h-4 w-4 opacity-50' /></Button>
+        <Button variant='outline' className='font-normal'>Materias<CaretSortIcon className='ml-3 h-4 w-4 opacity-50' /></Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='start' className='px-3'>
-
+      <DropdownMenuContent align='start' className='p-3'>
         <DropdownMenuGroup>
           <SliderItem
-            rangeValues={pendientesFilterValue.troncalesRange}
+            rangeValues={materiasFilterValue.troncalesRange}
             maxCant={maxCantTroncales}
             handleValueChange={(value: [number, number]) => {
-              const newState = { ...pendientesFilterValue, troncalesRange: value }
-              setPendientesFilterValue(newState)
+              const newState = { ...materiasFilterValue, troncalesRange: value }
+              setMateriasFilterValue(newState)
               table.getColumn('troncales')?.setFilterValue(newState)
               table.getColumn('generales')?.setFilterValue(newState)
             }}
             materiaType='troncales'
           />
-
-          <DropdownMenuSeparator />
-
           <SliderItem
-            rangeValues={pendientesFilterValue.generalesRange}
+            rangeValues={materiasFilterValue.generalesRange}
             maxCant={maxCantGenerales}
             handleValueChange={(value: [number, number]) => {
-              const newState = { ...pendientesFilterValue, generalesRange: value }
-              setPendientesFilterValue(newState)
+              const newState = { ...materiasFilterValue, generalesRange: value }
+              setMateriasFilterValue(newState)
               table.getColumn('troncales')?.setFilterValue(newState)
               table.getColumn('generales')?.setFilterValue(newState)
             }}
             materiaType='generales'
           />
-          <DropdownMenuSeparator />
-
           <SliderItem
-            rangeValues={pendientesFilterValue.generalesRange}
-            maxCant={9}
+            rangeValues={materiasFilterValue.enProceso2020Range}
+            maxCant={maxCantEnProceso2020}
             handleValueChange={(value: [number, number]) => {
-              const newState = pendientesFilterValue.generalesRange
-              // setPendientesFilterValue(newState)
+              const newState = { ...materiasFilterValue, enProceso2020Range: value }
+              setMateriasFilterValue(newState)
               table.getColumn('enProceso2020')?.setFilterValue(newState)
             }}
             materiaType='en proceso 2020'
@@ -101,33 +88,42 @@ function MateriasFilter ({ table } : PendientesFilterProps) {
 
         <DropdownMenuSeparator className='my-3' />
 
-        <div className='flex flex-col space-y-3 px-4 pb-3'>
+        <div className='flex flex-col space-y-2'>
           <DropdownMenuLabel asChild>
             <h4 className='text-center text-accent-foreground font-medium tracking-tight'>Promoción y permanencia</h4>
           </DropdownMenuLabel>
-          <RadioGroup
-            onValueChange={(value: pendientesFilterValueState['promotedAndRepetears']) => {
-              const newState = { ...pendientesFilterValue, promotedAndRepetears: value }
-              setPendientesFilterValue(newState)
+          <DropdownMenuRadioGroup
+            onValueChange={(value) => {
+              const newState = { ...materiasFilterValue, promotedAndRepetears: (value as materiasFilterValueState['promotedAndRepetears']) }
+              setMateriasFilterValue(newState)
               table.getColumn('troncales')?.setFilterValue(newState)
               table.getColumn('generales')?.setFilterValue(newState)
             }}
-            className='flex flex-col space-y-2'
-            defaultValue={pendientesFilterValue.promotedAndRepetears}
+            className='flex flex-col'
+            value={materiasFilterValue.promotedAndRepetears}
           >
-            <div className='flex items-center space-x-3'>
-              <RadioGroupItem value='all' id='all' />
-              <Label className='text-sm font-normal leading-none cursor-pointer' htmlFor='all'>Todos</Label>
-            </div>
-            <div className='flex items-center space-x-3'>
-              <RadioGroupItem value='onlyRepeaters' id='onlyRepeaters' />
-              <Label className='text-sm font-normal leading-none cursor-pointer' htmlFor='onlyRepeaters'>Sólo estudiantes que repiten</Label>
-            </div>
-            <div className='flex items-center space-x-3'>
-              <RadioGroupItem value='onlyPromoted' id='onlyPromoted' />
-              <Label className='text-sm font-normal leading-none cursor-pointer' htmlFor='onlyPromoted'>Sólo estudiantes que promocionan</Label>
-            </div>
-          </RadioGroup>
+            <DropdownMenuRadioItem
+              value='all'
+              onSelect={(e) => e.preventDefault()}
+              className='cursor-pointer'
+            >
+              Todos
+            </DropdownMenuRadioItem>
+            <DropdownMenuRadioItem
+              value='onlyRepeaters'
+              onSelect={(e) => e.preventDefault()}
+              className='cursor-pointer'
+            >
+              Sólo estudiantes que repiten
+            </DropdownMenuRadioItem>
+            <DropdownMenuRadioItem
+              value='onlyPromoted'
+              onSelect={(e) => e.preventDefault()}
+              className='cursor-pointer'
+            >
+              Sólo estudiantes que promocionan
+            </DropdownMenuRadioItem>
+          </DropdownMenuRadioGroup>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -135,10 +131,3 @@ function MateriasFilter ({ table } : PendientesFilterProps) {
 }
 
 export default MateriasFilter
-
-/* (value) => {
-                        const newState = { ...pendientesFilterValue, troncalesRange: value }
-                        setPendientesFilterValue(newState)
-                        table.getColumn('troncales')?.setFilterValue(newState)
-                        table.getColumn('generales')?.setFilterValue(newState)
-                      } */

@@ -1,6 +1,6 @@
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { type Student } from '@/types'
-import { pendientesFilterValueState } from '@/app/table/filters/materiasFilter'
+import { materiasFilterValueState } from '@/app/table/filters/materiasFilter'
 import { Badge } from '@/components/ui/badge'
 import { CURSO } from '@/constants'
 import SortingHeader from './sortingHeader'
@@ -87,7 +87,7 @@ export const columns: ColumnDef<Student>[] = [
   }
 ]
 
-function pendientesFilterFn (row: Row<Student>, _columnID: string, filterValue: pendientesFilterValueState) {
+function pendientesFilterFn (row: Row<Student>, _columnID: string, filterValue: materiasFilterValueState) {
   const { cantTroncales, cantGenerales } = row.original.materiasPendientes
   if (cantTroncales === undefined || cantGenerales === undefined) return false
   const isInTroncalesRange = cantTroncales >= filterValue.troncalesRange[0] && cantTroncales <= filterValue.troncalesRange[1]
@@ -101,9 +101,9 @@ function pendientesFilterFn (row: Row<Student>, _columnID: string, filterValue: 
   return isInTroncalesRange && isInGeneralesRange && isValidPromotedCondition
 }
 
-function enProcesoFilterFn (row: Row<Student>, _columnID: string, filterValue: number[]) {
+function enProcesoFilterFn (row: Row<Student>, _columnID: string, filterValue: materiasFilterValueState) {
   const { cantidad } = row.original.materiasEnProceso2020
   if (cantidad === undefined) return false
-  const [min, max] = filterValue
+  const [min, max] = filterValue.enProceso2020Range
   return cantidad >= min && cantidad <= max
 }
