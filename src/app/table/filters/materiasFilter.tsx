@@ -8,18 +8,19 @@ import { Student } from '@/types'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { Table } from '@tanstack/react-table'
 import { useMemo, useState } from 'react'
+import SliderItem from './sliderItem'
 
 interface PendientesFilterProps {
   table: Table<Student>
 }
 
 export interface pendientesFilterValueState {
-  troncalesRange: number[],
-  generalesRange: number[],
+  troncalesRange: [number, number],
+  generalesRange: [number, number],
   promotedAndRepetears: 'all' | 'onlyRepeaters' | 'onlyPromoted'
 }
 
-function PendientesFilter ({ table } : PendientesFilterProps) {
+function MateriasFilter ({ table } : PendientesFilterProps) {
   const data = table.getCoreRowModel().rows
   const [pendientesFilterValue, setPendientesFilterValue] = useState<pendientesFilterValueState>({
     troncalesRange: [0, 0],
@@ -57,78 +58,49 @@ function PendientesFilter ({ table } : PendientesFilterProps) {
         <Button variant='outline' className='font-normal'>Pendientes<CaretSortIcon className='ml-3 h-4 w-4 opacity-50' /></Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='start' className='px-3'>
-        <DropdownMenuLabel className='text-center text-accent-foreground font-medium tracking-tight'>
-          Troncales
-        </DropdownMenuLabel>
+
         <DropdownMenuGroup>
-          <DropdownMenuItem asChild onSelect={(e) => e.preventDefault()}>
-            <div className='flex justify-between space-x-2 py-1'>
-              <span className='w-8 font-light text-sm text-center'>{pendientesFilterValue.troncalesRange[0]}</span>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Slider
-                      defaultValue={pendientesFilterValue.troncalesRange}
-                      onValueChange={(value) => {
-                        const newState = { ...pendientesFilterValue, troncalesRange: value }
-                        setPendientesFilterValue(newState)
-                        table.getColumn('troncales')?.setFilterValue(newState)
-                        table.getColumn('generales')?.setFilterValue(newState)
-                      }}
-                      max={maxCantTroncales}
-                      step={1}
-                      className='w-80'
-                      color='bg-primary'
-                    />
-                  </TooltipTrigger>
-                  <TooltipContent side='bottom' className='bg-background border rounded-md w-fit p-3'>
-                    <p className='text-sm text-center text-muted-foreground'>{pendientesFilterValue.troncalesRange[0] === pendientesFilterValue.troncalesRange[1]
-                      ? `Estudiantes que tengan ${pendientesFilterValue.troncalesRange[1]} materias troncales`
-                      : `Estudiantes que tengan entre ${pendientesFilterValue.troncalesRange[0]} y ${pendientesFilterValue.troncalesRange[1]} materias troncales`}
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <span className='w-8 font-light text-sm text-center'>{pendientesFilterValue.troncalesRange[1]}</span>
-            </div>
-          </DropdownMenuItem>
+          <SliderItem
+            rangeValues={pendientesFilterValue.troncalesRange}
+            maxCant={maxCantTroncales}
+            handleValueChange={(value: [number, number]) => {
+              const newState = { ...pendientesFilterValue, troncalesRange: value }
+              setPendientesFilterValue(newState)
+              table.getColumn('troncales')?.setFilterValue(newState)
+              table.getColumn('generales')?.setFilterValue(newState)
+            }}
+            materiaType='troncales'
+          />
 
           <DropdownMenuSeparator />
 
-          <DropdownMenuLabel className='text-center text-accent-foreground font-medium tracking-tight'>
-            Generales
-          </DropdownMenuLabel>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className='p-2 flex justify-between space-x-2 my-2'>
-                  <span className='w-8 font-light text-sm text-center'>{pendientesFilterValue.generalesRange[0]}</span>
-                  <Slider
-                    defaultValue={pendientesFilterValue.generalesRange}
-                    onValueChange={(value) => {
-                      const newState = { ...pendientesFilterValue, generalesRange: value }
-                      setPendientesFilterValue(newState)
-                      table.getColumn('troncales')?.setFilterValue(newState)
-                      table.getColumn('generales')?.setFilterValue(newState)
-                    }}
-                    max={maxCantGenerales}
-                    step={1}
-                    className='w-80'
-                    color='bg-primary'
-                  />
-                  <span className='w-8 font-light text-sm text-center'>{pendientesFilterValue.generalesRange[1]}</span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side='bottom' className='bg-background border rounded-md w-fit p-3'>
-                <p className='text-sm text-center text-muted-foreground'>{pendientesFilterValue.generalesRange[0] === pendientesFilterValue.generalesRange[1]
-                  ? `Estudiantes que tengan ${pendientesFilterValue.generalesRange[1]} materias generales`
-                  : `Estudiantes que tengan entre ${pendientesFilterValue.generalesRange[0]} y ${pendientesFilterValue.generalesRange[1]} materias generales`}
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <SliderItem
+            rangeValues={pendientesFilterValue.generalesRange}
+            maxCant={maxCantGenerales}
+            handleValueChange={(value: [number, number]) => {
+              const newState = { ...pendientesFilterValue, generalesRange: value }
+              setPendientesFilterValue(newState)
+              table.getColumn('troncales')?.setFilterValue(newState)
+              table.getColumn('generales')?.setFilterValue(newState)
+            }}
+            materiaType='generales'
+          />
+          <DropdownMenuSeparator />
+
+          <SliderItem
+            rangeValues={pendientesFilterValue.generalesRange}
+            maxCant={9}
+            handleValueChange={(value: [number, number]) => {
+              const newState = pendientesFilterValue.generalesRange
+              // setPendientesFilterValue(newState)
+              table.getColumn('enProceso2020')?.setFilterValue(newState)
+            }}
+            materiaType='en proceso 2020'
+          />
         </DropdownMenuGroup>
+
         <DropdownMenuSeparator className='my-3' />
+
         <div className='flex flex-col space-y-3 px-4 pb-3'>
           <DropdownMenuLabel asChild>
             <h4 className='text-center text-accent-foreground font-medium tracking-tight'>Promoción y permanencia</h4>
@@ -162,4 +134,11 @@ function PendientesFilter ({ table } : PendientesFilterProps) {
   )
 }
 
-export default PendientesFilter
+export default MateriasFilter
+
+/* (value) => {
+                        const newState = { ...pendientesFilterValue, troncalesRange: value }
+                        setPendientesFilterValue(newState)
+                        table.getColumn('troncales')?.setFilterValue(newState)
+                        table.getColumn('generales')?.setFilterValue(newState)
+                      } */

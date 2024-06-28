@@ -15,7 +15,7 @@ function SortingHeader ({ title, column, className } : SortingHeaderProps) {
     <Button
       variant='ghost'
       className={cn('font-medium text-foreground', className)}
-      onClick={() => column.toggleSorting()}
+      onClick={() => column.toggleSorting(undefined, true)}
     >
       {title}
       {!column.getIsSorted()

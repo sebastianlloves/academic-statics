@@ -1,8 +1,7 @@
-import { flexRender, getCoreRowModel, useReactTable, getPaginationRowModel, getFilteredRowModel, getSortedRowModel } from '@tanstack/react-table'
+import { flexRender, getCoreRowModel, useReactTable, getFilteredRowModel, getSortedRowModel } from '@tanstack/react-table'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { columns } from './columns'
-import { Button } from '@/components/ui/button'
-import PendientesFilter from './filters/pendientesFilter'
+import PendientesFilter from './filters/materiasFilter'
 import CursoFilter from './filters/cursosFilter'
 import { Student } from '@/types'
 import { useMemo } from 'react'
@@ -28,12 +27,9 @@ export function DataTable ({ data, loading }: DataTableProps) {
     data: dataTable,
     columns: columnsTable,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     initialState: {
-      pagination: { pageIndex: 0, pageSize: 100 },
-      sorting: [{ id: 'curso', desc: true }]
     }
   })
 
@@ -79,10 +75,6 @@ export function DataTable ({ data, loading }: DataTableProps) {
           </TableBody>
         </Table>
       </ScrollArea>
-      <div className='flex justify-center gap-4'>
-        <Button variant='outline' disabled={!table.getCanPreviousPage()} onClick={() => table.previousPage()}>Anterior</Button>
-        <Button variant='outline' disabled={!table.getCanNextPage()} onClick={() => table.nextPage()}>Siguiente</Button>
-      </div>
     </>
   )
 }
