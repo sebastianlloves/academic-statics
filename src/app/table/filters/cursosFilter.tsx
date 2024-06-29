@@ -26,7 +26,7 @@ function CursoFilter ({ table }: CursoFilterProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align='start' className='p-2'>
         <DropdownMenuCheckboxItem
-          className='cursor-pointer font-semibold text-foreground'
+          className='cursor-pointer font-semibold text-foreground pr-3'
           checked={JSON.stringify(cursoFilterValue) === JSON.stringify(coursesData.all)}
           onCheckedChange={() => {
             const newState = JSON.stringify(cursoFilterValue) === JSON.stringify(coursesData.all) ? [] : coursesData.all
@@ -35,17 +35,33 @@ function CursoFilter ({ table }: CursoFilterProps) {
           }}
           onSelect={(e) => e.preventDefault()}
         >
-          Todos
+          Todos los cursos
         </DropdownMenuCheckboxItem>
         <DropdownMenuSeparator />
         {
           Object.keys(CURSOS).map(anio => (
             <DropdownMenuSub key={anio}>
-              <DropdownMenuSubTrigger>
+              <DropdownMenuSubTrigger inset>
                 {`${anio}° año`}
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent sideOffset={10}>
+                  <DropdownMenuCheckboxItem
+                    className='cursor-pointer font-medium text-foreground pr-3'
+                    checked={coursesData[(`${anio}° año`) as keyof typeof coursesData].every(course => cursoFilterValue.includes(course))}
+                    onCheckedChange={() => {
+                      const allCoursesIncluded = coursesData[(`${anio}° año`) as keyof typeof coursesData].every(course => cursoFilterValue.includes(course))
+                      const newState = allCoursesIncluded
+                        ? [...cursoFilterValue].filter(course => !coursesData[(`${anio}° año`) as keyof typeof coursesData].includes(course))
+                        : [...cursoFilterValue, ...coursesData[(`${anio}° año`) as keyof typeof coursesData].filter(course => ![...cursoFilterValue].includes(course))].sort()
+                      setCursoFilterValue(newState)
+                      table.getColumn('curso')?.setFilterValue(newState)
+                    }}
+                    onSelect={(e) => e.preventDefault()}
+                  >
+                    {`Todos los ${anio}°`}
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuSeparator />
                   {CURSOS[Number(anio) as keyof(typeof CURSOS)].map(objCurso => {
                     const { nombre } = objCurso
                     return (
@@ -64,22 +80,6 @@ function CursoFilter ({ table }: CursoFilterProps) {
                       </DropdownMenuCheckboxItem>
                     )
                   })}
-                  <DropdownMenuSeparator />
-                  <DropdownMenuCheckboxItem
-                    className='cursor-pointer font-semibold text-foreground'
-                    checked={coursesData[(`${anio}° año`) as keyof typeof coursesData].every(course => cursoFilterValue.includes(course))}
-                    onCheckedChange={() => {
-                      const allCoursesIncluded = coursesData[(`${anio}° año`) as keyof typeof coursesData].every(course => cursoFilterValue.includes(course))
-                      const newState = allCoursesIncluded
-                        ? [...cursoFilterValue].filter(course => !coursesData[(`${anio}° año`) as keyof typeof coursesData].includes(course))
-                        : [...cursoFilterValue, ...coursesData[(`${anio}° año`) as keyof typeof coursesData].filter(course => ![...cursoFilterValue].includes(course))].sort()
-                      setCursoFilterValue(newState)
-                      table.getColumn('curso')?.setFilterValue(newState)
-                    }}
-                    onSelect={(e) => e.preventDefault()}
-                  >
-                    Todos
-                  </DropdownMenuCheckboxItem>
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>

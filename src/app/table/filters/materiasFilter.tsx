@@ -1,10 +1,11 @@
 import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Student } from '@/types'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { Table } from '@tanstack/react-table'
 import { useMemo, useState } from 'react'
 import SliderItem from './sliderItem'
+import { MATERIAS_POR_CURSO } from '@/constants'
 
 interface MateriasFilterProps {
   table: Table<Student>
@@ -51,6 +52,57 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
         <Button variant='outline' className='font-normal'>Materias<CaretSortIcon className='ml-3 h-4 w-4 opacity-50' /></Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='start' className='p-3'>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger inset>Materias</DropdownMenuSubTrigger>
+          <DropdownMenuPortal>
+            <DropdownMenuSubContent sideOffset={14}>
+              <DropdownMenuCheckboxItem
+                onSelect={e => e.preventDefault()}
+                className='cursor-pointer font-semibold text-foreground pr-3'
+                checked
+              >
+                Todas las materias
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuSeparator />
+              {
+                Object.keys(MATERIAS_POR_CURSO).map(anio => (
+                  <DropdownMenuSub key={anio}>
+                    <DropdownMenuSubTrigger inset>
+                      {`${anio}° año`}
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuPortal>
+                      <DropdownMenuSubContent sideOffset={6}>
+                        <DropdownMenuCheckboxItem
+                          onSelect={e => e.preventDefault()}
+                          className='cursor-pointer font-medium text-foreground pr-3'
+                          checked
+                        >
+                          {`Todas las materias de ${anio}° año`}
+                        </DropdownMenuCheckboxItem>
+                        <DropdownMenuSeparator />
+                        {
+                        MATERIAS_POR_CURSO[(Number(anio) as keyof(typeof MATERIAS_POR_CURSO))].map(({ nombre }) => (
+                          <DropdownMenuCheckboxItem
+                            onSelect={e => e.preventDefault()}
+                            key={`${nombre}_${anio}`}
+                            className='cursor-pointer'
+                            checked
+                          >
+                            {nombre}
+                          </DropdownMenuCheckboxItem>
+                        ))
+                        }
+                      </DropdownMenuSubContent>
+                    </DropdownMenuPortal>
+                  </DropdownMenuSub>
+                ))
+              }
+            </DropdownMenuSubContent>
+          </DropdownMenuPortal>
+        </DropdownMenuSub>
+
+        <DropdownMenuSeparator className='my-3' />
+
         <DropdownMenuGroup>
           <SliderItem
             rangeValues={materiasFilterValue.troncalesRange}
@@ -88,7 +140,7 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
 
         <DropdownMenuSeparator className='my-3' />
 
-        <div className='flex flex-col space-y-2'>
+        <DropdownMenuGroup className='flex flex-col space-y-2'>
           <DropdownMenuLabel asChild>
             <h4 className='text-center text-accent-foreground font-medium tracking-tight'>Promoción y permanencia</h4>
           </DropdownMenuLabel>
@@ -124,7 +176,8 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
               Sólo estudiantes que promocionan
             </DropdownMenuRadioItem>
           </DropdownMenuRadioGroup>
-        </div>
+        </DropdownMenuGroup>
+
       </DropdownMenuContent>
     </DropdownMenu>
   )

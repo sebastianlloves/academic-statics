@@ -44,6 +44,104 @@ export const CURSOS = {
   ]
 } as const
 
+export const MATERIAS_POR_CURSO = {
+  1: [
+    { nombre: 'Lengua y Literatura', es_troncal: true, orientacion: 'Ciclo Básico' },
+    { nombre: 'Inglés', es_troncal: false, orientacion: 'Ciclo Básico' },
+    { nombre: 'Historia', es_troncal: false, orientacion: 'Ciclo Básico' },
+    { nombre: 'Geografía', es_troncal: false, orientacion: 'Ciclo Básico' },
+    { nombre: 'Educación Ciudadana', es_troncal: false, orientacion: 'Ciclo Básico' },
+    { nombre: 'Educación Física', es_troncal: false, orientacion: 'Ciclo Básico' },
+    { nombre: 'Biología', es_troncal: false, orientacion: 'Ciclo Básico' },
+    { nombre: 'Educación Artística', es_troncal: false, orientacion: 'Ciclo Básico' },
+    { nombre: 'Matemática', es_troncal: true, orientacion: 'Ciclo Básico' },
+    { nombre: 'Tecnol. de la Representación', es_troncal: true, orientacion: 'Ciclo Básico' },
+    { nombre: 'Taller', es_troncal: true, orientacion: 'Ciclo Básico' }
+  ],
+  2: [
+    { nombre: 'Lengua y Literatura', es_troncal: true, orientacion: 'Ciclo Básico' },
+    { nombre: 'Inglés', es_troncal: false, orientacion: 'Ciclo Básico' },
+    { nombre: 'Historia', es_troncal: false, orientacion: 'Ciclo Básico' },
+    { nombre: 'Geografía', es_troncal: false, orientacion: 'Ciclo Básico' },
+    { nombre: 'Educación Ciudadana', es_troncal: false, orientacion: 'Ciclo Básico' },
+    { nombre: 'Educación Física', es_troncal: false, orientacion: 'Ciclo Básico' },
+    { nombre: 'Biología', es_troncal: false, orientacion: 'Ciclo Básico' },
+    { nombre: 'Matemática', es_troncal: true, orientacion: 'Ciclo Básico' },
+    { nombre: 'Física', es_troncal: true, orientacion: 'Ciclo Básico' },
+    { nombre: 'Tecnol. de la Representación', es_troncal: false, orientacion: 'Ciclo Básico' },
+    { nombre: 'Taller', es_troncal: true, orientacion: 'Ciclo Básico' }
+  ],
+  3: [
+    { nombre: 'Historia', es_troncal: false, orientacion: 'Ciclo Superior' },
+    { nombre: 'Geografía', es_troncal: false, orientacion: 'Ciclo Superior' },
+    { nombre: 'Educación Física', es_troncal: false, orientacion: 'Ciclo Superior' },
+    { nombre: 'Educación Ciudadana', es_troncal: false, orientacion: 'Ciclo Superior' },
+    { nombre: 'Inglés', es_troncal: false, orientacion: 'Ciclo Superior' },
+    { nombre: 'Lengua y Literatura', es_troncal: true, orientacion: 'Ciclo Superior' },
+    { nombre: 'Matemática', es_troncal: true, orientacion: 'Ciclo Superior' },
+    { nombre: 'Física', es_troncal: true, orientacion: 'Ciclo Superior' },
+    { nombre: 'Tecnol. de la Representación', es_troncal: true, orientacion: 'TICs' },
+    { nombre: 'Rep. Mediales, Comunicación y Lenguajes', es_troncal: true, orientacion: 'Producción Multimedial' },
+    { nombre: 'Química', es_troncal: false, orientacion: 'Ciclo Superior' },
+    { nombre: 'Taller de Tecnol. y del Control', es_troncal: true, orientacion: 'Ciclo Superior' },
+    { nombre: 'Taller de TICs', es_troncal: true, orientacion: 'TICs' },
+    { nombre: 'Taller de Prod. Multimedial', es_troncal: true, orientacion: 'Producción Multimedial' }
+  ],
+  4: [
+    { nombre: 'Educación Física', es_troncal: false, orientacion: 'Ciclo Superior' },
+    { nombre: 'Inglés', es_troncal: false, orientacion: 'Ciclo Superior' },
+    { nombre: 'Ciudadanía y Trabajo', es_troncal: false, orientacion: 'Producción Multimedial' },
+    { nombre: 'Lengua y Literatura', es_troncal: false, orientacion: 'Ciclo Superior' },
+    { nombre: 'Ciencia y Tecnología', es_troncal: false, orientacion: 'Ciclo Superior' },
+    { nombre: 'Matemática', es_troncal: true, orientacion: 'Ciclo Superior' },
+    { nombre: 'Introd. a las Redes de Comunicación', es_troncal: true, orientacion: 'TICs' },
+    { nombre: 'Dispositivos Electrónicos Programables', es_troncal: false, orientacion: 'TICs' },
+    { nombre: 'Lab. de Soporte de Equipos Informáticos', es_troncal: true, orientacion: 'TICs' },
+    { nombre: 'Lab. de Desarrollo de Aplicaciones', es_troncal: true, orientacion: 'TICs' },
+    { nombre: 'Taller de Proy. Integradores I', es_troncal: true, orientacion: 'TICs' },
+    { nombre: 'Representación Sonora', es_troncal: true, orientacion: 'Producción Multimedial' },
+    { nombre: 'Representación Visual', es_troncal: true, orientacion: 'Producción Multimedial' },
+    { nombre: 'Diseño Web', es_troncal: true, orientacion: 'Producción Multimedial' },
+    { nombre: 'Lab. de Postprod. de la Imagen y del Sonido', es_troncal: true, orientacion: 'Producción Multimedial' },
+    { nombre: 'Taller de Tecnol. de la Imagen', es_troncal: true, orientacion: 'Producción Multimedial' },
+    { nombre: 'Taller de Tecnol. del Sonido', es_troncal: true, orientacion: 'Producción Multimedial' }
+  ],
+  5: [
+    { nombre: 'Educación Física', es_troncal: false, orientacion: 'Ciclo Superior' },
+    { nombre: 'Inglés', es_troncal: false, orientacion: 'Ciclo Superior' },
+    { nombre: 'Lengua y Literatura', es_troncal: false, orientacion: 'Ciclo Superior' },
+    { nombre: 'Matemática', es_troncal: false, orientacion: 'Ciclo Superior' },
+    { nombre: 'Administración de Redes', es_troncal: true, orientacion: 'TICs' },
+    { nombre: 'Sist. Integrales de Información', es_troncal: true, orientacion: 'TICs' },
+    { nombre: 'Lab. de Soporte de Sist. Informáticos', es_troncal: true, orientacion: 'TICs' },
+    { nombre: 'Lab. de Desarrollo de Sist. de Información', es_troncal: true, orientacion: 'TICs' },
+    { nombre: 'Taller de Proy. Integradores II', es_troncal: true, orientacion: 'TICs' },
+    { nombre: 'Arte, Tecnol. y Comunicación', es_troncal: true, orientacion: 'Producción Multimedial' },
+    { nombre: 'Guión y Narrativa', es_troncal: true, orientacion: 'Producción Multimedial' },
+    { nombre: 'Lab. de Técnicas de Animación', es_troncal: true, orientacion: 'Producción Multimedial' },
+    { nombre: 'Lab. de Proy. Multimediales', es_troncal: true, orientacion: 'Producción Multimedial' },
+    { nombre: 'Taller de Proy. Audiovisual de Ficción', es_troncal: true, orientacion: 'Producción Multimedial' },
+    { nombre: 'Taller de Proy. Audiovisual Documental', es_troncal: true, orientacion: 'Producción Multimedial' }
+  ],
+  6: [
+    { nombre: 'Educación Física', es_troncal: false, orientacion: 'Ciclo Superior' },
+    { nombre: 'Ciudadanía y Trabajo', es_troncal: false, orientacion: 'TICs' },
+    { nombre: 'Gestión de los Procesos Productivos', es_troncal: true, orientacion: 'Ciclo Superior' },
+    { nombre: 'Economía y Gestión de las Organizaciones', es_troncal: false, orientacion: 'Ciclo Superior' },
+    { nombre: 'Admin. Avanzada de Sistemas y Redes', es_troncal: true, orientacion: 'TICs' },
+    { nombre: 'Procesamiento de la Información', es_troncal: true, orientacion: 'TICs' },
+    { nombre: 'Seguridad y Medioambiente', es_troncal: false, orientacion: 'TICs' },
+    { nombre: 'Gestión y Marketing Aplicado a TICs', es_troncal: false, orientacion: 'TICs' },
+    { nombre: 'Taller de Proy. Integradores III', es_troncal: true, orientacion: 'TICs' },
+    { nombre: 'Arte Digital', es_troncal: true, orientacion: 'Producción Multimedial' },
+    { nombre: 'Lab. de Proy. Multimedial Ludificado', es_troncal: true, orientacion: 'Producción Multimedial' },
+    { nombre: 'Lab. de Proy. de Tecnol. y Artes Electrónicas', es_troncal: true, orientacion: 'Producción Multimedial' },
+    { nombre: 'Taller de Proy. Audio Visual Digital', es_troncal: true, orientacion: 'Producción Multimedial' },
+    { nombre: 'Taller de Animación 3D', es_troncal: true, orientacion: 'Producción Multimedial' },
+    { nombre: 'Prácticas Profesionalizantes', es_troncal: true, orientacion: 'Ciclo Superior' }
+  ]
+} as const
+
 export type ANOS = keyof(typeof CURSOS)
 export type DIV = typeof CURSOS[ANOS][number]['division']
 export type CURSO = typeof CURSOS[ANOS][number]['nombre']
@@ -51,53 +149,3 @@ export type ORIENTACIONES = typeof CURSOS[ANOS][number]['orientacion']
 export type TURNOS = typeof CURSOS[ANOS][number]['turno']
 export const GENEROS = { M: 'Masculino', F: 'Femenino' } as const
 export const MOVILIDAD_VALUES = { Adeuda: 'adeuda', 'No adeuda': 'noAdeuda', '-': false } as const
-
-export const LOADING_DATA = Array.from({ length: 25 }, () => {
-  return {
-    anio: 'loading',
-    division: 'loading',
-    apellido: 'loading',
-    nombre: 'loading',
-    dni: 'loading',
-    correo: 'loading',
-    codigoMiEscuela: 'loading',
-    genero: 'loading',
-    fechaNacimiento: 'loading',
-    paisNacimiento: 'loading',
-    lugarNacimiento: 'loading',
-    cud: 'loading',
-    adulResp1: {
-      nombre: 'loading',
-      dni: 'loading',
-      telefono: 'loading',
-      correo: 'loading',
-      nacionalidad: 'loading'
-    },
-    adulResp2: {
-      apellido: 'loading',
-      nombre: 'loading',
-      dni: 'loading',
-      telefono: 'loading',
-      correo: 'loading',
-      nacionalidad: 'loading'
-    },
-    numLegajo: 'loading',
-    anioIngreso: 'loading',
-    repitencia1: 'loading',
-    repitencia2: 'loading',
-    repitencia3: 'loading',
-    movilidad: 'loading',
-    anioCursado2020: 'loading',
-    materiasPendientes: {
-      cantTotal: 'loading',
-      cantTroncales: 'loading',
-      detalleTroncales: 'loading',
-      cantGenerales: 'loading',
-      detalleGenerales: 'loading'
-    },
-    materiasEnProceso2020: {
-      cantidad: 'loading',
-      detalle: 'loading'
-    }
-  }
-})
