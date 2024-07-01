@@ -55,10 +55,21 @@ export const columns: ColumnDef<Student>[] = [
   {
     id: 'troncales',
     accessorKey: 'materiasPendientes.cantTroncales',
-    header: ({ column }) => (
-      <SortingHeader title='Troncales' column={column} />
+    header: ({ column, table }) => (
+      <>
+        <SortingHeader title='Troncales' column={column} />
+        <button onClick={() => table.toggleAllRowsExpanded()}>+</button>
+      </>
     ),
-    cell: ({ cell }) => <p className='text-center font-medium text-muted-foreground'>{`${cell.getValue() ?? ''}`}</p>,
+    cell: ({ row, cell }) => {
+      return (
+        <div>
+          <p className='text-center font-medium text-muted-foreground'>{`${cell.getValue() ?? ''}`}</p>
+          <button onClick={() => row.toggleExpanded()}>+</button>
+          <p>{row.getIsExpanded() && 'Expandida'}</p>
+        </div>
+      )
+    },
     filterFn: pendientesFilterFn,
     sortingFn: 'basic',
     size: 150

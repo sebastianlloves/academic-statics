@@ -184,3 +184,13 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
 }
 
 export default MateriasFilter
+
+export interface a {
+  quantity: {
+    troncalesRange: [number, number],
+    generalesRange: [number, number],
+    enProceso2020Range: [number, number],
+    promotedAndRepetears: 'all' | 'onlyRepeaters' | 'onlyPromoted'
+    },
+  subjects: []
+}
