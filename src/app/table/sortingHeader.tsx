@@ -13,8 +13,8 @@ interface SortingHeaderProps{
 function SortingHeader ({ title, column, className } : SortingHeaderProps) {
   return (
     <Button
-      variant='ghost'
-      className={cn('font-medium text-foreground pl-8', className)}
+      variant='link'
+      className={cn('font-medium text-foreground hover:no-underline', className)}
       onClick={() => column.toggleSorting(undefined, true)}
     >
       {title}

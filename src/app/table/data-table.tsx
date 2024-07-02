@@ -47,7 +47,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className='sticky top-0 bg-background border-b-0 outline outline-1 outline-primary/50 hover:bg-background' key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
-                  <TableHead className='py-2 text-foreground' style={{ width: header.column.getSize(), maxWidth: header.column.getSize() }} key={header.id}>
+                  <TableHead align='left' className='py-2 text-foreground' style={{ width: header.column.getSize(), maxWidth: header.column.getSize() }} key={header.id}>
                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>)
                 )}
@@ -58,9 +58,9 @@ export function DataTable ({ data, loading }: DataTableProps) {
           <TableBody className=''>
             {table.getRowModel().rows?.length
               ? (table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className=''>
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} align='center' style={{ width: cell.column.getSize(), maxWidth: cell.column.getSize() }}>
+                    <TableCell key={cell.id} align='left' style={{ width: cell.column.getSize(), maxWidth: cell.column.getSize() }} className='align-baseline'>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
@@ -69,7 +69,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
                 )
               : (
                 <TableRow>
-                  <TableCell colSpan={columns.length} className='h-24 text-center'>
+                  <TableCell colSpan={columns.length} className='text-center'>
                     No se hallaron resultados.
                   </TableCell>
                 </TableRow>

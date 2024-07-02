@@ -40,11 +40,11 @@ export function formatData (text: string): Student[] {
         anioCursado2020Value,
         materiasPendientesCantTotalValue,
         materiasPendientesCantTroncalesValue,
-        materiasPendientesDetalleTroncalesValue,
+        detalleTroncalesValue,
         materiasPendientesCantGeneralesValue,
-        materiasPendientesDetalleGeneralesValue,
+        detalleGeneralesValue,
         materiasEnProceso2020CantidadValue,
-        materiasEnProceso2020DetalleValue
+        detalleEnProceso2020Value
       ]): Student => {
         return {
           anio: formatValidCourse(ANIOS, anioValue.split('')[0]),
@@ -85,13 +85,13 @@ export function formatData (text: string): Student[] {
           materiasPendientes: {
             cantTotal: parseInt(materiasPendientesCantTotalValue) >= 0 ? parseInt(materiasPendientesCantTotalValue) : undefined,
             cantTroncales: parseInt(materiasPendientesCantTroncalesValue) >= 0 ? parseInt(materiasPendientesCantTroncalesValue) : undefined,
-            detalleTroncales: materiasPendientesDetalleTroncalesValue,
+            detalleTroncales: detalleTroncalesValue ? detalleTroncalesValue.slice(0, detalleTroncalesValue.length - 1).replace('º', '°').split(', ') : [],
             cantGenerales: parseInt(materiasPendientesCantGeneralesValue) >= 0 ? parseInt(materiasPendientesCantGeneralesValue) : undefined,
-            detalleGenerales: materiasPendientesDetalleGeneralesValue
+            detalleGenerales: detalleGeneralesValue ? detalleGeneralesValue.slice(0, detalleGeneralesValue.length - 1).replace('º', '°').split(', ') : []
           },
           materiasEnProceso2020: {
             cantidad: parseInt(materiasEnProceso2020CantidadValue) >= 0 ? parseInt(materiasEnProceso2020CantidadValue) : undefined,
-            detalle: materiasEnProceso2020DetalleValue
+            detalle: detalleEnProceso2020Value ? detalleEnProceso2020Value.slice(0, detalleEnProceso2020Value.length - 1).replace('º', '°').split(', ') : []
           }
         }
       }

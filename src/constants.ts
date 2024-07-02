@@ -1,5 +1,7 @@
 export const ANIOS = [1, 2, 3, 4, 5, 6] as const
 export const DIVISIONES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const
+export const GENEROS = { M: 'Masculino', F: 'Femenino' } as const
+export const MOVILIDAD_VALUES = { Adeuda: 'adeuda', 'No adeuda': 'noAdeuda', '-': false } as const
 
 export const CURSOS = {
   1: [
@@ -141,11 +143,3 @@ export const MATERIAS_POR_CURSO = {
     { nombre: 'Prácticas Profesionalizantes', es_troncal: true, orientacion: 'Ciclo Superior' }
   ]
 } as const
-
-export type ANOS = keyof(typeof CURSOS)
-export type DIV = typeof CURSOS[ANOS][number]['division']
-export type CURSO = typeof CURSOS[ANOS][number]['nombre']
-export type ORIENTACIONES = typeof CURSOS[ANOS][number]['orientacion']
-export type TURNOS = typeof CURSOS[ANOS][number]['turno']
-export const GENEROS = { M: 'Masculino', F: 'Femenino' } as const
-export const MOVILIDAD_VALUES = { Adeuda: 'adeuda', 'No adeuda': 'noAdeuda', '-': false } as const

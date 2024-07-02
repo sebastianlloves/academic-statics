@@ -2,8 +2,9 @@ import { ColumnDef, Row } from '@tanstack/react-table'
 import { type Student } from '@/types'
 import { materiasFilterValueState } from '@/app/table/filters/materiasFilter'
 import { Badge } from '@/components/ui/badge'
-import { CURSO } from '@/constants'
+import { CURSO } from '@/types'
 import SortingHeader from './sortingHeader'
+import SubRow from './subRow'
 
 export const columns: ColumnDef<Student>[] = [
   {
@@ -47,14 +48,20 @@ export const columns: ColumnDef<Student>[] = [
     header: ({ column }) => (
       <SortingHeader title='DNI' column={column} />
     ),
-    cell: ({ row }) => <p className='text-center text-xs text-muted-foreground mx-6'>{row.original.dni}</p>,
+    cell: ({ row }) => (
+      <div className='flex items-start'>
+        <p className='text-left text-xs text-muted-foreground'>{row.original.dni}</p>
+      </div>),
     size: 150,
     sortingFn: 'basic',
     enableMultiSort: true
   },
   {
     id: 'troncales',
-    accessorKey: 'materiasPendientes.cantTroncales',
+    accessorFn: (row) => {
+      const { cantTroncales, detalleTroncales } = row.materiasPendientes
+      return { cantTroncales, detalleTroncales }
+    },
     header: ({ column, table }) => (
       <>
         <SortingHeader title='Troncales' column={column} />
@@ -62,17 +69,19 @@ export const columns: ColumnDef<Student>[] = [
       </>
     ),
     cell: ({ row, cell }) => {
+      const { cantTroncales, detalleTroncales } = cell.getValue<{cantTroncales: number, detalleTroncales: string[]}>()
       return (
         <div>
-          <p className='text-center font-medium text-muted-foreground'>{`${cell.getValue() ?? ''}`}</p>
+          <SubRow triggerContent={cantTroncales} subjects={detalleTroncales} handleClick={() => row.toggleExpanded()} />
+          {/* <p className='text-center font-medium text-muted-foreground'>{`${cell.getValue() ?? ''}`}</p>
           <button onClick={() => row.toggleExpanded()}>+</button>
-          <p>{row.getIsExpanded() && 'Expandida'}</p>
+          <p>{row.getIsExpanded() && 'Expandida'}</p> */}
         </div>
       )
     },
     filterFn: pendientesFilterFn,
     sortingFn: 'basic',
-    size: 150
+    size: 250
   },
   {
     id: 'generales',

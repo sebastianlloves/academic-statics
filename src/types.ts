@@ -1,4 +1,11 @@
-import { ANIOS, DIVISIONES, GENEROS, MOVILIDAD_VALUES } from './constants'
+import { ANIOS, CURSOS, DIVISIONES, GENEROS, MATERIAS_POR_CURSO, MOVILIDAD_VALUES } from './constants'
+
+export type ANIO = keyof(typeof CURSOS)
+export type DIVISION = typeof CURSOS[ANIO][number]['division']
+export type CURSO = typeof CURSOS[ANIO][number]['nombre']
+export type ORIENTACIONES = typeof CURSOS[ANIO][number]['orientacion']
+export type TURNOS = typeof CURSOS[ANIO][number]['turno']
+export type MATERIA = `${typeof MATERIAS_POR_CURSO[ANIO][number]['nombre']} (${ANIO}°)`
 
 type AdulResp = {
   apellido?: string;
@@ -11,15 +18,15 @@ type AdulResp = {
 
 type MateriasEnProceso2020 = {
   cantidad?: number;
-  detalle?: string;
+  detalle?: string[];
 };
 
 type MateriasPendientes = {
   cantTotal?: number;
   cantTroncales?: number;
-  detalleTroncales?: string;
+  detalleTroncales?: string[];
   cantGenerales?: number;
-  detalleGenerales?: string;
+  detalleGenerales?: string[];
 };
 
 export type Student = {
