@@ -1,26 +1,38 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Button } from '@/components/ui/button'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { ChevronsUpDown } from 'lucide-react'
 
 interface SubRowProps {
   triggerContent: number,
   subjects: string[],
+  open: {
+    tableExpanded: boolean,
+    rowExpanded: boolean
+  },
   handleClick: () => void
 }
 
-function SubRow ({ triggerContent, subjects, handleClick } : SubRowProps) {
+function SubRow ({ triggerContent, subjects, handleClick, open } : SubRowProps) {
   return (
     <>
-      {triggerContent > 0
-        ? (<Accordion type='single' collapsible onClick={handleClick}>
-          <AccordionItem value='item-1' className='border-b-0'>
-            <AccordionTrigger className='hover:no-underline justify-start gap-x-4 text-muted-foreground py-0 -ml-4'>{triggerContent}</AccordionTrigger>
-            <AccordionContent className='text-muted-foreground '>
-              <ul className='pt-1 pl-4'>
-                {subjects.map(subject => <li className='pt-1.5' key={subject}>{subject}</li>)}
-              </ul>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>)
-        : <p className='text-center font-medium text-muted-foreground'>{triggerContent}</p>}
+      <Collapsible open={open.rowExpanded || open.tableExpanded}>
+        <CollapsibleTrigger asChild className='cursor-pointer' onClick={handleClick}>
+          <div className='flex items-center h-10 gap-x-2 -ml-4'>
+            <Button variant='ghost' size='sm' className='w-7 p-0'>
+              <ChevronsUpDown className='h-3.5 w-3.5 text-muted-foreground' />
+              <span className='sr-only'>Toggle</span>
+            </Button>
+            <h4 className='text-sm text-muted-foreground font-semibold'>
+              {triggerContent}
+            </h4>
+          </div>
+        </CollapsibleTrigger>
+        <CollapsibleContent className='text-accent-foreground'>
+          <ul className='pl-4 pt-0 -mt-1 space-y-1'>
+            {subjects.map(subject => <li className='text-xs' key={subject}>{subject}</li>)}
+          </ul>
+        </CollapsibleContent>
+      </Collapsible>
     </>
   )
 }

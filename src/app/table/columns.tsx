@@ -5,6 +5,8 @@ import { Badge } from '@/components/ui/badge'
 import { CURSO } from '@/types'
 import SortingHeader from './sortingHeader'
 import SubRow from './subRow'
+import { ChevronsUpDown } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 export const columns: ColumnDef<Student>[] = [
   {
@@ -13,8 +15,12 @@ export const columns: ColumnDef<Student>[] = [
     header: ({ column }) => (
       <SortingHeader title='Curso' column={column} />
     ),
-    cell: ({ cell }) => <Badge variant='outline' className='mx-6'>{cell.getValue() as string}</Badge>,
-    size: 120,
+    cell: ({ cell }) => (
+      <div className='h-10 flex flex-col items-start justify-center'>
+        <Badge variant='outline'>{cell.getValue() as string}</Badge>
+      </div>
+    ),
+    size: 100,
     filterFn: (row: Row<Student>, columnID: string, filterValue: CURSO[]) => filterValue.includes(row.getValue(columnID) as CURSO),
     sortingFn: (rowA, rowB) => {
       const anioA = rowA.original.anio ?? 0
@@ -36,9 +42,14 @@ export const columns: ColumnDef<Student>[] = [
     ),
     cell: ({ cell }) => {
       const [apellido, nombre] = `${cell.getValue()}`.split(', ')
-      return <div className='text-left mx-6'><p className='font-normal my-0'>{apellido}</p><p className='font-light my-0'>{nombre}</p></div>
+      return (
+        <div className='text-left h-10'>
+          <p className='font-normal'>{apellido}</p>
+          <p className='font-light'>{nombre}</p>
+        </div>
+      )
     },
-    size: 250,
+    size: 180,
     sortingFn: 'text',
     enableMultiSort: true
   },
@@ -49,7 +60,7 @@ export const columns: ColumnDef<Student>[] = [
       <SortingHeader title='DNI' column={column} />
     ),
     cell: ({ row }) => (
-      <div className='flex items-start'>
+      <div className='h-10 flex flex-col justify-center'>
         <p className='text-left text-xs text-muted-foreground'>{row.original.dni}</p>
       </div>),
     size: 150,
@@ -63,24 +74,33 @@ export const columns: ColumnDef<Student>[] = [
       return { cantTroncales, detalleTroncales }
     },
     header: ({ column, table }) => (
-      <>
-        <SortingHeader title='Troncales' column={column} />
-        <button onClick={() => table.toggleAllRowsExpanded()}>+</button>
-      </>
+      <div className='flex gap-x-2 items-center'>
+        <Button variant='ghost' size='sm' className='w-9 p-0' onClick={() => table.toggleAllRowsExpanded(!table.getIsAllRowsExpanded())}>
+          <ChevronsUpDown className='h-3.5 w-3.5' />
+          <span className='sr-only'>Toggle</span>
+        </Button>
+        <SortingHeader title='Troncales' column={column} className='' />
+      </div>
     ),
-    cell: ({ row, cell }) => {
+    cell: ({ table, row, cell }) => {
       const { cantTroncales, detalleTroncales } = cell.getValue<{cantTroncales: number, detalleTroncales: string[]}>()
       return (
         <div>
-          <SubRow triggerContent={cantTroncales} subjects={detalleTroncales} handleClick={() => row.toggleExpanded()} />
-          {/* <p className='text-center font-medium text-muted-foreground'>{`${cell.getValue() ?? ''}`}</p>
-          <button onClick={() => row.toggleExpanded()}>+</button>
-          <p>{row.getIsExpanded() && 'Expandida'}</p> */}
+          <SubRow
+            triggerContent={cantTroncales}
+            subjects={detalleTroncales}
+            handleClick={() => row.toggleExpanded()}
+            open={{ tableExpanded: table.getIsAllRowsExpanded(), rowExpanded: row.getIsExpanded() }}
+          />
         </div>
       )
     },
     filterFn: pendientesFilterFn,
-    sortingFn: 'basic',
+    sortingFn: (rowA, rowB) => {
+      const { cantTroncales: cantA } = rowA.getValue<{cantTroncales: number}>('troncales')
+      const { cantTroncales: cantB } = rowB.getValue<{cantTroncales: number}>('troncales')
+      return cantA - cantB
+    },
     size: 250
   },
   {

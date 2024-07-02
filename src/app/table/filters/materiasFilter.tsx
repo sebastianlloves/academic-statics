@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Student } from '@/types'
+import { ANIO, Student } from '@/types'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { Table } from '@tanstack/react-table'
 import { useMemo, useState } from 'react'
@@ -15,7 +15,8 @@ export interface materiasFilterValueState {
   troncalesRange: [number, number],
   generalesRange: [number, number],
   enProceso2020Range: [number, number],
-  promotedAndRepetears: 'all' | 'onlyRepeaters' | 'onlyPromoted'
+  promotedAndRepetears: 'all' | 'onlyRepeaters' | 'onlyPromoted',
+  subjects: 'all' | string[] | false
 }
 
 function MateriasFilter ({ table } : MateriasFilterProps) {
@@ -24,7 +25,8 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
     troncalesRange: [0, 0],
     generalesRange: [0, 0],
     enProceso2020Range: [0, 0],
-    promotedAndRepetears: 'all'
+    promotedAndRepetears: 'all',
+    subjects: /* 'all' */ ['Inglés (1°)']
   })
   const [maxCantTroncales, maxCantGenerales, maxCantEnProceso2020] = useMemo(() => {
     const [maxCantTroncales, maxCantGenerales, maxCantEnProceso2020] = data.length > 0
@@ -46,6 +48,15 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
     return [maxCantTroncales, maxCantGenerales, maxCantEnProceso2020]
   }, [data])
 
+  const subjects = useMemo(() => {
+    const a = Object.keys(MATERIAS_POR_CURSO).map(anio => {
+      const subjectsByAnio = MATERIAS_POR_CURSO[Number(anio) as ANIO].map(objSubject => `${objSubject.nombre} (${anio}°)`)
+      return [`${anio}° año`, subjectsByAnio]
+    })
+    console.log(a)
+  }, [])
+  console.log(materiasFilterValue.subjects)
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className='w-fit'>
@@ -59,7 +70,10 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
               <DropdownMenuCheckboxItem
                 onSelect={e => e.preventDefault()}
                 className='cursor-pointer font-semibold text-foreground pr-3'
-                checked
+                checked={materiasFilterValue.subjects === 'all'}
+                onClick={() => {
+                  materiasFilterValue.subjects === 'all' ? setMateriasFilterValue((prevState) => { return { ...prevState, subjects: false } }) : setMateriasFilterValue((prevState) => { return { ...prevState, subjects: 'all' } })
+                }}
               >
                 Todas las materias
               </DropdownMenuCheckboxItem>
@@ -75,7 +89,7 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
                         <DropdownMenuCheckboxItem
                           onSelect={e => e.preventDefault()}
                           className='cursor-pointer font-medium text-foreground pr-3'
-                          checked
+                          checked={materiasFilterValue.subjects === 'all'}
                         >
                           {`Todas las materias de ${anio}° año`}
                         </DropdownMenuCheckboxItem>
@@ -86,7 +100,7 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
                             onSelect={e => e.preventDefault()}
                             key={`${nombre}_${anio}`}
                             className='cursor-pointer'
-                            checked
+                            checked={materiasFilterValue.subjects === 'all' || (materiasFilterValue.subjects && materiasFilterValue.subjects.includes(`${nombre} (${anio}°)`))}
                           >
                             {nombre}
                           </DropdownMenuCheckboxItem>
@@ -191,6 +205,7 @@ export interface a {
     generalesRange: [number, number],
     enProceso2020Range: [number, number],
     promotedAndRepetears: 'all' | 'onlyRepeaters' | 'onlyPromoted'
+    subjects: 'all' | string[]
     },
   subjects: []
 }

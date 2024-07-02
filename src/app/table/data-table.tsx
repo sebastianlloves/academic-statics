@@ -41,9 +41,9 @@ export function DataTable ({ data, loading }: DataTableProps) {
         <PendientesFilter table={table} />
         <CursoFilter table={table} />
       </div>
-      <ScrollArea className='h-[80vh] rounded-md w-max'>
+      <ScrollArea className='h-[80vh] max-w-[80vw] rounded-md'>
         <Table className='relative'>
-          <TableHeader>
+          <TableHeader className=''>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className='sticky top-0 bg-background border-b-0 outline outline-1 outline-primary/50 hover:bg-background' key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
@@ -60,7 +60,12 @@ export function DataTable ({ data, loading }: DataTableProps) {
               ? (table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} align='left' style={{ width: cell.column.getSize(), maxWidth: cell.column.getSize() }} className='align-baseline'>
+                    <TableCell
+                      key={cell.id}
+                      align='left'
+                      style={{ width: cell.column.getSize(), maxWidth: cell.column.getSize() }}
+                      className='align-top'
+                    >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
