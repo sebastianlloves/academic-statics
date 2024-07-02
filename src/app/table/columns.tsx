@@ -36,9 +36,9 @@ export const columns: ColumnDef<Student>[] = [
     ),
     cell: ({ cell }) => {
       const [apellido, nombre] = `${cell.getValue()}`.split(', ')
-      return <p className='text-left mx-6'><span className='font-normal'>{apellido}</span>, <span className='font-light'>{nombre}</span></p>
+      return <div className='text-left mx-6'><p className='font-normal my-0'>{apellido}</p><p className='font-light my-0'>{nombre}</p></div>
     },
-    size: 300,
+    size: 250,
     sortingFn: 'text',
     enableMultiSort: true
   },
