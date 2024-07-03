@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { CURSO } from '@/types'
 import SortingHeader from './sortingHeader'
 import SubRow from './subRow'
-import { ChevronsUpDown } from 'lucide-react'
+import { ChevronsDownUp, ChevronsUpDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export const columns: ColumnDef<Student>[] = [
@@ -73,28 +73,18 @@ export const columns: ColumnDef<Student>[] = [
       const { cantTroncales, detalleTroncales } = row.materiasPendientes
       return { cantTroncales, detalleTroncales }
     },
-    header: ({ column, table }) => (
+    header: ({ column }) => (
       <div className='flex gap-x-2 items-center'>
-        <Button variant='ghost' size='sm' className='w-9 p-0' onClick={() => table.toggleAllRowsExpanded(!table.getIsAllRowsExpanded())}>
-          <ChevronsUpDown className='h-3.5 w-3.5' />
-          <span className='sr-only'>Toggle</span>
-        </Button>
         <SortingHeader title='Troncales' column={column} className='' />
       </div>
     ),
-    cell: ({ table, row, cell }) => {
-      const { cantTroncales, detalleTroncales } = cell.getValue<{cantTroncales: number, detalleTroncales: string[]}>()
-      return (
-        <div>
-          <SubRow
-            triggerContent={cantTroncales}
-            subjects={detalleTroncales}
-            handleClick={() => row.toggleExpanded()}
-            open={{ tableExpanded: table.getIsAllRowsExpanded(), rowExpanded: row.getIsExpanded() }}
-          />
-        </div>
-      )
-    },
+    cell: ({ table, row }) => (
+      <SubRow
+        triggerContent={row.original.materiasPendientes.cantTroncales ?? 0}
+        subjects={row.original.materiasPendientes.detalleTroncales ?? []}
+        open={{ tableExpanded: table.getIsAllRowsExpanded(), rowExpanded: row.getIsExpanded() }}
+      />
+    ),
     filterFn: pendientesFilterFn,
     sortingFn: (rowA, rowB) => {
       const { cantTroncales: cantA } = rowA.getValue<{cantTroncales: number}>('troncales')
@@ -105,25 +95,75 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     id: 'generales',
-    accessorKey: 'materiasPendientes.cantGenerales',
+    accessorFn: (row) => {
+      const { cantGenerales, detalleGenerales } = row.materiasPendientes
+      return { cantGenerales, detalleGenerales }
+    },
     header: ({ column }) => (
       <SortingHeader title='Generales' column={column} />
     ),
-    cell: ({ cell }) => <p className='text-center font-medium text-muted-foreground'>{`${cell.getValue() ?? ''}`}</p>,
+    cell: ({ table, row }) => (
+      <SubRow
+        triggerContent={row.original.materiasPendientes.cantGenerales ?? 0}
+        subjects={row.original.materiasPendientes.detalleGenerales ?? []}
+        open={{ tableExpanded: table.getIsAllRowsExpanded(), rowExpanded: row.getIsExpanded() }}
+      />
+    ),
     filterFn: pendientesFilterFn,
-    sortingFn: 'basic',
+    sortingFn: (rowA, rowB) => {
+      const { cantGenerales: cantA } = rowA.getValue<{cantGenerales: number}>('generales')
+      const { cantGenerales: cantB } = rowB.getValue<{cantGenerales: number}>('generales')
+      return cantA - cantB
+    },
     size: 150
   },
   {
     id: 'enProceso2020',
-    accessorKey: 'materiasEnProceso2020.cantidad',
+    accessorFn: (row) => {
+      const { cantidad, detalle } = row.materiasEnProceso2020
+      return { cantidad, detalle }
+    },
     header: ({ column }) => (
       <SortingHeader title='En Proceso 2020' column={column} />
     ),
-    cell: ({ cell }) => <p className='text-center font-medium text-muted-foreground'>{`${cell.getValue() ?? ''}`}</p>,
+    cell: ({ table, row }) => (
+      <SubRow
+        triggerContent={row.original.materiasEnProceso2020.cantidad ?? 0}
+        subjects={row.original.materiasEnProceso2020.detalle ?? []}
+        open={{ tableExpanded: table.getIsAllRowsExpanded(), rowExpanded: row.getIsExpanded() }}
+      />
+    ),
+    filterFn: enProcesoFilterFn,
+    sortingFn: (rowA, rowB) => {
+      const { cantidad: cantA } = rowA.getValue<{cantidad: number}>('enProceso2020')
+      const { cantidad: cantB } = rowB.getValue<{cantidad: number}>('enProceso2020')
+      return cantA - cantB
+    },
+    size: 200
+  },
+  {
+    id: 'expand',
+    header: ({ table }) => (
+      <Button variant='ghost' size='sm' className='w-7 p-0' onClick={() => table.toggleAllRowsExpanded(!table.getIsAllRowsExpanded())}>
+        {table.getIsAllRowsExpanded()
+          ? <ChevronsDownUp strokeWidth='1.2px' size={15} className='text-foreground' />
+          : <ChevronsUpDown strokeWidth='1.2px' size={15} className='text-foreground' />}
+        <span className='sr-only'>Toggle</span>
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <div className='h-10 flex flex-col justify-center'>
+        <Button variant='ghost' size='sm' className='w-7 p-0' onClick={() => row.toggleExpanded()}>
+          {row.getIsExpanded()
+            ? <ChevronsDownUp strokeWidth='0.8px' size={15} className='text-muted-foreground' />
+            : <ChevronsUpDown strokeWidth='0.8px' size={15} className='text-muted-foreground' />}
+          <span className='sr-only'>Toggle</span>
+        </Button>
+      </div>
+    ),
     filterFn: enProcesoFilterFn,
     sortingFn: 'basic',
-    size: 200
+    size: 50
   }
 ]
 
