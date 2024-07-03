@@ -85,13 +85,13 @@ export function formatData (text: string): Student[] {
           materiasPendientes: {
             cantTotal: parseInt(materiasPendientesCantTotalValue) >= 0 ? parseInt(materiasPendientesCantTotalValue) : undefined,
             cantTroncales: parseInt(materiasPendientesCantTroncalesValue) >= 0 ? parseInt(materiasPendientesCantTroncalesValue) : undefined,
-            detalleTroncales: detalleTroncalesValue ? detalleTroncalesValue.slice(0, detalleTroncalesValue.length - 1).replace('º', '°').split(', ') : [],
+            detalleTroncales: detalleTroncalesValue ? formatDetalleMateria(detalleTroncalesValue) : [],
             cantGenerales: parseInt(materiasPendientesCantGeneralesValue) >= 0 ? parseInt(materiasPendientesCantGeneralesValue) : undefined,
-            detalleGenerales: detalleGeneralesValue ? detalleGeneralesValue.slice(0, detalleGeneralesValue.length - 1).replace('º', '°').split(', ') : []
+            detalleGenerales: detalleGeneralesValue ? formatDetalleMateria(detalleGeneralesValue) : []
           },
           materiasEnProceso2020: {
             cantidad: parseInt(materiasEnProceso2020CantidadValue) >= 0 ? parseInt(materiasEnProceso2020CantidadValue) : undefined,
-            detalle: detalleEnProceso2020Value ? detalleEnProceso2020Value.slice(0, detalleEnProceso2020Value.length - 1).replace('º', '°').split(', ') : []
+            detalle: detalleEnProceso2020Value ? formatDetalleMateria(detalleEnProceso2020Value) : []
           }
         }
       }
@@ -120,3 +120,11 @@ const defineRepitencia = (repitencia: string): Student['repitencia1'] => {
 }
 
 const isValidMovilidadValue = (movilidadValue: string): movilidadValue is keyof typeof MOVILIDAD_VALUES => MOVILIDAD_VALUES[movilidadValue as keyof typeof MOVILIDAD_VALUES] !== undefined
+
+const formatDetalleMateria = (detalle : string) : string[] => {
+  const partialString = detalle.slice(0, detalle.length - 1).replaceAll('º', '°')
+  if (partialString.includes('Rep. Mediales, Comunicación y Lenguajes') || partialString.includes('Arte, Tecnol. y Comunicación')) {
+    return partialString.split('), ').map(string => string.at(-1) === ')' || string === 'No adeuda' ? string : `${string})`)
+  }
+  return partialString.split(', ')
+}

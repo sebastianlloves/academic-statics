@@ -44,8 +44,8 @@ export const columns: ColumnDef<Student>[] = [
       const [apellido, nombre] = `${cell.getValue()}`.split(', ')
       return (
         <div className='text-left h-10'>
-          <p className='font-normal'>{apellido}</p>
-          <p className='font-light'>{nombre}</p>
+          <p className='font-medium'>{apellido}</p>
+          <p className='font-normal text-muted-foreground'>{nombre}</p>
         </div>
       )
     },
@@ -82,7 +82,7 @@ export const columns: ColumnDef<Student>[] = [
       <SubRow
         triggerContent={row.original.materiasPendientes.cantTroncales ?? 0}
         subjects={row.original.materiasPendientes.detalleTroncales ?? []}
-        open={{ tableExpanded: table.getIsAllRowsExpanded(), rowExpanded: row.getIsExpanded() }}
+        open={table.getIsAllRowsExpanded() || row.getIsExpanded()}
       />
     ),
     filterFn: pendientesFilterFn,
@@ -91,7 +91,7 @@ export const columns: ColumnDef<Student>[] = [
       const { cantTroncales: cantB } = rowB.getValue<{cantTroncales: number}>('troncales')
       return cantA - cantB
     },
-    size: 250
+    size: 220
   },
   {
     id: 'generales',
@@ -106,7 +106,7 @@ export const columns: ColumnDef<Student>[] = [
       <SubRow
         triggerContent={row.original.materiasPendientes.cantGenerales ?? 0}
         subjects={row.original.materiasPendientes.detalleGenerales ?? []}
-        open={{ tableExpanded: table.getIsAllRowsExpanded(), rowExpanded: row.getIsExpanded() }}
+        open={table.getIsAllRowsExpanded() || row.getIsExpanded()}
       />
     ),
     filterFn: pendientesFilterFn,
@@ -115,7 +115,7 @@ export const columns: ColumnDef<Student>[] = [
       const { cantGenerales: cantB } = rowB.getValue<{cantGenerales: number}>('generales')
       return cantA - cantB
     },
-    size: 150
+    size: 220
   },
   {
     id: 'enProceso2020',
@@ -130,7 +130,7 @@ export const columns: ColumnDef<Student>[] = [
       <SubRow
         triggerContent={row.original.materiasEnProceso2020.cantidad ?? 0}
         subjects={row.original.materiasEnProceso2020.detalle ?? []}
-        open={{ tableExpanded: table.getIsAllRowsExpanded(), rowExpanded: row.getIsExpanded() }}
+        open={table.getIsAllRowsExpanded() || row.getIsExpanded()}
       />
     ),
     filterFn: enProcesoFilterFn,
@@ -139,7 +139,7 @@ export const columns: ColumnDef<Student>[] = [
       const { cantidad: cantB } = rowB.getValue<{cantidad: number}>('enProceso2020')
       return cantA - cantB
     },
-    size: 200
+    size: 220
   },
   {
     id: 'expand',
@@ -155,8 +155,8 @@ export const columns: ColumnDef<Student>[] = [
       <div className='h-10 flex flex-col justify-center'>
         <Button variant='ghost' size='sm' className='w-7 p-0' onClick={() => row.toggleExpanded()}>
           {row.getIsExpanded()
-            ? <ChevronsDownUp strokeWidth='0.8px' size={15} className='text-muted-foreground' />
-            : <ChevronsUpDown strokeWidth='0.8px' size={15} className='text-muted-foreground' />}
+            ? <ChevronsDownUp strokeWidth='0.9px' size={15} className='text-foreground/80' />
+            : <ChevronsUpDown strokeWidth='0.9px' size={15} className='text-foreground/80' />}
           <span className='sr-only'>Toggle</span>
         </Button>
       </div>
