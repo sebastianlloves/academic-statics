@@ -3,6 +3,7 @@ import { DataTable } from './data-table'
 
 function StudentsTable () {
   const { data, loading } = useStudentsData()
+  // console.log(data)
 
   return (
     <div className='grid gap-y-4 justify-center'>

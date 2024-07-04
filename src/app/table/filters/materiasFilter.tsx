@@ -49,11 +49,16 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
   }, [data])
 
   const subjects : {[key: string]: string[]} = useMemo(() => {
+    // console.time('subjects Calc')
+    // console.log('Empezó subjects')
     const entriesSubjectsObject = Object.keys(MATERIAS_POR_CURSO).map(anio => {
       const subjectsByAnio = MATERIAS_POR_CURSO[Number(anio) as ANIO].map(objSubject => objSubject.nombre)
       return [`${anio}° año`, subjectsByAnio]
     })
-    return Object.fromEntries(entriesSubjectsObject)
+    const subjects = Object.fromEntries(entriesSubjectsObject)
+    // console.timeEnd('subjects Calc')
+    // console.log(subjects)
+    return subjects
   }, [])
 
   return (
@@ -68,7 +73,7 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
             <DropdownMenuSubContent sideOffset={14}>
               <DropdownMenuCheckboxItem
                 onSelect={e => e.preventDefault()}
-                className='cursor-pointer font-semibold text-foreground pr-3'
+                className='cursor-pointer font-semibold text-foreground pr-3 focus:bg-primary/10'
                 checked={materiasFilterValue.subjects === 'all'}
                 onClick={() => {
                   materiasFilterValue.subjects === 'all' ? setMateriasFilterValue((prevState) => { return { ...prevState, subjects: [] } }) : setMateriasFilterValue((prevState) => { return { ...prevState, subjects: 'all' } })
@@ -80,21 +85,25 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
               {
                 Object.keys(subjects).map(anio => (
                   <DropdownMenuSub key={anio}>
-                    <DropdownMenuSubTrigger inset>
+                    <DropdownMenuSubTrigger className='focus:bg-primary/10 data-[state=open]:bg-primary/10' inset>
                       {anio}
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
                       <DropdownMenuSubContent sideOffset={6}>
                         <DropdownMenuCheckboxItem
                           onSelect={e => e.preventDefault()}
-                          className='cursor-pointer font-medium text-foreground pr-3'
+                          className='cursor-pointer font-medium text-foreground pr-3 focus:bg-primary/10'
                           checked={materiasFilterValue.subjects === 'all' || subjects[anio].every(subject => materiasFilterValue.subjects.includes(`${subject} (${anio.slice(0, 2)})`))}
                           onClick={() => {
+                            // console.time('subjectsByAnio')
                             const subjectsByAnio = subjects[anio].map(subject => `${subject} (${anio.slice(0, 2)})`)
+                            // console.timeEnd('subjectsByAnio')
                             setMateriasFilterValue((prevState) => {
                               const prevSubjects = prevState.subjects || []
                               if (prevSubjects === 'all') {
+                                // console.time('allSubjects')
                                 const allSubjects = Object.keys(subjects).flatMap((anio) => subjects[anio].map(subject => `${subject} (${anio.slice(0, 2)})`))
+                                // console.timeEnd('allSubjects')
                                 const newSubjectsState = allSubjects.filter(subject => !subjectsByAnio.includes(subject))
                                 return { ...prevState, subjects: newSubjectsState }
                               }
@@ -115,7 +124,7 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
                           <DropdownMenuCheckboxItem
                             onSelect={e => e.preventDefault()}
                             key={`${subject}_${anio}`}
-                            className='cursor-pointer'
+                            className='cursor-pointer focus:bg-primary/10'
                             checked={materiasFilterValue.subjects === 'all' || materiasFilterValue.subjects.includes(`${subject} (${anio.slice(0, 2)})`)}
                             onClick={() => {
                               if (materiasFilterValue.subjects === 'all') {

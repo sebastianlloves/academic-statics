@@ -7,18 +7,20 @@ import { Student } from '@/types'
 import { useMemo } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import CantidadesFilter from './filters/cantidadesFilter/cantidadesFilter'
 
 interface DataTableProps {
-  data: Student[],
+  data: Student[] | false,
   loading: boolean
 }
 
 export function DataTable ({ data, loading }: DataTableProps) {
-  const columnsTable = useMemo(() => loading
+  const columnsTable = useMemo(() => loading || data === false
     ? columns.map(column => { return { ...column, cell: () => <Skeleton className='h-6 rounded-md' /> } })
     : columns,
-  [loading])
-  const dataTable = useMemo(() => loading
+  [loading, data])
+
+  const dataTable = useMemo(() => loading || data === false
     ? Array(30).fill({})
     : data,
   [loading, data])
@@ -39,6 +41,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
     <>
       <div className='flex items-center gap-x-3'>
         <PendientesFilter table={table} />
+        {/* <CantidadesFilter /> */}
         <CursoFilter table={table} />
       </div>
       <ScrollArea className='h-[80vh] max-w-[80vw] rounded-md'>
@@ -74,8 +77,8 @@ export function DataTable ({ data, loading }: DataTableProps) {
                 )
               : (
                 <TableRow>
-                  <TableCell colSpan={columns.length} className='text-center'>
-                    No se hallaron resultados.
+                  <TableCell colSpan={columns.length} className='text-center text-muted-foreground italic py-6'>
+                    No hay resultados.
                   </TableCell>
                 </TableRow>
                 )}

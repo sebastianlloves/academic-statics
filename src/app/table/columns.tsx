@@ -22,36 +22,27 @@ export const columns: ColumnDef<Student>[] = [
     ),
     size: 100,
     filterFn: (row: Row<Student>, columnID: string, filterValue: CURSO[]) => filterValue.includes(row.getValue(columnID) as CURSO),
-    sortingFn: (rowA, rowB) => {
-      const anioA = rowA.original.anio ?? 0
-      const anioB = rowB.original.anio ?? 0
-      const divisionA = rowA.original.division ?? 0
-      const divisionB = rowB.original.division ?? 0
-      return anioA - anioB !== 0 ? anioA - anioB : divisionA - divisionB
-    }
+    sortingFn: 'alphanumeric'
   },
   {
     id: 'estudiante',
-    accessorFn: ({ apellido, nombre }) => {
-      const capitalizeApellido = apellido?.split(' ').map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ')
-      const capitalizeNombre = nombre?.split(' ').map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ')
-      return `${capitalizeApellido}, ${capitalizeNombre}`
-    },
+    accessorKey: 'apellido',
     header: ({ column }) => (
       <SortingHeader title='Estudiante' column={column} />
     ),
-    cell: ({ cell }) => {
-      const [apellido, nombre] = `${cell.getValue()}`.split(', ')
+    cell: ({ row }) => {
+      const { apellido, nombre } = row.original
+      const capitalizeApellido = apellido?.split(' ').map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ')
+      const capitalizeNombre = nombre?.split(' ').map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ')
       return (
         <div className='text-left h-10'>
-          <p className='font-medium'>{apellido}</p>
-          <p className='font-normal text-muted-foreground'>{nombre}</p>
+          <p className='font-medium'>{capitalizeApellido}</p>
+          <p className='font-normal text-muted-foreground'>{capitalizeNombre}</p>
         </div>
       )
     },
-    size: 180,
     sortingFn: 'text',
-    enableMultiSort: true
+    size: 180
   },
   {
     id: 'dni',
@@ -64,15 +55,11 @@ export const columns: ColumnDef<Student>[] = [
         <p className='text-left text-xs text-muted-foreground'>{row.original.dni}</p>
       </div>),
     size: 150,
-    sortingFn: 'basic',
-    enableMultiSort: true
+    sortingFn: 'basic'
   },
   {
     id: 'troncales',
-    accessorFn: (row) => {
-      const { cantTroncales, detalleTroncales } = row.materiasPendientes
-      return { cantTroncales, detalleTroncales }
-    },
+    accessorKey: 'materiasPendientes.cantTroncales',
     header: ({ column }) => (
       <div className='flex gap-x-2 items-center'>
         <SortingHeader title='Troncales' column={column} className='' />
@@ -86,19 +73,12 @@ export const columns: ColumnDef<Student>[] = [
       />
     ),
     filterFn: pendientesFilterFn,
-    sortingFn: (rowA, rowB) => {
-      const { cantTroncales: cantA } = rowA.getValue<{cantTroncales: number}>('troncales')
-      const { cantTroncales: cantB } = rowB.getValue<{cantTroncales: number}>('troncales')
-      return cantA - cantB
-    },
-    size: 220
+    sortingFn: 'basic',
+    size: 250
   },
   {
     id: 'generales',
-    accessorFn: (row) => {
-      const { cantGenerales, detalleGenerales } = row.materiasPendientes
-      return { cantGenerales, detalleGenerales }
-    },
+    accessorKey: 'materiasPendientes.cantGenerales',
     header: ({ column }) => (
       <SortingHeader title='Generales' column={column} />
     ),
@@ -110,19 +90,12 @@ export const columns: ColumnDef<Student>[] = [
       />
     ),
     filterFn: pendientesFilterFn,
-    sortingFn: (rowA, rowB) => {
-      const { cantGenerales: cantA } = rowA.getValue<{cantGenerales: number}>('generales')
-      const { cantGenerales: cantB } = rowB.getValue<{cantGenerales: number}>('generales')
-      return cantA - cantB
-    },
-    size: 220
+    sortingFn: 'basic',
+    size: 250
   },
   {
     id: 'enProceso2020',
-    accessorFn: (row) => {
-      const { cantidad, detalle } = row.materiasEnProceso2020
-      return { cantidad, detalle }
-    },
+    accessorKey: 'materiasEnProceso2020.cantidad',
     header: ({ column }) => (
       <SortingHeader title='En Proceso 2020' column={column} />
     ),
@@ -134,12 +107,8 @@ export const columns: ColumnDef<Student>[] = [
       />
     ),
     filterFn: enProcesoFilterFn,
-    sortingFn: (rowA, rowB) => {
-      const { cantidad: cantA } = rowA.getValue<{cantidad: number}>('enProceso2020')
-      const { cantidad: cantB } = rowB.getValue<{cantidad: number}>('enProceso2020')
-      return cantA - cantB
-    },
-    size: 220
+    sortingFn: 'basic',
+    size: 250
   },
   {
     id: 'expand',
@@ -161,8 +130,8 @@ export const columns: ColumnDef<Student>[] = [
         </Button>
       </div>
     ),
-    filterFn: enProcesoFilterFn,
-    sortingFn: 'basic',
+    enableColumnFilter: false,
+    enableSorting: false,
     size: 50
   }
 ]
