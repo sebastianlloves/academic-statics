@@ -13,7 +13,7 @@ function SubRow ({ triggerContent, subjects, open } : SubRowProps) {
       <Collapsible open={open}>
         <CollapsibleTrigger asChild>
           <div className='flex items-center h-10 gap-x-2'>
-            <h4 className='text-base text-foreground font-normal pl-1'>
+            <h4 className='text-sm text-foreground font-normal pl-1'>
               {triggerContent}
             </h4>
           </div>
@@ -23,7 +23,7 @@ function SubRow ({ triggerContent, subjects, open } : SubRowProps) {
             {subjects.map(subject => (
               subject === 'No adeuda'
                 ? <Badge variant='success' className='text-xs rounded-full' key={subject}>{subject}</Badge>
-                : <Badge variant='secondary' className='text-xs' key={subject}>{subject}</Badge>
+                : <Badge variant='secondary' className='text-xs border-secondary-foreground/10' key={subject}>{subject}</Badge>
             ))}
           </div>
         </CollapsibleContent>

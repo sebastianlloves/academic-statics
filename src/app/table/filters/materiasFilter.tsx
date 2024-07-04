@@ -16,7 +16,7 @@ export interface materiasFilterValueState {
   generalesRange: [number, number],
   enProceso2020Range: [number, number],
   promotedAndRepetears: 'all' | 'onlyRepeaters' | 'onlyPromoted',
-  subjects: 'all' | string[] | false
+  subjects: 'all' | string[]
 }
 
 function MateriasFilter ({ table } : MateriasFilterProps) {
@@ -55,7 +55,6 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
     })
     return Object.fromEntries(entriesSubjectsObject)
   }, [])
-  console.log(materiasFilterValue)
 
   return (
     <DropdownMenu>
@@ -72,7 +71,7 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
                 className='cursor-pointer font-semibold text-foreground pr-3'
                 checked={materiasFilterValue.subjects === 'all'}
                 onClick={() => {
-                  materiasFilterValue.subjects === 'all' ? setMateriasFilterValue((prevState) => { return { ...prevState, subjects: false } }) : setMateriasFilterValue((prevState) => { return { ...prevState, subjects: 'all' } })
+                  materiasFilterValue.subjects === 'all' ? setMateriasFilterValue((prevState) => { return { ...prevState, subjects: [] } }) : setMateriasFilterValue((prevState) => { return { ...prevState, subjects: 'all' } })
                 }}
               >
                 Todas las materias
@@ -89,7 +88,7 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
                         <DropdownMenuCheckboxItem
                           onSelect={e => e.preventDefault()}
                           className='cursor-pointer font-medium text-foreground pr-3'
-                          checked={materiasFilterValue.subjects === 'all' || subjects[anio].every(subject => materiasFilterValue.subjects && materiasFilterValue.subjects.includes(`${subject} (${anio.slice(0, 2)})`))}
+                          checked={materiasFilterValue.subjects === 'all' || subjects[anio].every(subject => materiasFilterValue.subjects.includes(`${subject} (${anio.slice(0, 2)})`))}
                           onClick={() => {
                             const subjectsByAnio = subjects[anio].map(subject => `${subject} (${anio.slice(0, 2)})`)
                             setMateriasFilterValue((prevState) => {
@@ -117,7 +116,14 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
                             onSelect={e => e.preventDefault()}
                             key={`${subject}_${anio}`}
                             className='cursor-pointer'
-                            checked={materiasFilterValue.subjects === 'all' || (materiasFilterValue.subjects && materiasFilterValue.subjects.includes(`${subject} (${anio.slice(0, 2)})`))}
+                            checked={materiasFilterValue.subjects === 'all' || materiasFilterValue.subjects.includes(`${subject} (${anio.slice(0, 2)})`)}
+                            onClick={() => {
+                              if (materiasFilterValue.subjects === 'all') {
+                                const allSubjects = Object.keys(subjects).flatMap((anio) => subjects[anio].map(subject => `${subject} (${anio.slice(0, 2)})`))
+                                const newSubjectsState = allSubjects.filter(subject => subject !== `${subject} (${anio.slice(0, 2)})`)
+                                setMateriasFilterValue(prevState => { return { ...prevState, subjects: newSubjectsState } })
+                              }
+                            }}
                           >
                             {subject}
                           </DropdownMenuCheckboxItem>
