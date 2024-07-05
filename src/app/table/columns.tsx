@@ -112,8 +112,13 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     id: 'expand',
-    header: ({ table }) => (
-      <Button variant='ghost' size='sm' className='w-7 p-0' onClick={() => table.toggleAllRowsExpanded(!table.getIsAllRowsExpanded())}>
+    header: ({ table, column }) => (
+      <Button
+        variant='ghost' size='sm' className='w-7 p-0' onClick={() => {
+          column.setFilterValue(['Matemática (2°)', 'Física (3°)'])
+          table.toggleAllRowsExpanded(!table.getIsAllRowsExpanded())
+        }}
+      >
         {table.getIsAllRowsExpanded()
           ? <ChevronsDownUp strokeWidth='1.2px' size={15} className='text-foreground' />
           : <ChevronsUpDown strokeWidth='1.2px' size={15} className='text-foreground' />}
@@ -130,7 +135,12 @@ export const columns: ColumnDef<Student>[] = [
         </Button>
       </div>
     ),
-    enableColumnFilter: false,
+    filterFn: (row: Row<Student>, _columnID, filterValue :'all' | string[]) => {
+      if (filterValue === 'all') return true
+      const { detalleTroncales, detalleGenerales } = row.original.materiasPendientes
+      const studentSubjects = [...detalleTroncales || [], ...detalleGenerales || []]
+      return filterValue.some(subject => studentSubjects.includes(subject))
+    },
     enableSorting: false,
     size: 50
   }
