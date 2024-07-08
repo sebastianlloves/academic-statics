@@ -110,13 +110,33 @@ export const columns: ColumnDef<Student>[] = [
     size: 250
   },
   {
+    id: 'promocion',
+    accessorFn: (row) => {
+      const { cantTroncales, cantGenerales } = row.materiasPendientes
+      if (cantTroncales === undefined || cantGenerales === undefined) return 'faltan datos'
+      return cantTroncales <= 2 && cantTroncales + cantGenerales <= 4 ? 'promociona' : 'permanece'
+    },
+    header: ({ column }) => (
+      <SortingHeader title='Promoción' column={column} />
+    ),
+    cell: ({ cell }) => {
+      const value = cell.getValue<string>()
+      return (
+        <div className='h-10 flex flex-col items-start justify-center'>
+          {value === 'faltan datos' && <Badge variant='outline' className='capitalize'>{value}</Badge>}
+          {value === 'promociona' ? <Badge variant='success' className='capitalize'>{value}</Badge> : <Badge variant='destructive' className='capitalize'>{value}</Badge>}
+        </div>
+      )
+    },
+    filterFn: 'includesString',
+    sortingFn: 'text',
+    size: 250
+  },
+  {
     id: 'expand',
-    header: ({ table, column }) => (
+    header: ({ table }) => (
       <Button
-        variant='ghost' size='sm' className='w-7 p-0' onClick={() => {
-          column.setFilterValue(['Matemática (2°)', 'Física (3°)'])
-          table.toggleAllRowsExpanded(!table.getIsAllRowsExpanded())
-        }}
+        variant='ghost' size='sm' className='w-7 p-0' onClick={() => table.toggleAllRowsExpanded(!table.getIsAllRowsExpanded())}
       >
         {table.getIsAllRowsExpanded()
           ? <ChevronsDownUp strokeWidth='1.2px' size={15} className='text-foreground' />
@@ -134,12 +154,12 @@ export const columns: ColumnDef<Student>[] = [
         </Button>
       </div>
     ),
-    filterFn: (row: Row<Student>, _columnID, filterValue :'all' | string[]) => {
+    /* filterFn: (row: Row<Student>, _columnID, filterValue :'all' | string[]) => {
       if (filterValue === 'all') return true
       const { detalleTroncales, detalleGenerales } = row.original.materiasPendientes
       const studentSubjects = [...detalleTroncales || [], ...detalleGenerales || []]
       return filterValue.some(subject => studentSubjects.includes(subject))
-    },
+    }, */
     enableSorting: false,
     size: 50
   }

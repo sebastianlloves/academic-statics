@@ -1,13 +1,12 @@
 import { flexRender, getCoreRowModel, useReactTable, getFilteredRowModel, getSortedRowModel, getExpandedRowModel } from '@tanstack/react-table'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { columns } from './columns'
-import PendientesFilter from './filters/materiasFilter'
-import CursoFilter from './filters/cursosFilter'
 import { Student } from '@/types'
 import { useMemo } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import CantidadesFilter from './filters/cantidadesFilter/cantidadesFilter'
+import FiltersPanel from './filters/filtersPanel'
+// import CantidadesFilter from './filters/cantidadesFilter/cantidadesFilter'
 
 interface DataTableProps {
   data: Student[] | false,
@@ -33,17 +32,14 @@ export function DataTable ({ data, loading }: DataTableProps) {
     getSortedRowModel: getSortedRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
     initialState: {
-      expanded: {}
+      expanded: {},
+      columnVisibility: { promocion: true }
     }
   })
 
   return (
     <>
-      <div className='flex items-center gap-x-3'>
-        <PendientesFilter table={table} />
-        {/* <CantidadesFilter /> */}
-        <CursoFilter table={table} />
-      </div>
+      <FiltersPanel table={table} />
       <ScrollArea className='h-[80vh] max-w-[80vw] rounded-md'>
         <Table className='relative'>
           <TableHeader className=''>
