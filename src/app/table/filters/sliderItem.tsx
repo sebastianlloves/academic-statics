@@ -1,15 +1,19 @@
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Slider } from '@/components/ui/slider'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { Student } from '@/types'
+import { Column } from '@tanstack/react-table'
+import { useState } from 'react'
 
 interface SliderItemProps {
-  rangeValues: [number, number],
   maxCant: number,
-  handleValueChange: (value: [number, number]) => void,
-  materiaType: 'troncales' | 'generales' | 'en proceso 2020'
+  materiaType: 'troncales' | 'generales' | 'en proceso (2020)',
+  column?: Column<Student>
 }
 
-function SliderItem ({ rangeValues, maxCant, handleValueChange, materiaType } : SliderItemProps) {
+function SliderItem ({ maxCant, materiaType, column } : SliderItemProps) {
+  const [range, setRange] = useState([0, maxCant])
+
   return (
     <>
       <DropdownMenuItem asChild onSelect={(e) => e.preventDefault()}>
@@ -18,13 +22,16 @@ function SliderItem ({ rangeValues, maxCant, handleValueChange, materiaType } : 
             {materiaType}
           </h5>
           <div className='flex justify-between space-x-2'>
-            <span className='w-8 font-light text-sm text-center'>{rangeValues[0]}</span>
+            <span className='w-8 font-light text-sm text-center'>{range[0]}</span>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Slider
-                    defaultValue={rangeValues}
-                    onValueChange={handleValueChange}
+                    value={range}
+                    onValueChange={(value) => {
+                      setRange(value)
+                      column?.setFilterValue(value)
+                    }}
                     max={maxCant}
                     step={1}
                     className='w-52'
@@ -32,14 +39,14 @@ function SliderItem ({ rangeValues, maxCant, handleValueChange, materiaType } : 
                   />
                 </TooltipTrigger>
                 <TooltipContent side='bottom' className='bg-background border rounded-md w-fit p-3'>
-                  <p className='text-sm text-center text-muted-foreground'>{rangeValues[0] === rangeValues[1]
-                    ? `Estudiantes que tengan ${rangeValues[1]} materias ${materiaType}`
-                    : `Estudiantes que tengan entre ${rangeValues[0]} y ${rangeValues[1]} materias ${materiaType}`}
+                  <p className='text-sm text-center text-muted-foreground'>{range[0] === range[1]
+                    ? `Estudiantes que tengan ${range[1]} materias ${materiaType}`
+                    : `Estudiantes que tengan entre ${range[0]} y ${range[1]} materias ${materiaType}`}
                   </p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <span className='w-8 font-light text-sm text-center'>{rangeValues[1]}</span>
+            <span className='w-8 font-light text-sm text-center'>{range[1]}</span>
           </div>
         </div>
       </DropdownMenuItem>

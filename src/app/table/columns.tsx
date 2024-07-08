@@ -1,6 +1,5 @@
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { type Student } from '@/types'
-import { materiasFilterValueState } from '@/app/table/filters/materiasFilter'
 import { Badge } from '@/components/ui/badge'
 import { CURSO } from '@/types'
 import SortingHeader from './sortingHeader'
@@ -72,7 +71,7 @@ export const columns: ColumnDef<Student>[] = [
         open={table.getIsAllRowsExpanded() || row.getIsExpanded()}
       />
     ),
-    filterFn: pendientesFilterFn,
+    filterFn: 'inNumberRange',
     sortingFn: 'basic',
     size: 250
   },
@@ -89,7 +88,7 @@ export const columns: ColumnDef<Student>[] = [
         open={table.getIsAllRowsExpanded() || row.getIsExpanded()}
       />
     ),
-    filterFn: pendientesFilterFn,
+    filterFn: 'inNumberRange',
     sortingFn: 'basic',
     size: 250
   },
@@ -97,7 +96,7 @@ export const columns: ColumnDef<Student>[] = [
     id: 'enProceso2020',
     accessorKey: 'materiasEnProceso2020.cantidad',
     header: ({ column }) => (
-      <SortingHeader title='En Proceso 2020' column={column} />
+      <SortingHeader title='En Proceso (2020)' column={column} />
     ),
     cell: ({ table, row }) => (
       <SubRow
@@ -106,7 +105,7 @@ export const columns: ColumnDef<Student>[] = [
         open={table.getIsAllRowsExpanded() || row.getIsExpanded()}
       />
     ),
-    filterFn: enProcesoFilterFn,
+    filterFn: 'inNumberRange',
     sortingFn: 'basic',
     size: 250
   },
@@ -146,7 +145,7 @@ export const columns: ColumnDef<Student>[] = [
   }
 ]
 
-function pendientesFilterFn (row: Row<Student>, _columnID: string, filterValue: materiasFilterValueState) {
+/* function pendientesFilterFn (row: Row<Student>, _columnID: string, filterValue: materiasFilterValueState) {
   const { cantTroncales, cantGenerales } = row.original.materiasPendientes
   if (cantTroncales === undefined || cantGenerales === undefined) return false
   const isInTroncalesRange = cantTroncales >= filterValue.troncalesRange[0] && cantTroncales <= filterValue.troncalesRange[1]
@@ -158,11 +157,11 @@ function pendientesFilterFn (row: Row<Student>, _columnID: string, filterValue: 
       : true
 
   return isInTroncalesRange && isInGeneralesRange && isValidPromotedCondition
-}
+} */
 
-function enProcesoFilterFn (row: Row<Student>, _columnID: string, filterValue: materiasFilterValueState) {
+/* function enProcesoFilterFn (row: Row<Student>, _columnID: string, filterValue: materiasFilterValueState) {
   const { cantidad } = row.original.materiasEnProceso2020
   if (cantidad === undefined) return false
   const [min, max] = filterValue.enProceso2020Range
   return cantidad >= min && cantidad <= max
-}
+} */
