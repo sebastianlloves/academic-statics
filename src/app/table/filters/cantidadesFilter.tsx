@@ -48,11 +48,12 @@ function CantidadesFilter ({ table } : CantidadesFilterProps) {
           title='generales'
           column={table.getColumn('generales')}
         />
-        <SliderItem
-          maxCant={maxCantEnProceso2020}
-          title='en proceso (2020)'
-          column={table.getColumn('enProceso2020')}
-        />
+        {table.getColumn('enProceso2020')?.getIsVisible() &&
+          <SliderItem
+            maxCant={maxCantEnProceso2020}
+            title='en proceso (2020)'
+            column={table.getColumn('enProceso2020')}
+          />}
       </DropdownMenuContent>
     </DropdownMenu>
   )

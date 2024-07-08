@@ -33,7 +33,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
     getExpandedRowModel: getExpandedRowModel(),
     initialState: {
       expanded: {},
-      columnVisibility: { promocion: true }
+      columnVisibility: { promocion: false, enProceso2020: false }
     }
   })
 

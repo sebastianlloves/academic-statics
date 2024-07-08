@@ -6,6 +6,7 @@ import SortingHeader from './sortingHeader'
 import SubRow from './subRow'
 import { ChevronsDownUp, ChevronsUpDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { MateriasFilterState } from './filters/materiasFilter'
 
 export const columns: ColumnDef<Student>[] = [
   {
@@ -20,8 +21,12 @@ export const columns: ColumnDef<Student>[] = [
       </div>
     ),
     size: 100,
-    filterFn: (row: Row<Student>, columnID: string, filterValue: CURSO[]) => filterValue.includes(row.getValue(columnID) as CURSO),
-    sortingFn: 'alphanumeric'
+    filterFn: (row: Row<Student>, columnID: string, filterValue: CURSO[] | 'all') => {
+      if (filterValue === 'all') return true
+      return filterValue.includes(row.getValue(columnID))
+    },
+    sortingFn: 'alphanumeric',
+    enableHiding: false
   },
   {
     id: 'estudiante',
@@ -34,17 +39,18 @@ export const columns: ColumnDef<Student>[] = [
       const capitalizeApellido = apellido?.split(' ').map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ')
       const capitalizeNombre = nombre?.split(' ').map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ')
       return (
-        <div className='text-left h-10'>
+        <div className='text-left h-10 text-nowrap'>
           <p className='font-medium'>{capitalizeApellido}</p>
           <p className='font-normal text-muted-foreground'>{capitalizeNombre}</p>
         </div>
       )
     },
     sortingFn: 'text',
-    size: 180
+    size: 180,
+    enableHiding: false
   },
   {
-    id: 'dni',
+    id: 'DNI',
     accessorKey: 'dni',
     header: ({ column }) => (
       <SortingHeader title='DNI' column={column} />
@@ -130,7 +136,7 @@ export const columns: ColumnDef<Student>[] = [
     },
     filterFn: 'includesString',
     sortingFn: 'text',
-    size: 250
+    size: 150
   },
   {
     id: 'expand',
@@ -154,12 +160,15 @@ export const columns: ColumnDef<Student>[] = [
         </Button>
       </div>
     ),
-    /* filterFn: (row: Row<Student>, _columnID, filterValue :'all' | string[]) => {
-      if (filterValue === 'all') return true
-      const { detalleTroncales, detalleGenerales } = row.original.materiasPendientes
-      const studentSubjects = [...detalleTroncales || [], ...detalleGenerales || []]
-      return filterValue.some(subject => studentSubjects.includes(subject))
-    }, */
+    filterFn: (row: Row<Student>, _columnID, filterValue: MateriasFilterState) => {
+      const { subjects, includeEnProceso2020, includesAll } = filterValue
+      if (subjects === 'all') return true
+      const detalleTroncales = row.original.materiasPendientes.detalleTroncales || []
+      const detalleGenerales = row.original.materiasPendientes.detalleGenerales || []
+      const detalleEnProceso2020 = (includeEnProceso2020 && row.original.materiasEnProceso2020.detalle) || []
+      const studentSubjects = [...detalleTroncales, ...detalleGenerales, ...detalleEnProceso2020]
+      return includesAll ? subjects.some(subject => studentSubjects.includes(subject)) : subjects.every(subject => studentSubjects.includes(subject))
+    },
     enableSorting: false,
     size: 50
   }
