@@ -14,6 +14,7 @@ function CursoFilter ({ table }: CursoFilterProps) {
   const coursesByYear = useMemo(
     () => Object.fromEntries(Object.keys(CURSOS).map(anio => [`${anio}° año`, CURSOS[Number(anio) as keyof(typeof CURSOS)].map(({ nombre }) => nombre)])), [])
   const [cursoFilter, setCursoFilter] = useState<CURSO[] | 'all'>('all')
+  const filterValue = table.getColumn('curso')?.getFilterValue()
 
   return (
     <DropdownMenu>

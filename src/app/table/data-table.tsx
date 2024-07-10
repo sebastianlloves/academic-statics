@@ -6,7 +6,6 @@ import { useMemo } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import FiltersPanel from './filters/filtersPanel'
-// import CantidadesFilter from './filters/cantidadesFilter/cantidadesFilter'
 
 interface DataTableProps {
   data: Student[] | false,
@@ -36,6 +35,8 @@ export function DataTable ({ data, loading }: DataTableProps) {
       columnVisibility: { promocion: false, enProceso2020: false }
     }
   })
+
+  console.log(table.getColumn('curso'))
 
   return (
     <>
