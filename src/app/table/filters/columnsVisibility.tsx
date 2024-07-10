@@ -5,12 +5,14 @@ import { CaretSortIcon } from '@radix-ui/react-icons'
 import { Table } from '@tanstack/react-table'
 import { MateriasFilterState } from './materiasFilter'
 import { useEffect } from 'react'
+import { cn } from '@/lib/utils'
 
 interface ColumnsVisibilityProps {
-  table: Table<Student>
+  table: Table<Student>,
+  className?: string
 }
 
-function ColumnsVisibility ({ table }: ColumnsVisibilityProps) {
+function ColumnsVisibility ({ table, className }: ColumnsVisibilityProps) {
   const columns = table.getAllColumns().filter(column => column.getCanHide() && column.id !== 'expand')
   const isTroncalesVisible = table.getColumn('troncales')?.getIsVisible()
   const isGeneralesVisible = table.getColumn('generales')?.getIsVisible()
@@ -24,8 +26,12 @@ function ColumnsVisibility ({ table }: ColumnsVisibilityProps) {
   return (
     <DropdownMenu>
 
-      <DropdownMenuTrigger asChild className='w-fit ml-auto'>
-        <Button variant='outline' className='font-normal'>Columnas<CaretSortIcon className='ml-3 h-4 w-4 opacity-50' /></Button>
+      <DropdownMenuTrigger asChild className='w-fit'>
+        <Button
+          variant='outline'
+          className={cn(className, 'font-normal')}
+        >Columnas<CaretSortIcon className='ml-3 h-4 w-4 opacity-50' />
+        </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align='start' className='p-1'>

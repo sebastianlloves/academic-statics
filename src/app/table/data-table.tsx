@@ -36,12 +36,9 @@ export function DataTable ({ data, loading }: DataTableProps) {
     }
   })
 
-  console.log(table.getColumn('curso'))
-
   return (
-    <>
-      <FiltersPanel table={table} />
-      <ScrollArea className='relative max-h-[80vh] w-[60vw] border p-4 rounded-lg'>
+    <div className='flex gap-x-4 border'>
+      <ScrollArea className='relative max-h-[80vh] w-[70vw] border p-1 rounded-lg'>
         <Table className=''>
           <TableHeader className=''>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -82,6 +79,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
           </TableBody>
         </Table>
       </ScrollArea>
-    </>
+      <FiltersPanel table={table} />
+    </div>
   )
 }

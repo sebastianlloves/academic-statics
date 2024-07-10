@@ -37,21 +37,22 @@ function CantidadesFilter ({ table } : CantidadesFilterProps) {
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align='start' className='p-3'>
-        <SliderItem
-          maxCant={maxCantTroncales}
-          title='troncales'
-          column={table.getColumn('troncales')}
-        />
-        <SliderItem
-          maxCant={maxCantGenerales}
-          title='generales'
-          column={table.getColumn('generales')}
-        />
+      <DropdownMenuContent align='start' className='p-1'>
+        {table.getColumn('troncales')?.getIsVisible() && (
+          <SliderItem
+            maxCant={maxCantTroncales}
+            column={table.getColumn('troncales')}
+          />
+        )}
+        {table.getColumn('generales')?.getIsVisible() && (
+          <SliderItem
+            maxCant={maxCantGenerales}
+            column={table.getColumn('generales')}
+          />
+        )}
         {table.getColumn('enProceso2020')?.getIsVisible() &&
           <SliderItem
             maxCant={maxCantEnProceso2020}
-            title='en proceso (2020)'
             column={table.getColumn('enProceso2020')}
           />}
       </DropdownMenuContent>

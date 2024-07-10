@@ -13,19 +13,29 @@ interface FiltersPanelProps {
 }
 
 function FiltersPanel ({ table } : FiltersPanelProps) {
+  const isTroncalesVisible = table.getColumn('troncales')?.getIsVisible()
+  const isGeneralesVisible = table.getColumn('generales')?.getIsVisible()
+  const isEnProceso2020Visible = table.getColumn('enProceso2020')?.getIsVisible()
+
   return (
-    <div className='flex items-center gap-x-3'>
+    <div className='flex flex-col justify-start items-start gap-y-4  border min-w-64'>
+      <ColumnsVisibility className='ml-auto' table={table} />
       <CursoFilter table={table} />
-      <CantidadesFilter table={table} />
-      <MateriasFilter table={table} />
+      {(isTroncalesVisible || isGeneralesVisible || isEnProceso2020Visible) && (
+        <>
+          <CantidadesFilter table={table} />
+          <MateriasFilter table={table} />
+        </>
+      )}
       {table.getColumn('promocion')?.getIsVisible() && <PromocionFilter table={table} />}
-      <Button
-        variant='secondary'
-        className='flex items-center gap-x-3'
-        onClick={() => table.resetColumnFilters()}
-      >Resetear filtros<X size={12} />
-      </Button>
-      <ColumnsVisibility table={table} />
+      {table.getFilteredRowModel().rows.length < table.getCoreRowModel().rows.length && (
+        <Button
+          variant='secondary'
+          className='flex items-center gap-x-3'
+          onClick={() => table.resetColumnFilters()}
+        >Resetear filtros<X size={12} />
+        </Button>
+      )}
     </div>
   )
 }

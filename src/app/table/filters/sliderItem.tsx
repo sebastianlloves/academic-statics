@@ -6,19 +6,19 @@ import { Column } from '@tanstack/react-table'
 
 interface SliderItemProps {
   maxCant: number,
-  title: 'troncales' | 'generales' | 'en proceso (2020)',
   column?: Column<Student>
 }
 
-function SliderItem ({ maxCant, title, column } : SliderItemProps) {
+function SliderItem ({ maxCant, column } : SliderItemProps) {
   const range = (column?.getFilterValue() as (number[] & {length: 2})) ?? [0, maxCant]
+  const { title } = column?.columnDef.meta ?? {}
 
   return (
     <>
       <DropdownMenuItem asChild onSelect={(e) => e.preventDefault()}>
         <div className='grid py-2'>
           <h5 className='capitalize text-center text-accent-foreground font-normal tracking-tight py-0'>
-            {title}
+            {title || column?.id}
           </h5>
           <div className='flex justify-between space-x-2'>
             <span className='w-8 font-light text-sm text-center'>{range[0]}</span>

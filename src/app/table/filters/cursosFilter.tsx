@@ -11,8 +11,11 @@ interface CursoFilterProps {
 }
 
 function CursoFilter ({ table }: CursoFilterProps) {
-  const coursesByYear = useMemo(
-    () => Object.fromEntries(Object.keys(CURSOS).map(anio => [`${anio}° año`, CURSOS[Number(anio) as keyof(typeof CURSOS)].map(({ nombre }) => nombre)])), [])
+  const coursesByYear = useMemo(() =>
+    Object.fromEntries(Object.keys(CURSOS)
+      .map(anio => [`${anio}° año`, CURSOS[Number(anio) as keyof(typeof CURSOS)]
+        .map(({ nombre }) => nombre)]))
+  , [])
   const cursosFilter = (table.getColumn('curso')?.getFilterValue() || []) as CURSO[]
 
   return (
