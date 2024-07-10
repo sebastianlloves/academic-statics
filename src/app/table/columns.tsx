@@ -8,6 +8,12 @@ import { ChevronsDownUp, ChevronsUpDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { MateriasFilterState } from './filters/materiasFilter'
 
+declare module '@tanstack/react-table' {
+  interface ColumnMeta {
+    title?: string
+  }
+}
+
 export const columns: ColumnDef<Student>[] = [
   {
     id: 'curso',
@@ -21,12 +27,16 @@ export const columns: ColumnDef<Student>[] = [
       </div>
     ),
     size: 100,
-    filterFn: (row: Row<Student>, columnID: string, filterValue: CURSO[] | 'all') => {
-      if (filterValue === 'all') return true
+    filterFn: (row: Row<Student>, columnID: string, filterValue: CURSO[]) => {
+      if (filterValue.length === 0) return true
       return filterValue.includes(row.getValue(columnID))
     },
     sortingFn: 'alphanumeric',
-    enableHiding: false
+    enableHiding: false,
+    sortDescFirst: true,
+    meta: {
+      title: 'curso'
+    }
   },
   {
     id: 'estudiante',
@@ -47,10 +57,14 @@ export const columns: ColumnDef<Student>[] = [
     },
     sortingFn: 'text',
     size: 180,
-    enableHiding: false
+    enableHiding: false,
+    sortDescFirst: true,
+    meta: {
+      title: 'estudiante'
+    }
   },
   {
-    id: 'DNI',
+    id: 'dni',
     accessorKey: 'dni',
     header: ({ column }) => (
       <SortingHeader title='DNI' column={column} />
@@ -60,7 +74,10 @@ export const columns: ColumnDef<Student>[] = [
         <p className='text-left text-xs text-muted-foreground'>{row.original.dni}</p>
       </div>),
     size: 150,
-    sortingFn: 'basic'
+    sortingFn: 'basic',
+    meta: {
+      title: 'DNI'
+    }
   },
   {
     id: 'troncales',
@@ -79,7 +96,10 @@ export const columns: ColumnDef<Student>[] = [
     ),
     filterFn: 'inNumberRange',
     sortingFn: 'basic',
-    size: 250
+    size: 250,
+    meta: {
+      title: 'troncales'
+    }
   },
   {
     id: 'generales',
@@ -96,7 +116,10 @@ export const columns: ColumnDef<Student>[] = [
     ),
     filterFn: 'inNumberRange',
     sortingFn: 'basic',
-    size: 250
+    size: 250,
+    meta: {
+      title: 'generales'
+    }
   },
   {
     id: 'enProceso2020',
@@ -113,7 +136,11 @@ export const columns: ColumnDef<Student>[] = [
     ),
     filterFn: 'inNumberRange',
     sortingFn: 'basic',
-    size: 250
+    sortDescFirst: true,
+    size: 250,
+    meta: {
+      title: 'En Proceso (2020)'
+    }
   },
   {
     id: 'promocion',
@@ -136,7 +163,10 @@ export const columns: ColumnDef<Student>[] = [
     },
     filterFn: 'includesString',
     sortingFn: 'text',
-    size: 150
+    size: 150,
+    meta: {
+      title: 'promoción'
+    }
   },
   {
     id: 'expand',
@@ -161,16 +191,19 @@ export const columns: ColumnDef<Student>[] = [
       </div>
     ),
     filterFn: (row: Row<Student>, _columnID, filterValue: MateriasFilterState) => {
-      const { subjects, includeEnProceso2020, includesAll } = filterValue
-      if (subjects === 'all') return true
+      const { subjects, includeEnProceso2020, strictInclusion } = filterValue
+      if (subjects.length === 0) return true
       const detalleTroncales = row.original.materiasPendientes.detalleTroncales || []
       const detalleGenerales = row.original.materiasPendientes.detalleGenerales || []
       const detalleEnProceso2020 = (includeEnProceso2020 && row.original.materiasEnProceso2020.detalle) || []
       const studentSubjects = [...detalleTroncales, ...detalleGenerales, ...detalleEnProceso2020]
-      return includesAll ? subjects.some(subject => studentSubjects.includes(subject)) : subjects.every(subject => studentSubjects.includes(subject))
+      return strictInclusion ? subjects.every(subject => studentSubjects.includes(subject)) : subjects.some(subject => studentSubjects.includes(subject))
     },
     enableSorting: false,
-    size: 50
+    size: 50,
+    meta: {
+      title: 'expandir'
+    }
   }
 ]
 

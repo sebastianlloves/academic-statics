@@ -3,14 +3,23 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { Student } from '@/types'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { Table } from '@tanstack/react-table'
+import { MateriasFilterState } from './materiasFilter'
+import { useEffect } from 'react'
 
 interface ColumnsVisibilityProps {
   table: Table<Student>
 }
 
 function ColumnsVisibility ({ table }: ColumnsVisibilityProps) {
-  const columns = table.getAllColumns().filter(column => column.getCanHide())
-  console.log(columns)
+  const columns = table.getAllColumns().filter(column => column.getCanHide() && column.id !== 'expand')
+  const isTroncalesVisible = table.getColumn('troncales')?.getIsVisible()
+  const isGeneralesVisible = table.getColumn('generales')?.getIsVisible()
+  const isEnProceso2020Visible = table.getColumn('enProceso2020')?.getIsVisible()
+
+  useEffect(() => {
+    const hideExpandColumn = !isTroncalesVisible && !isGeneralesVisible && !isEnProceso2020Visible
+    table.getColumn('expand')?.toggleVisibility(!hideExpandColumn)
+  }, [isTroncalesVisible, isGeneralesVisible, isEnProceso2020Visible, table])
 
   return (
     <DropdownMenu>
@@ -21,17 +30,27 @@ function ColumnsVisibility ({ table }: ColumnsVisibilityProps) {
 
       <DropdownMenuContent align='start' className='p-1'>
         {
-          columns.map(column => (
-            <DropdownMenuCheckboxItem
-              key={column.id}
-              className='capitalize pr-3'
-              onSelect={e => e.preventDefault()}
-              checked={column.getIsVisible()}
-              onCheckedChange={() => column.toggleVisibility()}
-            >
-              {column.id}
-            </DropdownMenuCheckboxItem>
-          ))
+          columns.map(column => {
+            const { title } = column.columnDef.meta ?? {}
+            return (
+              <DropdownMenuCheckboxItem
+                key={column.id}
+                className='capitalize pr-3 cursor-pointer'
+                onSelect={e => e.preventDefault()}
+                checked={column.getIsVisible()}
+                onCheckedChange={() => {
+                  if (column.id === 'enProceso2020') {
+                    table.getColumn('expand')?.setFilterValue((prevValue: MateriasFilterState | undefined) => {
+                      if (prevValue) return { ...prevValue, includeEnProceso2020: !column.getIsVisible() }
+                    })
+                  }
+                  column.toggleVisibility()
+                }}
+              >
+                {title || column.id}
+              </DropdownMenuCheckboxItem>
+            )
+          })
         }
       </DropdownMenuContent>
 

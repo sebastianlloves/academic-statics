@@ -1,31 +1,32 @@
 import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { ANIO, Student } from '@/types'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { Table } from '@tanstack/react-table'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { MATERIAS_POR_CURSO } from '@/constants'
+import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
 
 interface MateriasFilterProps {
   table: Table<Student>
 }
 
 export interface MateriasFilterState {
-  includeEnProceso2020: boolean,
-  includesAll: boolean,
-  subjects: string[] | 'all'
+  includeEnProceso2020?: boolean,
+  strictInclusion?: boolean,
+  subjects: string[]
 }
 
 function MateriasFilter ({ table } : MateriasFilterProps) {
-  const [materiasFilter, setMateriasFilter] = useState<MateriasFilterState>({ includesAll: true, subjects: 'all', includeEnProceso2020: table.getColumn('enProceso2020')?.getIsVisible() || false })
+  const materiasFilter = (table.getColumn('expand')?.getFilterValue() || { subjects: [] }) as MateriasFilterState
 
   const allSubjects : {[key: string]: string[]} = useMemo(() => {
     const entriesSubjectsObject = Object.keys(MATERIAS_POR_CURSO).map(anio => {
       const subjectsByAnio = MATERIAS_POR_CURSO[Number(anio) as ANIO].map(objSubject => `${objSubject.nombre} (${anio}°)`)
       return [`${anio}° año`, subjectsByAnio]
     })
-    const subjects = Object.fromEntries(entriesSubjectsObject)
-    return subjects
+    return Object.fromEntries(entriesSubjectsObject)
   }, [])
 
   return (
@@ -48,18 +49,12 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
                     onSelect={e => e.preventDefault()}
                     key={subject}
                     className='cursor-pointer'
-                    checked={materiasFilter.subjects !== 'all' && materiasFilter.subjects.includes(subject)}
+                    checked={materiasFilter.subjects.includes(subject)}
                     onCheckedChange={(checked) => {
-                      let newState
-                      if (materiasFilter.subjects === 'all') newState = { ...materiasFilter, subjects: [subject] }
-                      else {
-                        const newSubjectState = !checked
-                          ? materiasFilter.subjects.filter(prevSubject => prevSubject !== subject)
-                          : [...materiasFilter.subjects, subject]
-                        newState = newSubjectState.length === 0 ? { ...materiasFilter, subjects: ('all' as const) } : { ...materiasFilter, subjects: newSubjectState }
-                      }
-                      setMateriasFilter(newState)
-                      table.getColumn('expand')?.setFilterValue(newState)
+                      const newSubjectsState = !checked
+                        ? materiasFilter.subjects.filter(prevSubject => prevSubject !== subject)
+                        : [...materiasFilter.subjects, subject]
+                      table.getColumn('expand')?.setFilterValue({ ...materiasFilter, subjects: newSubjectsState })
                     }}
                   >
                     {subject.split(' (')[0]}
@@ -69,18 +64,12 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
                 <DropdownMenuCheckboxItem
                   onSelect={e => e.preventDefault()}
                   className='cursor-pointer font-medium text-foreground pr-4'
-                  checked={materiasFilter.subjects !== 'all' && allSubjects[anio].every(subject => materiasFilter.subjects.includes(subject))}
+                  checked={allSubjects[anio].every(subject => materiasFilter.subjects.includes(subject))}
                   onCheckedChange={(checked) => {
-                    let newState
-                    if (materiasFilter.subjects === 'all') newState = { ...materiasFilter, subjects: allSubjects[anio] }
-                    else {
-                      const newSubjectState = !checked
-                        ? materiasFilter.subjects.filter(prevSubject => !allSubjects[anio].includes(prevSubject))
-                        : Array.from(new Set([...materiasFilter.subjects, ...allSubjects[anio]]))
-                      newState = newSubjectState.length === 0 ? { ...materiasFilter, subjects: ('all' as const) } : { ...materiasFilter, subjects: newSubjectState }
-                    }
-                    setMateriasFilter(newState)
-                    table.getColumn('expand')?.setFilterValue(newState)
+                    const newSubjectState = !checked
+                      ? materiasFilter.subjects.filter(prevSubject => !allSubjects[anio].includes(prevSubject))
+                      : Array.from(new Set([...materiasFilter.subjects, ...allSubjects[anio]]))
+                    table.getColumn('expand')?.setFilterValue({ ...materiasFilter, subjects: newSubjectState })
                   }}
                 >
                   {`Todas las materias de ${anio}`}
@@ -89,6 +78,25 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
             </DropdownMenuPortal>
           </DropdownMenuSub>
         ))}
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem onSelect={e => e.preventDefault()}>
+          <div className='flex items-center space-x-6 p-1'>
+            <Label
+              htmlFor='estrict-inclusion'
+              className='cursor-pointer font-normal text-foreground'
+            >Inclusión estricta
+            </Label>
+            <Switch
+              id='estrict-inclusion'
+              className='w-8 h-4'
+              disabled={materiasFilter.subjects.length <= 1}
+              checked={materiasFilter.strictInclusion && materiasFilter.subjects.length > 1}
+              onCheckedChange={() => table.getColumn('expand')?.setFilterValue({ ...materiasFilter, strictInclusion: !materiasFilter.strictInclusion })}
+            />
+          </div>
+        </DropdownMenuItem>
 
       </DropdownMenuContent>
     </DropdownMenu>

@@ -22,12 +22,12 @@ function PromocionFilter ({ table } : PromocionFilterProps) {
 
       <DropdownMenuContent align='start' className='p-3'>
         <DropdownMenuRadioGroup
+          value={value}
           onValueChange={(value) => {
             setValue(value)
             table.getColumn('promocion')?.setFilterValue(value)
           }}
           className='flex flex-col'
-          value={value}
         >
           <DropdownMenuRadioItem
             value=''
