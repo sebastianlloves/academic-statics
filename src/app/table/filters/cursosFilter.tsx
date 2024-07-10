@@ -4,7 +4,7 @@ import { CURSOS } from '@/constants'
 import { CURSO, Student } from '@/types'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { Table } from '@tanstack/react-table'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
 interface CursoFilterProps {
   table: Table<Student>
@@ -13,8 +13,7 @@ interface CursoFilterProps {
 function CursoFilter ({ table }: CursoFilterProps) {
   const coursesByYear = useMemo(
     () => Object.fromEntries(Object.keys(CURSOS).map(anio => [`${anio}° año`, CURSOS[Number(anio) as keyof(typeof CURSOS)].map(({ nombre }) => nombre)])), [])
-  const [cursoFilter, setCursoFilter] = useState<CURSO[] | 'all'>('all')
-  const filterValue = table.getColumn('curso')?.getFilterValue()
+  const cursosFilter = (table.getColumn('curso')?.getFilterValue() || []) as CURSO[]
 
   return (
     <DropdownMenu>
@@ -36,19 +35,13 @@ function CursoFilter ({ table }: CursoFilterProps) {
                       <DropdownMenuCheckboxItem
                         key={curso}
                         className='cursor-pointer'
-                        checked={cursoFilter.includes(curso)}
+                        checked={cursosFilter.includes(curso)}
                         onSelect={(e) => e.preventDefault()}
                         onCheckedChange={(checked) => {
-                          let newState
-                          if (cursoFilter === 'all') newState = [curso]
-                          else {
-                            const newCursosArr = !checked
-                              ? cursoFilter.filter(prevCurso => prevCurso !== curso)
-                              : [...cursoFilter, curso]
-                            newState = newCursosArr.length === 0 ? ('all' as const) : newCursosArr
-                          }
-                          setCursoFilter(newState)
-                          table.getColumn('curso')?.setFilterValue(newState)
+                          const newCursosState = !checked
+                            ? cursosFilter.filter(prevCurso => prevCurso !== curso)
+                            : [...cursosFilter, curso]
+                          table.getColumn('curso')?.setFilterValue(newCursosState)
                         }}
                       >
                         {curso}
@@ -59,18 +52,12 @@ function CursoFilter ({ table }: CursoFilterProps) {
                   <DropdownMenuCheckboxItem
                     className='cursor-pointer font-medium text-foreground pr-4'
                     onSelect={(e) => e.preventDefault()}
-                    checked={coursesByYear[anio].every(course => cursoFilter.includes(course))}
+                    checked={coursesByYear[anio].every(course => cursosFilter.includes(course))}
                     onCheckedChange={(checked) => {
-                      let newState
-                      if (cursoFilter === 'all') newState = coursesByYear[anio]
-                      else {
-                        const newCursosArr = !checked
-                          ? cursoFilter.filter(curso => !coursesByYear[anio].includes(curso))
-                          : Array.from(new Set([...cursoFilter, ...coursesByYear[anio]]))
-                        newState = newCursosArr.length === 0 ? ('all' as const) : newCursosArr
-                      }
-                      setCursoFilter(newState)
-                      table.getColumn('curso')?.setFilterValue(newState)
+                      const newCursosState = !checked
+                        ? cursosFilter.filter(curso => !coursesByYear[anio].includes(curso))
+                        : Array.from(new Set([...cursosFilter, ...coursesByYear[anio]]))
+                      table.getColumn('curso')?.setFilterValue(newCursosState)
                     }}
                   >
                     {`Todos los ${anio.split(' año')[0]}`}

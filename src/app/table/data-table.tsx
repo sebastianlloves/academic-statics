@@ -41,8 +41,8 @@ export function DataTable ({ data, loading }: DataTableProps) {
   return (
     <>
       <FiltersPanel table={table} />
-      <ScrollArea className='h-[80vh] max-w-[80vw] rounded-md'>
-        <Table className='relative'>
+      <ScrollArea className='relative max-h-[80vh] w-[60vw] border p-4 rounded-lg'>
+        <Table className=''>
           <TableHeader className=''>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className='sticky top-0 bg-background border-b-0 outline outline-1 outline-primary/50 hover:bg-background' key={headerGroup.id}>
