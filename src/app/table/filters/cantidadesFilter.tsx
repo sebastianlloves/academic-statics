@@ -12,12 +12,12 @@ interface CantidadesFilterProps {
 function CantidadesFilter ({ table } : CantidadesFilterProps) {
   // const min = table.getColumn('troncales')?.getFacetedMinMaxValues()?.[0] ?? 0
   // const max = table.getColumn('troncales')?.getFacetedMinMaxValues()?.[1] ?? 0
-  const [min, max] = table.getColumn('troncales')?.getFacetedMinMaxValues() ?? [0, 1]
+  // const [min, max] = table.getColumn('troncales')?.getFacetedMinMaxValues() ?? [0, 1]
   const uniqueValuesTroncales = table.getColumn('troncales')?.getFacetedUniqueValues()
-  const array = uniqueValuesTroncales && Array.from(uniqueValuesTroncales, ([value, quantity]) => ({ value, quantity }))
+  const uniqueValuesGenerales = table.getColumn('generales')?.getFacetedUniqueValues()
 
-  console.log(array)
-  console.log(min, max)
+  console.log(uniqueValuesTroncales)
+  console.log(uniqueValuesGenerales)
 
   return (
     <DropdownMenu>

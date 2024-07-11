@@ -32,7 +32,16 @@ export function DataTable ({ data, loading }: DataTableProps) {
     getExpandedRowModel: getExpandedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
+    getFacetedUniqueValues: (table, columnId) => {
+      if (columnId === 'troncales') {
+        return () => {
+          const uniqueValueMap = new Map<string, number>()
+          uniqueValueMap.set('hola', 1)
+          return uniqueValueMap
+        }
+      }
+      return getFacetedUniqueValues()(table, columnId)
+    },
     initialState: {
       expanded: {},
       columnVisibility: { promocion: false, enProceso2020: false }
