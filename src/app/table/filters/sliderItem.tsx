@@ -5,13 +5,14 @@ import { Student } from '@/types'
 import { Column } from '@tanstack/react-table'
 
 interface SliderItemProps {
-  maxCant: number,
+  minMaxCant: number[],
   column?: Column<Student>
 }
 
-function SliderItem ({ maxCant, column } : SliderItemProps) {
-  const range = (column?.getFilterValue() as (number[] & {length: 2})) ?? [0, maxCant]
+function SliderItem ({ minMaxCant, column } : SliderItemProps) {
+  const range = (column?.getFilterValue() as (number[] & {length: 2})) ?? minMaxCant
   const { title } = column?.columnDef.meta ?? {}
+  console.log(range)
 
   return (
     <>
@@ -27,8 +28,12 @@ function SliderItem ({ maxCant, column } : SliderItemProps) {
                 <TooltipTrigger asChild>
                   <Slider
                     value={range}
-                    onValueChange={(value) => column?.setFilterValue(value)}
-                    max={maxCant}
+                    onValueChange={(value) => {
+                      const isMaxRange = value[0] === minMaxCant[0] && value[1] === minMaxCant[1]
+                      column?.setFilterValue(isMaxRange ? undefined : value)
+                    }}
+                    min={minMaxCant[0]}
+                    max={minMaxCant[1]}
                     step={1}
                     className='w-52'
                     color='bg-primary'

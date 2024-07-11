@@ -7,6 +7,7 @@ import { useMemo } from 'react'
 import { MATERIAS_POR_CURSO } from '@/constants'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
+import Item from './item'
 
 interface MateriasFilterProps {
   table: Table<Student>
@@ -29,6 +30,11 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
     return Object.fromEntries(entriesSubjectsObject)
   }, [])
 
+  const facets = table.getColumn('expand')?.getFacetedUniqueValues()
+  const facets1 = table.getColumn('expand')?.getFacetedRowModel()
+  // console.log(facets)
+  // console.log(facets1)
+
   return (
     <DropdownMenu>
 
@@ -44,22 +50,31 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent sideOffset={6}>
-                {allSubjects[anio].map((subject:string) => (
-                  <DropdownMenuCheckboxItem
-                    onSelect={e => e.preventDefault()}
-                    key={subject}
-                    className='cursor-pointer'
-                    checked={materiasFilter.subjects.includes(subject)}
-                    onCheckedChange={(checked) => {
-                      const newSubjectsState = !checked
-                        ? materiasFilter.subjects.filter(prevSubject => prevSubject !== subject)
-                        : [...materiasFilter.subjects, subject]
-                      table.getColumn('expand')?.setFilterValue({ ...materiasFilter, subjects: newSubjectsState })
-                    }}
-                  >
-                    {subject.split(' (')[0]}
-                  </DropdownMenuCheckboxItem>
-                ))}
+                {allSubjects[anio].map((subject:string) => {
+                  const filtered = table.getRowModel().rows.filter(row => {
+                    const troncales = row.original.materiasPendientes?.detalleTroncales || []
+                    const generales = row.original.materiasPendientes?.detalleGenerales || []
+                    const enProceso2020 = (table.getColumn('enProceso2020')?.getIsVisible() && row.original.materiasEnProceso2020?.detalle) || []
+                    return [...troncales, ...generales, ...enProceso2020].includes(subject)
+                  })
+                  return (
+                    <DropdownMenuCheckboxItem
+                      onSelect={e => e.preventDefault()}
+                      key={subject}
+                      className='cursor-pointer'
+                      checked={materiasFilter.subjects.includes(subject)}
+                      onCheckedChange={(checked) => {
+                        const newSubjectsState = !checked
+                          ? materiasFilter.subjects.filter(prevSubject => prevSubject !== subject)
+                          : [...materiasFilter.subjects, subject]
+                        table.getColumn('expand')?.setFilterValue({ ...materiasFilter, subjects: newSubjectsState })
+                      }}
+                    >
+                      <Item value={subject.split(' (')[0]} quantity={filtered.length} />
+                    </DropdownMenuCheckboxItem>
+                  )
+                }
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuCheckboxItem
                   onSelect={e => e.preventDefault()}

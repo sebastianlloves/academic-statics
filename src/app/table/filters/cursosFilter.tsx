@@ -5,6 +5,7 @@ import { CURSO, Student } from '@/types'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { Table } from '@tanstack/react-table'
 import { useMemo } from 'react'
+import Item from './item'
 
 interface CursoFilterProps {
   table: Table<Student>
@@ -17,6 +18,8 @@ function CursoFilter ({ table }: CursoFilterProps) {
         .map(({ nombre }) => nombre)]))
   , [])
   const cursosFilter = (table.getColumn('curso')?.getFilterValue() || []) as CURSO[]
+
+  const facets = table.getColumn('curso')?.getFacetedUniqueValues()
 
   return (
     <DropdownMenu>
@@ -34,6 +37,7 @@ function CursoFilter ({ table }: CursoFilterProps) {
               <DropdownMenuPortal>
                 <DropdownMenuSubContent sideOffset={6}>
                   {coursesByYear[anio].map(curso => {
+                    const cantidad = facets?.get(curso) || 0
                     return (
                       <DropdownMenuCheckboxItem
                         key={curso}
@@ -44,10 +48,10 @@ function CursoFilter ({ table }: CursoFilterProps) {
                           const newCursosState = !checked
                             ? cursosFilter.filter(prevCurso => prevCurso !== curso)
                             : [...cursosFilter, curso]
-                          table.getColumn('curso')?.setFilterValue(newCursosState)
+                          table.getColumn('curso')?.setFilterValue(newCursosState.length ? newCursosState : undefined)
                         }}
                       >
-                        {curso}
+                        <Item value={curso} quantity={cantidad} />
                       </DropdownMenuCheckboxItem>
                     )
                   })}

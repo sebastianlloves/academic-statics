@@ -36,6 +36,10 @@ export const columns: ColumnDef<Student>[] = [
     sortDescFirst: true,
     meta: {
       title: 'curso'
+    },
+    footer: (props) => {
+      console.log(props)
+      return props.column.id
     }
   },
   {
@@ -170,6 +174,12 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     id: 'expand',
+    accessorFn: (row) => {
+      const detalleTroncales = row.materiasPendientes?.detalleTroncales || []
+      const detalleGenerales = row.materiasPendientes?.detalleGenerales || []
+      const studentSubjects = [...detalleTroncales, ...detalleGenerales].filter(subject => subject !== 'No adeuda')
+      return studentSubjects
+    },
     header: ({ table }) => (
       <Button
         variant='ghost' size='sm' className='w-7 p-0' onClick={() => table.toggleAllRowsExpanded(!table.getIsAllRowsExpanded())}

@@ -4,30 +4,20 @@ import { CaretSortIcon } from '@radix-ui/react-icons'
 import SliderItem from './sliderItem'
 import { Table } from '@tanstack/react-table'
 import { Student } from '@/types'
-import { useMemo } from 'react'
 
 interface CantidadesFilterProps {
   table: Table<Student>
 }
 
 function CantidadesFilter ({ table } : CantidadesFilterProps) {
-  const data = table.getCoreRowModel().rows
-  const [maxCantTroncales, maxCantGenerales, maxCantEnProceso2020] = useMemo(() => {
-    const [maxCantTroncales, maxCantGenerales, maxCantEnProceso2020] = data.length > 0
-      ? data.reduce((prevValue, newValue) => {
-        const [accCantTroncales, accCantGenerales, accCantEnProceso2020] = prevValue
-        const newCantTroncales = newValue?.original?.materiasPendientes?.cantTroncales ?? 0
-        const newCantGenerales = newValue?.original?.materiasPendientes?.cantGenerales ?? 0
-        const newCantEnProceso2020 = newValue?.original?.materiasEnProceso2020?.cantidad ?? 0
-        return [
-          newCantTroncales > accCantTroncales ? newCantTroncales : accCantTroncales,
-          newCantGenerales > accCantGenerales ? newCantGenerales : accCantGenerales,
-          newCantEnProceso2020 > accCantEnProceso2020 ? newCantEnProceso2020 : accCantEnProceso2020
-        ]
-      }, [0, 0, 0])
-      : [0, 0, 0]
-    return [maxCantTroncales, maxCantGenerales, maxCantEnProceso2020]
-  }, [data])
+  // const min = table.getColumn('troncales')?.getFacetedMinMaxValues()?.[0] ?? 0
+  // const max = table.getColumn('troncales')?.getFacetedMinMaxValues()?.[1] ?? 0
+  const [min, max] = table.getColumn('troncales')?.getFacetedMinMaxValues() ?? [0, 1]
+  const uniqueValuesTroncales = table.getColumn('troncales')?.getFacetedUniqueValues()
+  const array = uniqueValuesTroncales && Array.from(uniqueValuesTroncales, ([value, quantity]) => ({ value, quantity }))
+
+  console.log(array)
+  console.log(min, max)
 
   return (
     <DropdownMenu>
@@ -38,23 +28,23 @@ function CantidadesFilter ({ table } : CantidadesFilterProps) {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align='start' className='p-1'>
-        {table.getColumn('troncales')?.getIsVisible() && (
+        {/* {table.getColumn('troncales')?.getIsVisible() && (
           <SliderItem
-            maxCant={maxCantTroncales}
+            minMaxCant={[min, max]}
             column={table.getColumn('troncales')}
           />
         )}
         {table.getColumn('generales')?.getIsVisible() && (
           <SliderItem
-            maxCant={maxCantGenerales}
+            minMaxCant={minMaxGenerales}
             column={table.getColumn('generales')}
           />
         )}
         {table.getColumn('enProceso2020')?.getIsVisible() &&
           <SliderItem
-            maxCant={maxCantEnProceso2020}
+            minMaxCant={minMaxEnProceso2020}
             column={table.getColumn('enProceso2020')}
-          />}
+          />} */}
       </DropdownMenuContent>
     </DropdownMenu>
   )

@@ -1,4 +1,4 @@
-import { flexRender, getCoreRowModel, useReactTable, getFilteredRowModel, getSortedRowModel, getExpandedRowModel } from '@tanstack/react-table'
+import { flexRender, getCoreRowModel, useReactTable, getFilteredRowModel, getSortedRowModel, getExpandedRowModel, getFacetedMinMaxValues, getFacetedRowModel, getFacetedUniqueValues } from '@tanstack/react-table'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { columns } from './columns'
 import { Student } from '@/types'
@@ -30,6 +30,9 @@ export function DataTable ({ data, loading }: DataTableProps) {
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedMinMaxValues: getFacetedMinMaxValues(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
     initialState: {
       expanded: {},
       columnVisibility: { promocion: false, enProceso2020: false }
@@ -38,7 +41,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
 
   return (
     <div className='flex gap-x-4 border p-8 rounded-lg'>
-      <ScrollArea className='relative max-h-[80vh] w-[70vw] rounded-lg shadow-sm'>
+      <ScrollArea className='relative h-[80vh] min-h-[80vh] w-[70vw] rounded-lg shadow-sm'>
         <Table className=''>
           <TableHeader className=''>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -78,7 +81,8 @@ export function DataTable ({ data, loading }: DataTableProps) {
                 )}
           </TableBody>
         </Table>
-        <div className='sticky bottom-0 bg-muted py-2'>{`Mostrando ${table.getRowModel().rows.length} de ${table.getCoreRowModel().rows.length}`}</div>
+        {/* <div className='sticky bottom-0 bg-muted py-2'>{`Mostrando ${table.getRowModel().rows.length} de ${table.getCoreRowModel().rows.length}`}</div> */}
+        <div className='sticky bottom-0 bg-muted py-2'>{}</div>
       </ScrollArea>
       <FiltersPanel table={table} />
     </div>
