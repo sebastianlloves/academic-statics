@@ -37,12 +37,12 @@ export function DataTable ({ data, loading }: DataTableProps) {
   })
 
   return (
-    <div className='flex gap-x-4 border'>
-      <ScrollArea className='relative max-h-[80vh] w-[70vw] border p-1 rounded-lg'>
+    <div className='flex gap-x-4 border p-8 rounded-lg'>
+      <ScrollArea className='relative max-h-[80vh] w-[70vw] rounded-lg shadow-sm'>
         <Table className=''>
           <TableHeader className=''>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className='sticky top-0 bg-background border-b-0 outline outline-1 outline-primary/50 hover:bg-background' key={headerGroup.id}>
+              <TableRow className='sticky top-0 bg-background border-b-0 outline outline-1 outline-primary/50 hover:bg-background shadow-sm shadow-primary/50 p-6' key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
                   <TableHead align='left' className='py-2 text-foreground' style={{ width: header.column.getSize(), maxWidth: header.column.getSize() }} key={header.id}>
                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
@@ -78,6 +78,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
                 )}
           </TableBody>
         </Table>
+        <div className='sticky bottom-0 bg-muted py-2'>{`Mostrando ${table.getRowModel().rows.length} de ${table.getCoreRowModel().rows.length}`}</div>
       </ScrollArea>
       <FiltersPanel table={table} />
     </div>
