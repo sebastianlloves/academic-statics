@@ -105,8 +105,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
                 )}
           </TableBody>
         </Table>
-        {/* <div className='sticky bottom-0 bg-muted py-2'>{`Mostrando ${table.getRowModel().rows.length} de ${table.getCoreRowModel().rows.length}`}</div> */}
-        <div className='sticky bottom-0 bg-muted py-2'>{}</div>
+        <div className='sticky bottom-0 bg-muted py-2'>{`Mostrando ${table.getRowModel().rows.length} de ${table.getCoreRowModel().rows.length}`}</div>
       </ScrollArea>
       <FiltersPanel table={table} />
     </div>

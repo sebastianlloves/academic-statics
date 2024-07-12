@@ -21,6 +21,7 @@ export interface MateriasFilterState {
 
 function MateriasFilter ({ table } : MateriasFilterProps) {
   const materiasFilter = (table.getColumn('expand')?.getFilterValue() || { subjects: [] }) as MateriasFilterState
+  const facets = table.getColumn('expand')?.getFacetedUniqueValues()
 
   const allSubjects : {[key: string]: string[]} = useMemo(() => {
     const entriesSubjectsObject = Object.keys(MATERIAS_POR_CURSO).map(anio => {
@@ -29,10 +30,6 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
     })
     return Object.fromEntries(entriesSubjectsObject)
   }, [])
-
-  const facets = table.getColumn('expand')?.getFacetedUniqueValues()
-  // console.log(facets)
-  // console.log(facets1)
 
   return (
     <DropdownMenu>
@@ -50,7 +47,14 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
             <DropdownMenuPortal>
               <DropdownMenuSubContent sideOffset={6}>
                 {allSubjects[anio].map((subject:string) => {
-                  const quantity = facets?.get(subject) ?? 0
+                  const quantity = materiasFilter.strictInclusion
+                    ? table.getRowModel().rows.filter(row => {
+                      const troncales = row.original.detalleTroncales || []
+                      const generales = row.original.detalleGenerales || []
+                      const enProceso2020 = (table.getColumn('enProceso2020')?.getIsVisible() && row.original.materiasEnProceso2020?.detalle) || []
+                      return [...troncales, ...generales, ...enProceso2020].includes(subject)
+                    }).length
+                    : facets?.get(subject) ?? 0
                   return (
                     <DropdownMenuCheckboxItem
                       onSelect={e => e.preventDefault()}
@@ -101,7 +105,7 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
               id='estrict-inclusion'
               className='w-8 h-4'
               disabled={materiasFilter.subjects.length <= 1}
-              checked={materiasFilter.strictInclusion && materiasFilter.subjects.length > 1}
+              checked={materiasFilter.strictInclusion}
               onCheckedChange={() => table.getColumn('expand')?.setFilterValue({ ...materiasFilter, strictInclusion: !materiasFilter.strictInclusion })}
             />
           </div>
