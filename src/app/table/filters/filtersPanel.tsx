@@ -18,7 +18,7 @@ function FiltersPanel ({ table } : FiltersPanelProps) {
   const isEnProceso2020Visible = table.getColumn('enProceso2020')?.getIsVisible()
 
   return (
-    <div className='flex flex-col justify-start items-start gap-y-4  border min-w-64'>
+    <div className='flex flex-col justify-start items-start gap-y-4   min-w-64'>
       <ColumnsVisibility className='ml-auto' table={table} />
       <CursoFilter table={table} />
       {(isTroncalesVisible || isGeneralesVisible || isEnProceso2020Visible) && (

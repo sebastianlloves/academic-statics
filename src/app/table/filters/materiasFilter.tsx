@@ -31,7 +31,6 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
   }, [])
 
   const facets = table.getColumn('expand')?.getFacetedUniqueValues()
-  const facets1 = table.getColumn('expand')?.getFacetedRowModel()
   // console.log(facets)
   // console.log(facets1)
 
@@ -51,12 +50,7 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
             <DropdownMenuPortal>
               <DropdownMenuSubContent sideOffset={6}>
                 {allSubjects[anio].map((subject:string) => {
-                  const filtered = table.getRowModel().rows.filter(row => {
-                    const troncales = row.original.materiasPendientes?.detalleTroncales || []
-                    const generales = row.original.materiasPendientes?.detalleGenerales || []
-                    const enProceso2020 = (table.getColumn('enProceso2020')?.getIsVisible() && row.original.materiasEnProceso2020?.detalle) || []
-                    return [...troncales, ...generales, ...enProceso2020].includes(subject)
-                  })
+                  const quantity = facets?.get(subject) ?? 0
                   return (
                     <DropdownMenuCheckboxItem
                       onSelect={e => e.preventDefault()}
@@ -70,7 +64,7 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
                         table.getColumn('expand')?.setFilterValue({ ...materiasFilter, subjects: newSubjectsState })
                       }}
                     >
-                      <Item value={subject.split(' (')[0]} quantity={filtered.length} />
+                      <Item value={subject.split(' (')[0]} quantity={quantity} />
                     </DropdownMenuCheckboxItem>
                   )
                 }

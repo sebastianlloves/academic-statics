@@ -33,11 +33,23 @@ export function DataTable ({ data, loading }: DataTableProps) {
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
     getFacetedUniqueValues: (table, columnId) => {
-      if (columnId === 'troncales') {
+      if (columnId === 'expand') {
         return () => {
-          const uniqueValueMap = new Map<string, number>()
-          uniqueValueMap.set('hola', 1)
-          return uniqueValueMap
+          const facetedRowModel = table.getColumn('expand')?.getFacetedRowModel()
+          if (!facetedRowModel) return new Map()
+          const facetedUniqueValues = new Map<string, number>()
+          const troncalesValues = facetedRowModel.flatRows.flatMap(row => row.original.detalleTroncales).filter(string => string !== 'No adeuda')
+          const generalesValues = facetedRowModel.flatRows.flatMap(row => row.original.detalleGenerales).filter(string => string !== 'No adeuda')
+          const values = [...troncalesValues, ...generalesValues]
+          values.forEach(subject => {
+            if (facetedUniqueValues.has(subject)) {
+              const quantity = facetedUniqueValues.get(subject) ?? 0
+              facetedUniqueValues.set(subject, quantity + 1)
+            } else {
+              facetedUniqueValues.set(subject, 1)
+            }
+          })
+          return facetedUniqueValues
         }
       }
       return getFacetedUniqueValues()(table, columnId)
@@ -47,6 +59,9 @@ export function DataTable ({ data, loading }: DataTableProps) {
       columnVisibility: { promocion: false, enProceso2020: false }
     }
   })
+  console.log(table.getColumn('troncales')?.getFacetedUniqueValues())
+  console.log(table.getColumn('expand')?.getFacetedRowModel())
+  console.log(table.getColumn('expand')?.getFacetedUniqueValues())
 
   return (
     <div className='flex gap-x-4 border p-8 rounded-lg'>

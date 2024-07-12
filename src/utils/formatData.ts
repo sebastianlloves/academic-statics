@@ -38,7 +38,7 @@ export function formatData (text: string): Student[] {
         repitencia3Value,
         movilidadValue,
         anioCursado2020Value,
-        materiasPendientesCantTotalValue,
+        _materiasPendientesCantTotalValue,
         materiasPendientesCantTroncalesValue,
         detalleTroncalesValue,
         materiasPendientesCantGeneralesValue,
@@ -82,13 +82,10 @@ export function formatData (text: string): Student[] {
           repitencia3: defineRepitencia(repitencia3Value),
           movilidad: isValidMovilidadValue(movilidadValue) ? MOVILIDAD_VALUES[movilidadValue] : undefined,
           anioCursado2020: parseInt(anioCursado2020Value.split('')[0]) || undefined,
-          materiasPendientes: {
-            cantTotal: parseInt(materiasPendientesCantTotalValue) >= 0 ? parseInt(materiasPendientesCantTotalValue) : undefined,
-            cantTroncales: parseInt(materiasPendientesCantTroncalesValue) >= 0 ? parseInt(materiasPendientesCantTroncalesValue) : undefined,
-            detalleTroncales: detalleTroncalesValue ? formatDetalleMateria(detalleTroncalesValue) : [],
-            cantGenerales: parseInt(materiasPendientesCantGeneralesValue) >= 0 ? parseInt(materiasPendientesCantGeneralesValue) : undefined,
-            detalleGenerales: detalleGeneralesValue ? formatDetalleMateria(detalleGeneralesValue) : []
-          },
+          cantTroncales: parseInt(materiasPendientesCantTroncalesValue) >= 0 ? parseInt(materiasPendientesCantTroncalesValue) : undefined,
+          detalleTroncales: detalleTroncalesValue ? formatDetalleMateria(detalleTroncalesValue) : [],
+          cantGenerales: parseInt(materiasPendientesCantGeneralesValue) >= 0 ? parseInt(materiasPendientesCantGeneralesValue) : undefined,
+          detalleGenerales: detalleGeneralesValue ? formatDetalleMateria(detalleGeneralesValue) : [],
           materiasEnProceso2020: {
             cantidad: parseInt(materiasEnProceso2020CantidadValue) >= 0 ? parseInt(materiasEnProceso2020CantidadValue) : undefined,
             detalle: detalleEnProceso2020Value ? formatDetalleMateria(detalleEnProceso2020Value) : []

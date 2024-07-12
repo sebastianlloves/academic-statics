@@ -85,7 +85,7 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     id: 'troncales',
-    accessorKey: 'materiasPendientes.cantTroncales',
+    accessorFn: (row) => row.cantTroncales,
     header: ({ column }) => (
       <div className='flex gap-x-2 items-center'>
         <SortingHeader title='Troncales' column={column} className='' />
@@ -93,8 +93,8 @@ export const columns: ColumnDef<Student>[] = [
     ),
     cell: ({ table, row }) => (
       <SubRow
-        triggerContent={row.original.materiasPendientes.cantTroncales ?? 0}
-        subjects={row.original.materiasPendientes.detalleTroncales ?? []}
+        triggerContent={row.original.cantTroncales ?? 0}
+        subjects={row.original.detalleTroncales ?? []}
         open={table.getIsAllRowsExpanded() || row.getIsExpanded()}
       />
     ),
@@ -107,14 +107,14 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     id: 'generales',
-    accessorKey: 'materiasPendientes.cantGenerales',
+    accessorFn: (row) => row.cantGenerales,
     header: ({ column }) => (
       <SortingHeader title='Generales' column={column} />
     ),
     cell: ({ table, row }) => (
       <SubRow
-        triggerContent={row.original.materiasPendientes.cantGenerales ?? 0}
-        subjects={row.original.materiasPendientes.detalleGenerales ?? []}
+        triggerContent={row.original.cantGenerales ?? 0}
+        subjects={row.original.detalleGenerales ?? []}
         open={table.getIsAllRowsExpanded() || row.getIsExpanded()}
       />
     ),
@@ -149,7 +149,7 @@ export const columns: ColumnDef<Student>[] = [
   {
     id: 'promocion',
     accessorFn: (row) => {
-      const { cantTroncales, cantGenerales } = row.materiasPendientes
+      const { cantTroncales, cantGenerales } = row
       if (cantTroncales === undefined || cantGenerales === undefined) return 'faltan datos'
       return cantTroncales <= 2 && cantTroncales + cantGenerales <= 4 ? 'promociona' : 'permanece'
     },
@@ -175,8 +175,8 @@ export const columns: ColumnDef<Student>[] = [
   {
     id: 'expand',
     accessorFn: (row) => {
-      const detalleTroncales = row.materiasPendientes?.detalleTroncales || []
-      const detalleGenerales = row.materiasPendientes?.detalleGenerales || []
+      const detalleTroncales = row.detalleTroncales || []
+      const detalleGenerales = row.detalleGenerales || []
       const studentSubjects = [...detalleTroncales, ...detalleGenerales].filter(subject => subject !== 'No adeuda')
       return studentSubjects
     },
@@ -203,8 +203,8 @@ export const columns: ColumnDef<Student>[] = [
     filterFn: (row: Row<Student>, _columnID, filterValue: MateriasFilterState) => {
       const { subjects, includeEnProceso2020, strictInclusion } = filterValue
       if (subjects.length === 0) return true
-      const detalleTroncales = row.original.materiasPendientes.detalleTroncales || []
-      const detalleGenerales = row.original.materiasPendientes.detalleGenerales || []
+      const detalleTroncales = row.original.detalleTroncales || []
+      const detalleGenerales = row.original.detalleGenerales || []
       const detalleEnProceso2020 = (includeEnProceso2020 && row.original.materiasEnProceso2020.detalle) || []
       const studentSubjects = [...detalleTroncales, ...detalleGenerales, ...detalleEnProceso2020]
       return strictInclusion ? subjects.every(subject => studentSubjects.includes(subject)) : subjects.some(subject => studentSubjects.includes(subject))
@@ -218,7 +218,7 @@ export const columns: ColumnDef<Student>[] = [
 ]
 
 /* function pendientesFilterFn (row: Row<Student>, _columnID: string, filterValue: materiasFilterValueState) {
-  const { cantTroncales, cantGenerales } = row.original.materiasPendientes
+  const { cantTroncales, cantGenerales } = row.original
   if (cantTroncales === undefined || cantGenerales === undefined) return false
   const isInTroncalesRange = cantTroncales >= filterValue.troncalesRange[0] && cantTroncales <= filterValue.troncalesRange[1]
   const isInGeneralesRange = cantGenerales >= filterValue.generalesRange[0] && cantGenerales <= filterValue.generalesRange[1]

@@ -3,24 +3,29 @@ import { Slider } from '@/components/ui/slider'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Student } from '@/types'
 import { Column } from '@tanstack/react-table'
+import Item from './item'
 
 interface SliderItemProps {
-  minMaxCant: number[],
   column?: Column<Student>
 }
 
-function SliderItem ({ minMaxCant, column } : SliderItemProps) {
-  const range = (column?.getFilterValue() as (number[] & {length: 2})) ?? minMaxCant
+function SliderItem ({ column } : SliderItemProps) {
+  const minMax = column?.getFacetedMinMaxValues() ?? [0, 0]
+  const min = (Array.isArray(minMax[0]) ? minMax[0][0] : minMax[0]) ?? 0
+  const max = minMax[1] ?? 0
+  const range = (column?.getFilterValue() as (number[] & {length: 2})) ?? [min, max]
   const { title } = column?.columnDef.meta ?? {}
-  console.log(range)
-
+  console.log(min, max)
+  const uniqueValues = column?.getFacetedUniqueValues()
+  let cantidad = 0
+  uniqueValues?.forEach((value, key) => {
+    if (key >= range[0] && key <= range[1]) cantidad = cantidad + value
+  })
   return (
     <>
       <DropdownMenuItem asChild onSelect={(e) => e.preventDefault()}>
         <div className='grid py-2'>
-          <h5 className='capitalize text-center text-accent-foreground font-normal tracking-tight py-0'>
-            {title || column?.id}
-          </h5>
+          <Item value={title || ''} quantity={cantidad} />
           <div className='flex justify-between space-x-2'>
             <span className='w-8 font-light text-sm text-center'>{range[0]}</span>
             <TooltipProvider>
@@ -29,11 +34,11 @@ function SliderItem ({ minMaxCant, column } : SliderItemProps) {
                   <Slider
                     value={range}
                     onValueChange={(value) => {
-                      const isMaxRange = value[0] === minMaxCant[0] && value[1] === minMaxCant[1]
+                      const isMaxRange = value[0] === min && value[1] === max
                       column?.setFilterValue(isMaxRange ? undefined : value)
                     }}
-                    min={minMaxCant[0]}
-                    max={minMaxCant[1]}
+                    min={min}
+                    max={max}
                     step={1}
                     className='w-52'
                     color='bg-primary'

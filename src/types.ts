@@ -21,14 +21,6 @@ type MateriasEnProceso2020 = {
   detalle?: string[];
 };
 
-type MateriasPendientes = {
-  cantTotal?: number;
-  cantTroncales?: number;
-  detalleTroncales?: string[];
-  cantGenerales?: number;
-  detalleGenerales?: string[];
-};
-
 export type Student = {
   anio?: (typeof ANIOS)[number];
   division?: (typeof DIVISIONES)[number];
@@ -51,6 +43,9 @@ export type Student = {
   repitencia3?: Student['anio'] | false;
   movilidad?: typeof MOVILIDAD_VALUES[keyof typeof MOVILIDAD_VALUES];
   anioCursado2020?: number;
-  materiasPendientes: MateriasPendientes;
+  cantTroncales?: number;
+  detalleTroncales?: string[];
+  cantGenerales?: number;
+  detalleGenerales?: string[];
   materiasEnProceso2020: MateriasEnProceso2020;
 };
