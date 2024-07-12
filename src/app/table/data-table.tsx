@@ -38,9 +38,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
           const facetedRowModel = table.getColumn('expand')?.getFacetedRowModel()
           if (!facetedRowModel) return new Map()
           const facetedUniqueValues = new Map<string, number>()
-          const troncalesValues = facetedRowModel.flatRows.flatMap(row => row.original.detalleTroncales).filter(string => string !== 'No adeuda')
-          const generalesValues = facetedRowModel.flatRows.flatMap(row => row.original.detalleGenerales).filter(string => string !== 'No adeuda')
-          const values = [...troncalesValues, ...generalesValues]
+          const values = facetedRowModel.flatRows.flatMap(row => row.getValue<string[]>(columnId))
           values.forEach(subject => {
             if (facetedUniqueValues.has(subject)) {
               const quantity = facetedUniqueValues.get(subject) ?? 0
