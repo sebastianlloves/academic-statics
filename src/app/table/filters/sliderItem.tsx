@@ -15,12 +15,12 @@ function SliderItem ({ column } : SliderItemProps) {
   const max = minMax[1] ?? 0
   const range = (column?.getFilterValue() as (number[] & {length: 2})) ?? [min, max]
   const { title } = column?.columnDef.meta ?? {}
-  console.log(min, max)
   const uniqueValues = column?.getFacetedUniqueValues()
   let cantidad = 0
   uniqueValues?.forEach((value, key) => {
     if (key >= range[0] && key <= range[1]) cantidad = cantidad + value
   })
+
   return (
     <>
       <DropdownMenuItem asChild onSelect={(e) => e.preventDefault()}>
@@ -32,6 +32,7 @@ function SliderItem ({ column } : SliderItemProps) {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Slider
+                    defaultValue={range}
                     value={range}
                     onValueChange={(value) => {
                       const isMaxRange = value[0] === min && value[1] === max

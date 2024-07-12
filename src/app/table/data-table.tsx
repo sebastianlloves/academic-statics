@@ -35,7 +35,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
     getFacetedUniqueValues: (table, columnId) => {
       if (columnId === 'expand') {
         return () => {
-          const facetedRowModel = table.getColumn('expand')?.getFacetedRowModel()
+          const facetedRowModel = table.getColumn(columnId)?.getFacetedRowModel()
           if (!facetedRowModel) return new Map()
           const facetedUniqueValues = new Map<string, number>()
           const values = facetedRowModel.flatRows.flatMap(row => row.getValue<string[]>(columnId))
@@ -57,13 +57,10 @@ export function DataTable ({ data, loading }: DataTableProps) {
       columnVisibility: { promocion: false, enProceso2020: false }
     }
   })
-  console.log(table.getColumn('troncales')?.getFacetedUniqueValues())
-  console.log(table.getColumn('expand')?.getFacetedRowModel())
-  console.log(table.getColumn('expand')?.getFacetedUniqueValues())
 
   return (
     <div className='flex gap-x-4 border p-8 rounded-lg'>
-      <ScrollArea className='relative h-[80vh] min-h-[80vh] w-[70vw] rounded-lg shadow-sm'>
+      <ScrollArea className='relative border p-2 h-[80vh] min-h-[80vh] w-[70vw] rounded-lg shadow-sm'>
         <Table className=''>
           <TableHeader className=''>
             {table.getHeaderGroups().map((headerGroup) => (

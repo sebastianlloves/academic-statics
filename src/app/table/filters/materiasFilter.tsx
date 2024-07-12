@@ -22,7 +22,6 @@ export interface MateriasFilterState {
 function MateriasFilter ({ table } : MateriasFilterProps) {
   const materiasFilter = (table.getColumn('expand')?.getFilterValue() || { subjects: [] }) as MateriasFilterState
   const facets = table.getColumn('expand')?.getFacetedUniqueValues()
-  console.log(facets)
 
   const allSubjects : {[key: string]: string[]} = useMemo(() => {
     const entriesSubjectsObject = Object.keys(MATERIAS_POR_CURSO).map(anio => {

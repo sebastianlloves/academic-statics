@@ -19,11 +19,11 @@ function CantidadesFilter ({ table } : CantidadesFilterProps) {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align='start' className='p-1'>
-        {/* {table.getColumn('troncales')?.getIsVisible() && (
+        {table.getColumn('troncales')?.getIsVisible() && (
           <SliderItem
             column={table.getColumn('troncales')}
           />
-        )} */}
+        )}
         {table.getColumn('generales')?.getIsVisible() && (
           <SliderItem
             column={table.getColumn('generales')}

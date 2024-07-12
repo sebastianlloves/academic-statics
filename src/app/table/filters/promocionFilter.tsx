@@ -3,14 +3,16 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenu
 import { Student } from '@/types'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { Table } from '@tanstack/react-table'
-import { useState } from 'react'
+import Item from './item'
 
 interface PromocionFilterProps {
   table: Table<Student>
 }
 
 function PromocionFilter ({ table } : PromocionFilterProps) {
-  const [value, setValue] = useState('')
+  const promocionFilter = (table.getColumn('promocion')?.getFilterValue()) as string | undefined
+  const facets = table.getColumn('promocion')?.getFacetedUniqueValues()
+  console.log(facets)
 
   return (
     <DropdownMenu>
@@ -22,33 +24,23 @@ function PromocionFilter ({ table } : PromocionFilterProps) {
 
       <DropdownMenuContent align='start' className='p-3'>
         <DropdownMenuRadioGroup
-          value={value}
-          onValueChange={(value) => {
-            setValue(value)
-            table.getColumn('promocion')?.setFilterValue(value)
-          }}
+          value={promocionFilter}
+          onValueChange={(value) => table.getColumn('promocion')?.setFilterValue(value === promocionFilter ? undefined : value)}
           className='flex flex-col'
         >
-          <DropdownMenuRadioItem
-            value=''
-            onSelect={(e) => e.preventDefault()}
-            className='cursor-pointer'
-          >
-            Todos
-          </DropdownMenuRadioItem>
           <DropdownMenuRadioItem
             value='permanece'
             onSelect={(e) => e.preventDefault()}
             className='cursor-pointer'
           >
-            Sólo estudiantes que permanecen
+            <Item value='Sólo estudiantes que permanecen' quantity={facets?.get('permanece') ?? 0} />
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem
             value='promociona'
             onSelect={(e) => e.preventDefault()}
             className='cursor-pointer'
           >
-            Sólo estudiantes que promocionan
+            <Item value='Sólo estudiantes que promocionan' quantity={facets?.get('promociona') ?? 0} />
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
