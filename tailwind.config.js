@@ -39,6 +39,9 @@ module.exports = {
           DEFAULT: 'hsl(var(--success))',
           foreground: 'hsl(var(--success-foreground))'
         },
+        table: {
+          DEFAULT: 'hsl(var(--table))'
+        },
         muted: {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))'

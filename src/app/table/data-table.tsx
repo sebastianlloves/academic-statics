@@ -14,7 +14,16 @@ interface DataTableProps {
 
 export function DataTable ({ data, loading }: DataTableProps) {
   const columnsTable = useMemo(() => loading || data === false
-    ? columns.map(column => { return { ...column, cell: () => <Skeleton className='h-6 rounded-md' /> } })
+    ? columns.map(column => {
+      return {
+        ...column,
+        cell: () => (
+          <div className='h-10 flex items-center justify-start'>
+            <Skeleton className='h-2 rounded-full w-3/4' />
+          </div>
+        )
+      }
+    })
     : columns,
   [loading, data])
 
@@ -59,7 +68,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
   })
 
   return (
-    <div className='flex gap-x-4 border p-8 rounded-lg'>
+    <div className='flex gap-x-4 p-8 rounded-lg'>
       <ScrollArea className='relative border p-2 h-[80vh] min-h-[80vh] w-[70vw] rounded-lg shadow-sm'>
         <Table className=''>
           <TableHeader className=''>

@@ -6,7 +6,7 @@ function StudentsTable () {
   // console.log(data)
 
   return (
-    <div className='grid gap-y-4 justify-center'>
+    <div className='flex w-full'>
       <DataTable data={data} loading={loading} />
     </div>
   )
