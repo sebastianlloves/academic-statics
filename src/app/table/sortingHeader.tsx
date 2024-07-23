@@ -18,9 +18,11 @@ function SortingHeader ({ title, column, className } : SortingHeaderProps) {
       onClick={() => column.toggleSorting(undefined, true)}
     >
       {title}
-      {!column.getIsSorted()
-        ? <span className='w-4 h-4 ml-2' />
-        : <div className='ml-2 pt-0.5 w-4'><ArrowUp className={`w-3 h-4 opacity-50 ${column.getIsSorted() === 'asc' ? '' : 'rotate-180'}`} /></div>}
+      <div className={`mx-2 w-4 h-4 flex justify-center items-center ${column.columnDef.meta?.align === 'right' && 'order-first'}`}>
+        {column.getIsSorted() && (
+          <ArrowUp className={`w-3 h-4 opacity-50 ${column.getIsSorted() === 'asc' ? '' : 'rotate-180'}`} />
+        )}
+      </div>
     </Button>
   )
 }

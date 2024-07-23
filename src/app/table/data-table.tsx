@@ -1,10 +1,10 @@
-import { flexRender, getCoreRowModel, useReactTable, getFilteredRowModel, getSortedRowModel, getExpandedRowModel, getFacetedMinMaxValues, getFacetedRowModel, getFacetedUniqueValues } from '@tanstack/react-table'
+import { flexRender, getCoreRowModel, useReactTable, getFilteredRowModel, getSortedRowModel, getExpandedRowModel, getFacetedMinMaxValues, getFacetedRowModel, getFacetedUniqueValues, Column } from '@tanstack/react-table'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { columns } from './columns'
 import { Student } from '@/types'
 import { useMemo } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import FiltersPanel from './filters/filtersPanel'
 
 interface DataTableProps {
@@ -17,9 +17,9 @@ export function DataTable ({ data, loading }: DataTableProps) {
     ? columns.map(column => {
       return {
         ...column,
-        cell: () => (
-          <div className='h-10 flex items-center justify-start'>
-            <Skeleton className='h-2 rounded-full w-3/4' />
+        cell: ({ column } : {column: Column<Student>}) => (
+          <div className={`h-10 flex items-center ${column.columnDef.meta?.align === 'right' ? 'justify-end' : 'justify-start'}`}>
+            <Skeleton className='h-2 rounded-full w-full' />
           </div>
         )
       }
@@ -63,54 +63,73 @@ export function DataTable ({ data, loading }: DataTableProps) {
     },
     initialState: {
       expanded: {},
-      columnVisibility: { promocion: false, enProceso2020: false }
+      columnVisibility: { promocion: false, enProceso2020: false },
+      columnPinning: { left: ['expand', 'curso', 'estudiante'] }
     }
   })
 
   return (
-    <div className='flex gap-x-4 p-8 rounded-lg'>
-      <ScrollArea className='relative border p-2 h-[80vh] min-h-[80vh] w-[70vw] rounded-lg shadow-sm'>
-        <Table className=''>
-          <TableHeader className=''>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className='sticky top-0 bg-background border-b-0 outline outline-1 outline-primary/50 hover:bg-background shadow-sm shadow-primary/50 p-6' key={headerGroup.id}>
-                {headerGroup.headers.map(header => (
-                  <TableHead align='left' className='py-2 text-foreground' style={{ width: header.column.getSize(), maxWidth: header.column.getSize() }} key={header.id}>
-                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>)
-                )}
-              </TableRow>
-            ))}
-          </TableHeader>
-
-          <TableBody className=''>
-            {table.getRowModel().rows?.length
-              ? (table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      align='left'
-                      style={{ width: cell.column.getSize(), maxWidth: cell.column.getSize() }}
-                      className='align-top'
+    <div className='flex gap-x-4 p-8 rounded-lg bg-table'>
+      <div>
+        <ScrollArea className='border h-[80vh] min-h-[80vh] w-[70vw] rounded-lg shadow-sm bg-background'>
+          <Table className='grid w-max min-w-full bg-background'>
+            <TableHeader className='sticky top-0 w-full border-primary/100 border-b shadow-sm shadow-primary/40 z-20'>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow className='bg-background hover:bg-background flex items-center gap-x-8 px-3 py-1' key={headerGroup.id}>
+                  {headerGroup.headers.map(header => (
+                    <TableHead
+                      key={header.id}
+                      align={header.column.columnDef.meta?.align || 'left'}
+                      className='text-foreground px-0'
+                      style={{
+                        width: `${header.column.getSize()}px`,
+                        position: header.column.getIsPinned() ? 'sticky' : undefined,
+                        left: header.column.getIsPinned() ? `${header.column.getStart('left')}px` : undefined,
+                        zIndex: header.column.getIsPinned() ? 10 : undefined
+                      }}
                     >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
+                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                    </TableHead>
                   ))}
                 </TableRow>
-                ))
-                )
-              : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className='text-center text-muted-foreground italic py-6'>
-                    No hay resultados.
-                  </TableCell>
-                </TableRow>
-                )}
-          </TableBody>
-        </Table>
-        <div className='sticky bottom-0 bg-muted py-2'>{`Mostrando ${table.getRowModel().rows.length} de ${table.getCoreRowModel().rows.length}`}</div>
-      </ScrollArea>
+              ))}
+            </TableHeader>
+
+            <TableBody className=''>
+              {table.getRowModel().rows?.length
+                ? (table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className={`flex gap-x-8 px-3 ${row.getIsExpanded() && 'shadow-[inset_0px_0px_3px_0px_rgb(0,0,0,0.05)]'}`}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell
+                        key={cell.id}
+                        align={cell.column.columnDef.meta?.align || 'left'}
+                        className='bg-background h-full align-top my-2.5 p-0'
+                        style={{
+                          width: `${cell.column.getSize()}px`,
+                          position: cell.column.getIsPinned() ? 'sticky' : undefined,
+                          left: cell.column.getIsPinned() ? `${cell.column.getStart('left')}px` : undefined,
+                          zIndex: cell.column.getIsPinned() ? 10 : 0
+                        }}
+                      >
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                  ))
+                  )
+                : (
+                  <TableRow className='flex justify-center items-center'>
+                    <TableCell colSpan={columns.length} className='text-center text-muted-foreground italic py-6'>
+                      No hay resultados.
+                    </TableCell>
+                  </TableRow>
+                  )}
+            </TableBody>
+          </Table>
+          <ScrollBar orientation='horizontal' />
+        </ScrollArea>
+        {/* <div className='sticky bottom-0 bg-muted py-2 z-30'>{`Mostrando ${table.getRowModel().rows.length} de ${table.getCoreRowModel().rows.length}`}</div> */}
+      </div>
       <FiltersPanel table={table} />
     </div>
   )

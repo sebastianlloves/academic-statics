@@ -1,11 +1,10 @@
-import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { DropdownMenuCheckboxItem, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger } from '@/components/ui/dropdown-menu'
 import { CURSOS } from '@/constants'
 import { CURSO, Student } from '@/types'
-import { CaretSortIcon } from '@radix-ui/react-icons'
 import { Table } from '@tanstack/react-table'
 import { useMemo } from 'react'
 import Item from './item'
+import Filter from '../filter'
 
 interface CursoFilterProps {
   table: Table<Student>
@@ -22,13 +21,8 @@ function CursoFilter ({ table }: CursoFilterProps) {
   const facets = table.getColumn('curso')?.getFacetedUniqueValues()
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild className='w-fit'>
-        <Button variant='outline' className='font-normal'>Cursos<CaretSortIcon className='ml-3 h-4 w-4 opacity-50' /></Button>
-      </DropdownMenuTrigger>
-
-      <DropdownMenuContent align='start' className='p-1'>
-        {
+    <Filter title='Curso'>
+      {
           Object.keys(coursesByYear).map(anio => (
             <DropdownMenuSub key={anio}>
               <DropdownMenuSubTrigger className='pl-3'>
@@ -74,8 +68,7 @@ function CursoFilter ({ table }: CursoFilterProps) {
             </DropdownMenuSub>
           ))
         }
-      </DropdownMenuContent>
-    </DropdownMenu>
+    </Filter>
   )
 }
 

@@ -32,12 +32,12 @@ function SubRow ({ triggerContent, subjects, open } : SubRowProps) {
                 )}
           </div>
         </CollapsibleTrigger>
-        <CollapsibleContent className='mt-3 mb-2'>
+        <CollapsibleContent className='mt-3 mb-2 ml-2'>
           <div className='flex flex-col items-start space-y-1.5'>
             {subjects.map(subject => (
               subject === 'No adeuda'
-                ? <Badge variant='success' className='text-xs px-4 rounded-xl tracking-tight border-success/10' key={subject}>{subject}</Badge>
-                : <Badge variant='secondary' className='text-xs px-4 rounded-xl tracking-tight bg-secondary/70 border-secondary-foreground/5' key={subject}>{subject}</Badge>
+                ? <Badge variant='success' className='text-xs px-1 rounded-md font-normal border-0' key={subject}>{subject}</Badge>
+                : <Badge variant='secondary' className='text-xs px-3 rounded-md font-normal bg-secondary/80' key={subject}>{subject}</Badge>
             ))}
           </div>
         </CollapsibleContent>

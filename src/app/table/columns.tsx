@@ -6,15 +6,61 @@ import SortingHeader from './sortingHeader'
 import SubRow from './subRow'
 import { ChevronsDownUp, ChevronsUpDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { MateriasFilterState } from './filters/materiasFilter'
+import { MateriasFilterState } from './filters/filterInputs/materiasFilter'
 
 declare module '@tanstack/react-table' {
   interface ColumnMeta {
-    title?: string
+    title?: string,
+    align?: 'right'
   }
 }
 
 export const columns: ColumnDef<Student>[] = [
+  {
+    id: 'expand',
+    accessorFn: (row) => {
+      const detalleTroncales = row.detalleTroncales || []
+      const detalleGenerales = row.detalleGenerales || []
+      const studentSubjects = [...detalleTroncales, ...detalleGenerales].filter(subject => subject !== 'No adeuda')
+      return studentSubjects
+    },
+    header: ({ table }) => (
+      <div className='h-10 w-6 flex justify-center items-center -mt-0.5'>
+        <Button
+          variant='ghost' className='h-8 w-full px-0' onClick={() => table.toggleAllRowsExpanded(!table.getIsSomeRowsExpanded())}
+        >
+          {table.getIsSomeRowsExpanded()
+            ? <ChevronsDownUp strokeWidth='1.2px' size={15} className='text-foreground' />
+            : <ChevronsUpDown strokeWidth='1.2px' size={15} className='text-foreground' />}
+          <span className='sr-only'>Toggle</span>
+        </Button>
+      </div>
+    ),
+    cell: ({ row }) => (
+      <div className='h-10 w-6 flex justify-center items-center'>
+        <Button variant='ghost' className='w-full h-8 px-0' onClick={() => row.toggleExpanded()}>
+          {row.getIsExpanded()
+            ? <ChevronsDownUp strokeWidth='0.9px' size={15} className='text-foreground/80' />
+            : <ChevronsUpDown strokeWidth='0.9px' size={15} className='text-foreground/80' />}
+          <span className='sr-only'>Toggle</span>
+        </Button>
+      </div>
+    ),
+    filterFn: (row: Row<Student>, _columnID, filterValue: MateriasFilterState) => {
+      const { subjects, includeEnProceso2020, strictInclusion } = filterValue
+      if (subjects.length === 0) return true
+      const detalleTroncales = row.original.detalleTroncales || []
+      const detalleGenerales = row.original.detalleGenerales || []
+      const detalleEnProceso2020 = (includeEnProceso2020 && row.original.materiasEnProceso2020.detalle) || []
+      const studentSubjects = [...detalleTroncales, ...detalleGenerales, ...detalleEnProceso2020]
+      return strictInclusion ? subjects.every(subject => studentSubjects.includes(subject)) : subjects.some(subject => studentSubjects.includes(subject))
+    },
+    enableSorting: false,
+    size: 30,
+    meta: {
+      title: 'expandir'
+    }
+  },
   {
     id: 'curso',
     accessorFn: ({ anio, division }) => `${anio}° ${division}°`,
@@ -26,7 +72,7 @@ export const columns: ColumnDef<Student>[] = [
         <Badge variant='outline'>{cell.getValue() as string}</Badge>
       </div>
     ),
-    size: 100,
+    size: 70,
     filterFn: (row: Row<Student>, columnID: string, filterValue: CURSO[]) => {
       if (filterValue.length === 0) return true
       return filterValue.includes(row.getValue(columnID))
@@ -35,7 +81,7 @@ export const columns: ColumnDef<Student>[] = [
     enableHiding: false,
     sortDescFirst: true,
     meta: {
-      title: 'curso'
+      title: 'Curso'
     },
     footer: (props) => {
       console.log(props)
@@ -75,12 +121,13 @@ export const columns: ColumnDef<Student>[] = [
     ),
     cell: ({ row }) => (
       <div className='h-10 flex flex-col justify-center'>
-        <p className='text-left text-xs text-muted-foreground'>{row.original.dni}</p>
+        <p className='text-xs text-muted-foreground'>{row.original.dni}</p>
       </div>),
-    size: 150,
+    size: 77,
     sortingFn: 'basic',
     meta: {
-      title: 'DNI'
+      title: 'DNI',
+      align: 'right'
     }
   },
   {
@@ -100,7 +147,7 @@ export const columns: ColumnDef<Student>[] = [
     ),
     filterFn: 'inNumberRange',
     sortingFn: 'basic',
-    size: 250,
+    size: 220,
     meta: {
       title: 'troncales'
     }
@@ -120,7 +167,7 @@ export const columns: ColumnDef<Student>[] = [
     ),
     filterFn: 'inNumberRange',
     sortingFn: 'basic',
-    size: 250,
+    size: 220,
     meta: {
       title: 'generales'
     }
@@ -141,7 +188,7 @@ export const columns: ColumnDef<Student>[] = [
     filterFn: 'inNumberRange',
     sortingFn: 'basic',
     sortDescFirst: true,
-    size: 250,
+    size: 220,
     meta: {
       title: 'En Proceso (2020)'
     }
@@ -170,49 +217,6 @@ export const columns: ColumnDef<Student>[] = [
     size: 150,
     meta: {
       title: 'promoción'
-    }
-  },
-  {
-    id: 'expand',
-    accessorFn: (row) => {
-      const detalleTroncales = row.detalleTroncales || []
-      const detalleGenerales = row.detalleGenerales || []
-      const studentSubjects = [...detalleTroncales, ...detalleGenerales].filter(subject => subject !== 'No adeuda')
-      return studentSubjects
-    },
-    header: ({ table }) => (
-      <Button
-        variant='ghost' size='sm' className='w-7 p-0' onClick={() => table.toggleAllRowsExpanded(!table.getIsAllRowsExpanded())}
-      >
-        {table.getIsAllRowsExpanded()
-          ? <ChevronsDownUp strokeWidth='1.2px' size={15} className='text-foreground' />
-          : <ChevronsUpDown strokeWidth='1.2px' size={15} className='text-foreground' />}
-        <span className='sr-only'>Toggle</span>
-      </Button>
-    ),
-    cell: ({ row }) => (
-      <div className='h-10 flex flex-col justify-center'>
-        <Button variant='ghost' size='sm' className='w-7 p-0' onClick={() => row.toggleExpanded()}>
-          {row.getIsExpanded()
-            ? <ChevronsDownUp strokeWidth='0.9px' size={15} className='text-foreground/80' />
-            : <ChevronsUpDown strokeWidth='0.9px' size={15} className='text-foreground/80' />}
-          <span className='sr-only'>Toggle</span>
-        </Button>
-      </div>
-    ),
-    filterFn: (row: Row<Student>, _columnID, filterValue: MateriasFilterState) => {
-      const { subjects, includeEnProceso2020, strictInclusion } = filterValue
-      if (subjects.length === 0) return true
-      const detalleTroncales = row.original.detalleTroncales || []
-      const detalleGenerales = row.original.detalleGenerales || []
-      const detalleEnProceso2020 = (includeEnProceso2020 && row.original.materiasEnProceso2020.detalle) || []
-      const studentSubjects = [...detalleTroncales, ...detalleGenerales, ...detalleEnProceso2020]
-      return strictInclusion ? subjects.every(subject => studentSubjects.includes(subject)) : subjects.some(subject => studentSubjects.includes(subject))
-    },
-    enableSorting: false,
-    size: 50,
-    meta: {
-      title: 'expandir'
     }
   }
 ]

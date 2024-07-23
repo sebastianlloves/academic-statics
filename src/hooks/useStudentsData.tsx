@@ -10,7 +10,7 @@ function useStudentsData () {
   useEffect(() => {
     setError(false)
     setLoading(true)
-    console.time('fetch + res.text()')
+    // console.time('fetch + res.text()')
     // console.log('Empezó fetch')
     fetch(
       'https://docs.google.com/spreadsheets/d/e/2PACX-1vRFM0_HRdLzWPQjgMU7_6dUfm6LWNYyQAckFT-EKb6aCAgwvUzZZsCTr8KS_Legk1_2Fe1U00tF-gWA/pub?gid=0&single=true&output=tsv'
@@ -21,10 +21,10 @@ function useStudentsData () {
         return res.text()
       })
       .then((text) => setData(() => {
-        console.timeEnd('fetch + res.text()')
-        console.time('formatData')
+        // console.timeEnd('fetch + res.text()')
+        // console.time('formatData')
         const newState = formatData(text)
-        console.timeEnd('formatData')
+        // console.timeEnd('formatData')
         return newState
       }))
       .catch(() => setError(true))
