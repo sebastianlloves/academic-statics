@@ -1,5 +1,5 @@
 import { ANIO, Student } from '@/types'
-import { Column, ColumnFilter } from '@tanstack/react-table'
+import { ColumnFilter, Table } from '@tanstack/react-table'
 import { useMemo } from 'react'
 import FilterBox from './filterBox'
 import { MateriasFilterState } from '../filterInputs/materiasFilter'
@@ -7,10 +7,10 @@ import { MATERIAS_POR_CURSO } from '@/constants'
 
 interface MateriasFilterBoxProps {
   filter: ColumnFilter,
-  column?: Column<Student>
+  table: Table<Student>
 }
 
-function MateriasFilterBox ({ filter, column }: MateriasFilterBoxProps) {
+function MateriasFilterBox ({ filter, table }: MateriasFilterBoxProps) {
   const filterValue = filter.value as MateriasFilterState
   const allSubjects : {[key: string]: string[]} = useMemo(() => {
     const entriesSubjectsObject = Object.keys(MATERIAS_POR_CURSO).map(anio => {
@@ -19,25 +19,30 @@ function MateriasFilterBox ({ filter, column }: MateriasFilterBoxProps) {
     })
     return Object.fromEntries(entriesSubjectsObject)
   }, [])
-  const filterValues = (filterValue.subjects || [])
+  const subjectsValues = (filterValue.subjects || [])
     .reduce((acc, newValue) => {
       const anio = `${newValue.split('(')[1].split(')')[0]} año`
       if (allSubjects[anio].every(materia => acc.includes(materia))) {
-        return [...acc.filter(materia => !allSubjects[anio].includes(materia)), `Materias de ${anio}`]
+        return [...acc.filter(materia => !allSubjects[anio].includes(materia)), `Todas las materias de ${anio}`]
       }
       return acc
     }, filterValue.subjects)
 
+  const filterValues = subjectsValues.map(subject => {
+    return { id: filter.id, value: subject }
+  })
+
   return (
     <FilterBox
       title='Materias'
-      filterValues={filterValue.strictInclusion ? ['Inclusión estricta', ...filterValues] : filterValues}
-      handleBoxClick={() => column?.setFilterValue(undefined)}
-      handleItemClick={(item) => () => column?.setFilterValue((prevState: MateriasFilterState) => {
-        if (item === 'Inclusión estricta') return { ...prevState, strictInclusion: false }
-        const newSubjectsState = item.includes('Materias de ')
-          ? prevState.subjects.filter(prevValue => !allSubjects[item.split('Materias de ')[1]].includes(prevValue))
-          : prevState.subjects.filter(prevValue => prevValue !== item)
+      filterValues={filterValue.strictInclusion ? [{ id: filter.id, value: 'Inclusión estricta' }, ...filterValues] : filterValues}
+      handleBoxClick={() => table.getColumn(filter.id)?.setFilterValue(undefined)}
+      handleItemClick={(filter) => () => table.getColumn(filter.id)?.setFilterValue((prevState: MateriasFilterState) => {
+        if (filter.value === 'Inclusión estricta') return { ...prevState, strictInclusion: false }
+        const filterValue = filter.value as string
+        const newSubjectsState = filterValue.includes('Todas las materias de ')
+          ? prevState.subjects.filter(prevValue => !allSubjects[filterValue.split('Todas las materias de ')[1]].includes(prevValue))
+          : prevState.subjects.filter(prevValue => prevValue !== filterValue)
         return newSubjectsState.length ? { ...prevState, subjects: newSubjectsState } : undefined
       })}
     />

@@ -1,11 +1,12 @@
 import { Badge } from '@/components/ui/badge'
+import { ColumnFilter } from '@tanstack/react-table'
 import { X } from 'lucide-react'
 
 interface FilterBoxProps {
   title: string,
-  filterValues: string[],
+  filterValues: ColumnFilter[],
   handleBoxClick: () => void,
-  handleItemClick: (item: string) => () => void
+  handleItemClick: (filter: ColumnFilter) => () => void
 }
 
 function FilterBox ({ title, filterValues, handleBoxClick, handleItemClick }: FilterBoxProps) {
@@ -20,14 +21,16 @@ function FilterBox ({ title, filterValues, handleBoxClick, handleItemClick }: Fi
       </div>
       <div className='flex justify-start gap-2 p-1 flex-wrap'>
         {
-        (filterValues).map((item: string) => (
-          <Badge key={item} variant='secondary' className='font-normal pl-2 pr-1 leading-tight'>
-            <div className='flex justify-start items-center gap-x-3'>
-              <p className=''>{item}</p>
-              <X
-                size={13} strokeWidth='1.5px' className='text-muted-foreground cursor-pointer'
-                onClick={handleItemClick(item)}
-              />
+        (filterValues).map((filter) => (
+          <Badge
+            key={(filter.value as string)}
+            variant='secondary'
+            className='font-normal pl-2 pr-1 leading-tight cursor-pointer'
+            onClick={handleItemClick(filter)}
+          >
+            <div className='flex justify-start items-start gap-x-3'>
+              <p className=''>{(filter.value as string)}</p>
+              <X size={13} strokeWidth='1.5px' className='text-muted-foreground cursor-pointer hover:text-foreground' />
             </div>
           </Badge>
         ))

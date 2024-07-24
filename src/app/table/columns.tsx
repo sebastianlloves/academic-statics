@@ -149,7 +149,7 @@ export const columns: ColumnDef<Student>[] = [
     sortingFn: 'basic',
     size: 220,
     meta: {
-      title: 'troncales'
+      title: 'Troncales'
     }
   },
   {
@@ -169,7 +169,7 @@ export const columns: ColumnDef<Student>[] = [
     sortingFn: 'basic',
     size: 220,
     meta: {
-      title: 'generales'
+      title: 'Generales'
     }
   },
   {

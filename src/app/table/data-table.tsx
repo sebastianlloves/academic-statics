@@ -80,7 +80,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
                     <TableHead
                       key={header.id}
                       align={header.column.columnDef.meta?.align || 'left'}
-                      className='text-foreground px-0'
+                      className='text-foreground px-0 bg-background'
                       style={{
                         width: `${header.column.getSize()}px`,
                         position: header.column.getIsPinned() ? 'sticky' : undefined,

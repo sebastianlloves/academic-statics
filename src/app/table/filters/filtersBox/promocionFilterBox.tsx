@@ -1,21 +1,26 @@
 import { Student } from '@/types'
-import { Column, ColumnFilter } from '@tanstack/react-table'
+import { ColumnFilter, Table } from '@tanstack/react-table'
 import FilterBox from './filterBox'
 
 interface PromocionFilterBoxProps {
   filter: ColumnFilter,
-  column?: Column<Student>
+  table: Table<Student>
 }
 
-function PromocionFilterBox ({ filter, column }: PromocionFilterBoxProps) {
-  const filterValue = [filter.value === 'permanece' ? 'Sólo estudiantes que permanecen' : 'Sólo estudiantes que promocionan']
+function PromocionFilterBox ({ filter, table }: PromocionFilterBoxProps) {
+  const filterValue = [
+    {
+      id: filter.id,
+      value: filter.value === 'permanece' ? 'Sólo estudiantes que permanecen' : 'Sólo estudiantes que promocionan'
+    }
+  ]
 
   return (
     <FilterBox
       title='Promoción'
       filterValues={filterValue}
-      handleBoxClick={() => column?.setFilterValue(undefined)}
-      handleItemClick={() => () => column?.setFilterValue(undefined)}
+      handleBoxClick={() => table.getColumn(filter.id)?.setFilterValue(undefined)}
+      handleItemClick={() => () => table.getColumn(filter.id)?.setFilterValue(undefined)}
     />
   )
 }
