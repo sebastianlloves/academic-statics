@@ -1,7 +1,6 @@
 import { Student } from '@/types'
 import { ColumnFilter, Table } from '@tanstack/react-table'
 import FilterBox from './filterBox'
-import CursoFilter from '../filterInputs/cursosFilter'
 
 interface CantidadesFilterBoxProps {
   filters: ColumnFilter[],
@@ -17,15 +16,12 @@ function CantidadesFilterBox ({ filters, table }: CantidadesFilterBoxProps) {
   })
 
   return (
-    <>
-      {/* <CursoFilter table={table} /> */}
-      <FilterBox
-        title='Cantidades'
-        filterValues={filterValues}
-        handleBoxClick={() => filterValues?.forEach(filter => table.getColumn(filter.id)?.setFilterValue(undefined))}
-        handleItemClick={(filter) => () => table.getColumn(filter.id)?.setFilterValue(undefined)}
-      />
-    </>
+    <FilterBox
+      title='Cantidades'
+      filterValues={filterValues}
+      handleBoxClick={() => filterValues?.forEach(filter => table.getColumn(filter.id)?.setFilterValue(undefined))}
+      handleItemClick={(filter) => () => table.getColumn(filter.id)?.setFilterValue(undefined)}
+    />
   )
 }
 

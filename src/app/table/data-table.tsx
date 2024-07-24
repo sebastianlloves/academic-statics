@@ -98,12 +98,12 @@ export function DataTable ({ data, loading }: DataTableProps) {
             <TableBody className=''>
               {table.getRowModel().rows?.length
                 ? (table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className={`flex gap-x-8 px-3 ${row.getIsExpanded() && 'shadow-[inset_0px_0px_3px_0px_rgb(0,0,0,0.05)]'}`}>
+                  <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className={`flex gap-x-8 px-3 hover:bg-card ${row.getIsExpanded() && 'shadow-[inset_0px_0px_3px_0px_rgb(0,0,0,0.05)]'}`}>
                     {row.getVisibleCells().map((cell) => (
                       <TableCell
                         key={cell.id}
                         align={cell.column.columnDef.meta?.align || 'left'}
-                        className='bg-background h-full align-top my-2.5 p-0'
+                        className='bg-inherit h-full align-top my-2.5 p-0'
                         style={{
                           width: `${cell.column.getSize()}px`,
                           position: cell.column.getIsPinned() ? 'sticky' : undefined,

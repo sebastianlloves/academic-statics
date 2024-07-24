@@ -11,26 +11,23 @@ interface FilterBoxProps {
 
 function FilterBox ({ title, filterValues, handleBoxClick, handleItemClick }: FilterBoxProps) {
   return filterValues.length > 0 && (
-    <div className='border p-2 rounded-md grid space-y-2 shadow-sm'>
-      <div className='flex justify-between items-center'>
-        <h4 className='font-medium text-muted-foreground text-xs uppercase'>{title}</h4>
-        <X
-          size={15} strokeWidth='1.5px' className='text-muted-foreground cursor-pointer'
-          onClick={handleBoxClick}
-        />
-      </div>
-      <div className='flex justify-start gap-2 p-1 flex-wrap'>
+    <div className='p-0 rounded-md grid'>
+      <X
+        size={15} strokeWidth='1.5px' className='text-muted-foreground cursor-pointer ml-auto'
+        onClick={handleBoxClick}
+      />
+      <div className='flex justify-start gap-2 p-1 pt-0 flex-wrap'>
         {
         (filterValues).map((filter) => (
           <Badge
             key={(filter.value as string)}
-            variant='secondary'
-            className='font-normal pl-2 pr-1 leading-tight cursor-pointer'
+            variant='default'
+            className='font-medium rounded-full px-2 leading-tight cursor-pointer bg-primary/80'
             onClick={handleItemClick(filter)}
           >
-            <div className='flex justify-start items-start gap-x-3'>
+            <div className='flex justify-start items-center gap-x-3'>
               <p className=''>{(filter.value as string)}</p>
-              <X size={13} strokeWidth='1.5px' className='text-muted-foreground cursor-pointer hover:text-foreground' />
+              <X size={13} strokeWidth='1.5px' className='text-inherit cursor-pointer hover:text-foreground' />
             </div>
           </Badge>
         ))
