@@ -3,14 +3,15 @@ import { Student } from '@/types'
 import { Table } from '@tanstack/react-table'
 import { MateriasFilterState } from './materiasFilter'
 import { useEffect } from 'react'
-import DropdownFilter from './dropdownFilter'
+import { cn } from '@/lib/utils'
+import DropdownFilter from '../dropdownFilter'
 
 interface ColumnsVisibilityProps {
   table: Table<Student>,
   className?: string
 }
 
-function ColumnsVisibility ({ table }: ColumnsVisibilityProps) {
+function ColumnsVisibility ({ table, className }: ColumnsVisibilityProps) {
   const columns = table.getAllColumns().filter(column => column.getCanHide() && column.id !== 'expand')
   const isTroncalesVisible = table.getColumn('troncales')?.getIsVisible()
   const isGeneralesVisible = table.getColumn('generales')?.getIsVisible()
@@ -22,8 +23,9 @@ function ColumnsVisibility ({ table }: ColumnsVisibilityProps) {
   }, [isTroncalesVisible, isGeneralesVisible, isEnProceso2020Visible, table])
 
   return (
-    <DropdownFilter title='Columnas'>
-      {
+    <div className={cn(className)}>
+      <DropdownFilter title='Columnas'>
+        {
           columns.map(column => {
             const { title } = column.columnDef.meta ?? {}
             return (
@@ -46,7 +48,8 @@ function ColumnsVisibility ({ table }: ColumnsVisibilityProps) {
             )
           })
         }
-    </DropdownFilter>
+      </DropdownFilter>
+    </div>
   )
 }
 

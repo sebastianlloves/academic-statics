@@ -69,18 +69,19 @@ export function DataTable ({ data, loading }: DataTableProps) {
   })
 
   return (
-    <div className='flex gap-x-4 p-8 rounded-lg bg-table'>
+    <div className='flex gap-4 p-8 rounded-lg bg-background'>
+      <FiltersPanel table={table} />
       <div>
-        <ScrollArea className='border h-[80vh] min-h-[80vh] w-[70vw] rounded-lg shadow-sm bg-background'>
+        <ScrollArea className='border h-[80vh] min-h-[80vh] w-[70vw] rounded-t-lg border-b-0 shadow-sm bg-background'>
           <Table className='grid w-max min-w-full bg-background'>
             <TableHeader className='sticky top-0 w-full border-primary/100 border-b shadow-sm shadow-primary/40 z-20'>
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow className='bg-background hover:bg-background flex items-center gap-x-8 px-3 py-1' key={headerGroup.id}>
+                <TableRow className='bg-background hover:bg-background flex items-center py-1' key={headerGroup.id}>
                   {headerGroup.headers.map(header => (
                     <TableHead
                       key={header.id}
                       align={header.column.columnDef.meta?.align || 'left'}
-                      className='text-foreground px-0 bg-background'
+                      className='text-foreground bg-background px-3'
                       style={{
                         width: `${header.column.getSize()}px`,
                         position: header.column.getIsPinned() ? 'sticky' : undefined,
@@ -98,12 +99,12 @@ export function DataTable ({ data, loading }: DataTableProps) {
             <TableBody className=''>
               {table.getRowModel().rows?.length
                 ? (table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className={`flex gap-x-8 px-3 hover:bg-card ${row.getIsExpanded() && 'shadow-[inset_0px_0px_3px_0px_rgb(0,0,0,0.05)]'}`}>
+                  <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className='flex bg-background hover:bg-muted '>
                     {row.getVisibleCells().map((cell) => (
                       <TableCell
                         key={cell.id}
                         align={cell.column.columnDef.meta?.align || 'left'}
-                        className='bg-inherit h-full align-top my-2.5 p-0'
+                        className='bg-inherit h-full my-2.5 p-0 px-3'
                         style={{
                           width: `${cell.column.getSize()}px`,
                           position: cell.column.getIsPinned() ? 'sticky' : undefined,
@@ -128,9 +129,8 @@ export function DataTable ({ data, loading }: DataTableProps) {
           </Table>
           <ScrollBar orientation='horizontal' />
         </ScrollArea>
-        {/* <div className='sticky bottom-0 bg-muted py-2 z-30'>{`Mostrando ${table.getRowModel().rows.length} de ${table.getCoreRowModel().rows.length}`}</div> */}
+        <div className='bg-secondary text-secondary-foreground italic border py-2 z-30 text-center scroll-m-20 text-sm font-medium rounded-b-lg'>{`Mostrando ${table.getRowModel().rows.length} resultados`}</div>
       </div>
-      <FiltersPanel table={table} />
     </div>
   )
 }

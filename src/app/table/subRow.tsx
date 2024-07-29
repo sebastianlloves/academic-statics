@@ -10,7 +10,7 @@ interface SubRowProps {
 function SubRow ({ triggerContent, subjects, open } : SubRowProps) {
   return (
     <>
-      <Collapsible open={open} className=''>
+      <Collapsible open={open} className='-z-10'>
         <CollapsibleTrigger asChild className=''>
           <div className='flex items-center h-10'>
             {triggerContent === 0
@@ -25,14 +25,14 @@ function SubRow ({ triggerContent, subjects, open } : SubRowProps) {
               : (
                 <Badge
                   variant='secondary'
-                  className='text-sm font-medium bg-secondary/70 border-secondary-foreground/5 border-0'
+                  className='text-sm font-medium bg-secondary/70 border-secondary-foreground/5 border-0 shadow-sm'
                 >
                   {triggerContent}
                 </Badge>
                 )}
           </div>
         </CollapsibleTrigger>
-        <CollapsibleContent className='mt-1 mb-2 ml-2'>
+        <CollapsibleContent className='mt-1 mb-2 ml-2 -z-50'>
           <div className='flex flex-col items-start space-y-1.5'>
             {subjects.map(subject => (
               subject === 'No adeuda'

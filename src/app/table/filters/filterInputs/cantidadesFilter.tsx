@@ -1,8 +1,8 @@
 import SliderItem from './sliderItem'
 import { Table } from '@tanstack/react-table'
 import { Student } from '@/types'
-import Filter from '../filter'
 import { useMemo } from 'react'
+import DropdownFilter from '../dropdownFilter'
 
 interface CantidadesFilterProps {
   table: Table<Student>
@@ -28,7 +28,7 @@ function CantidadesFilter ({ table } : CantidadesFilterProps) {
   }, [data])
 
   return (
-    <Filter title='Cantidades'>
+    <DropdownFilter title='Cantidades'>
       <>
         {table.getColumn('troncales')?.getIsVisible() && (
           <SliderItem
@@ -49,7 +49,7 @@ function CantidadesFilter ({ table } : CantidadesFilterProps) {
           />
         )}
       </>
-    </Filter>
+    </DropdownFilter>
   )
 }
 

@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { CirclePlus } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import { ReactNode } from 'react'
 
 interface DropdownFilterProps {
@@ -11,11 +11,12 @@ interface DropdownFilterProps {
 function DropdownFilter ({ title, children }:DropdownFilterProps) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className='w-fit'>
-        <Button variant='outline' className='font-normal'><CirclePlus strokeWidth='1.5px' size={15} className='mr-3' />{title}</Button>
+      <DropdownMenuTrigger asChild className='w-full'>
+        <Button variant='ghost' className='font-medium shadow-sm py-0 tracking-wide'>
+          {title.toUpperCase()}<ChevronRight className='ml-auto h-4 w-4 opacity-70' />
+        </Button>
       </DropdownMenuTrigger>
-
-      <DropdownMenuContent align='start' className='p-1'>
+      <DropdownMenuContent align='start' alignOffset={-1} side='right' className='p-1'>
         {children}
       </DropdownMenuContent>
     </DropdownMenu>

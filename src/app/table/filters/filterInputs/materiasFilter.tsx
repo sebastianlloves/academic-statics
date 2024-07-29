@@ -6,7 +6,7 @@ import { MATERIAS_POR_CURSO } from '@/constants'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import Item from './item'
-import Filter from '../filter'
+import DropdownFilter from '../dropdownFilter'
 
 interface MateriasFilterProps {
   table: Table<Student>
@@ -31,7 +31,7 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
   }, [])
 
   return (
-    <Filter title='Materias'>
+    <DropdownFilter title='Materias'>
 
       {Object.keys(allSubjects).map(anio => (
         <DropdownMenuSub key={anio}>
@@ -105,7 +105,7 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
         </div>
       </DropdownMenuItem>
 
-    </Filter>
+    </DropdownFilter>
   )
 }
 

@@ -56,7 +56,7 @@ export const columns: ColumnDef<Student>[] = [
       return strictInclusion ? subjects.every(subject => studentSubjects.includes(subject)) : subjects.some(subject => studentSubjects.includes(subject))
     },
     enableSorting: false,
-    size: 30,
+    size: 50,
     meta: {
       title: 'expandir'
     }
@@ -69,10 +69,10 @@ export const columns: ColumnDef<Student>[] = [
     ),
     cell: ({ cell }) => (
       <div className='h-10 flex flex-col items-start justify-center'>
-        <Badge variant='outline'>{cell.getValue() as string}</Badge>
+        <Badge variant='outline' className='text-nowrap'>{cell.getValue() as string}</Badge>
       </div>
     ),
-    size: 70,
+    size: 80,
     filterFn: (row: Row<Student>, columnID: string, filterValue: CURSO[]) => {
       if (filterValue.length === 0) return true
       return filterValue.includes(row.getValue(columnID))
@@ -94,14 +94,19 @@ export const columns: ColumnDef<Student>[] = [
     header: ({ column }) => (
       <SortingHeader title='Estudiante' column={column} />
     ),
-    cell: ({ row }) => {
+    cell: ({ table, row }) => {
       const { apellido, nombre } = row.original
       const capitalizeApellido = apellido?.split(' ').map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ')
       const capitalizeNombre = nombre?.split(' ').map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ')
       return (
-        <div className='text-left h-10 text-nowrap'>
-          <p className='font-medium'>{capitalizeApellido}</p>
-          <p className='font-normal text-muted-foreground'>{capitalizeNombre}</p>
+        <div className='h-full self-stretch flex flex-col'>
+          <div className='text-left self-stretch h-full text-nowrap'>
+            <p className='font-medium'>{capitalizeApellido}</p>
+            <p className='font-normal text-muted-foreground'>{capitalizeNombre}</p>
+          </div>
+          {
+            (table.getIsAllRowsExpanded() || row.getIsExpanded()) && <div className='h-full self-stretch' />
+          }
         </div>
       )
     },
@@ -120,10 +125,10 @@ export const columns: ColumnDef<Student>[] = [
       <SortingHeader title='DNI' column={column} />
     ),
     cell: ({ row }) => (
-      <div className='h-10 flex flex-col justify-center'>
-        <p className='text-xs text-muted-foreground'>{row.original.dni}</p>
+      <div className='h-10 flex justify-end items-center px-0 mx-0'>
+        <p className='text-xs  text-muted-foreground px-0 mx-0'>{row.original.dni}</p>
       </div>),
-    size: 77,
+    size: 90,
     sortingFn: 'basic',
     meta: {
       title: 'DNI',
@@ -147,7 +152,7 @@ export const columns: ColumnDef<Student>[] = [
     ),
     filterFn: 'inNumberRange',
     sortingFn: 'basic',
-    size: 220,
+    size: 240,
     meta: {
       title: 'Troncales'
     }
@@ -167,7 +172,7 @@ export const columns: ColumnDef<Student>[] = [
     ),
     filterFn: 'inNumberRange',
     sortingFn: 'basic',
-    size: 220,
+    size: 240,
     meta: {
       title: 'Generales'
     }
@@ -188,7 +193,7 @@ export const columns: ColumnDef<Student>[] = [
     filterFn: 'inNumberRange',
     sortingFn: 'basic',
     sortDescFirst: true,
-    size: 220,
+    size: 240,
     meta: {
       title: 'En Proceso (2020)'
     }

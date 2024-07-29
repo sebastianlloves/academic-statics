@@ -2,7 +2,7 @@ import { DropdownMenuRadioGroup, DropdownMenuRadioItem } from '@/components/ui/d
 import { Student } from '@/types'
 import { Table } from '@tanstack/react-table'
 import Item from './item'
-import Filter from '../filter'
+import DropdownFilter from '../dropdownFilter'
 
 interface PromocionFilterProps {
   table: Table<Student>
@@ -13,7 +13,7 @@ function PromocionFilter ({ table } : PromocionFilterProps) {
   const facets = table.getColumn('promocion')?.getFacetedUniqueValues()
 
   return (
-    <Filter title='Promoción'>
+    <DropdownFilter title='Promoción'>
       <DropdownMenuRadioGroup
         value={promocionFilter}
         onValueChange={(value) => table.getColumn('promocion')?.setFilterValue(value === promocionFilter ? undefined : value)}
@@ -34,7 +34,7 @@ function PromocionFilter ({ table } : PromocionFilterProps) {
           <Item value='Sólo estudiantes que promocionan' quantity={facets?.get('promociona') ?? 0} />
         </DropdownMenuRadioItem>
       </DropdownMenuRadioGroup>
-    </Filter>
+    </DropdownFilter>
   )
 }
 

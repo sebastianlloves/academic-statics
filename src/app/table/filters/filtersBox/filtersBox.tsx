@@ -22,18 +22,20 @@ function FiltersBox ({ table } : FiltersBoxProps) {
   ].filter(value => value !== undefined)
   console.log(filtersValues)
   return filtersValues.length > 0 && (
-    <div className='border rounded-lg bg-background w-full p-3 grid space-y-3'>
-      <h3>Filtros aplicados</h3>
-      {cursoFilterValue && <CursoFilterBox filter={cursoFilterValue} table={table} />}
-      {cantidadesFilterValues.length > 0 && <CantidadesFilterBox filters={cantidadesFilterValues} table={table} />}
-      {materiasFilterValue && <MateriasFilterBox filter={materiasFilterValue} table={table} />}
-      {promocionFilterValue && <PromocionFilterBox filter={promocionFilterValue} table={table} />}
-      <Button
-        variant='secondary'
-        className='flex items-center gap-x-3 w-fit justify-self-end'
-        onClick={() => table.resetColumnFilters()}
-      >Limpiar filtros
-      </Button>
+    <div className='w-full p-3 grid space-y-2'>
+      {/* <h4 className='scroll-m-20 text-sm text-muted-foreground font-semibold tracking-tight capitalize'>Filtros Activos</h4> */}
+      <div className='flex'>
+        {cursoFilterValue && <CursoFilterBox filter={cursoFilterValue} table={table} />}
+        {cantidadesFilterValues.length > 0 && <CantidadesFilterBox filters={cantidadesFilterValues} table={table} />}
+        {materiasFilterValue && <MateriasFilterBox filter={materiasFilterValue} table={table} />}
+        {promocionFilterValue && <PromocionFilterBox filter={promocionFilterValue} table={table} />}
+        <Button
+          variant='secondary'
+          className='flex items-center gap-x-3 border border-border shadow-sm w-fit justify-self-end'
+          onClick={() => table.resetColumnFilters()}
+        >Limpiar filtros
+        </Button>
+      </div>
     </div>
   )
 }
