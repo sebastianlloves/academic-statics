@@ -30,15 +30,19 @@ function CursosFilter ({ table }: CursosFilterProps) {
         }
         return acc
       }, (cursoFilter.value as string[]))
-      return filterLabels.map(label => label.includes(' año')
-        ? { id: cursoFilter.id, label, value: [...coursesByYear[label]], quantity: coursesByYear[label].reduce((acc, newValue) => acc + (facets?.get(newValue) || 0), 0) }
-        : { id: cursoFilter.id, label, value: [label], quantity: facets?.get(label) || 0 }
-      )
+      return filterLabels.map(label => {
+        return {
+          id: cursoFilter.id,
+          label,
+          value: label.includes(' año') ? [...coursesByYear[label]] : [label],
+          quantity: label.includes(' año') ? coursesByYear[label].reduce((acc, newValue) => acc + (facets?.get(newValue) || 0), 0) : (facets?.get(label) || 0)
+        }
+      })
     }
     return []
   }, [coursesByYear, cursoFilter, facets])
 
-  const cursoFilterValue = formatedFilters.flatMap(formatedFilter => formatedFilter.value)
+  const cursoFilterValues = formatedFilters.flatMap(formatedFilter => formatedFilter.value)
 
   return (
     <div className='border rounded-lg w-full shadow-sm'>
@@ -61,12 +65,12 @@ function CursosFilter ({ table }: CursosFilterProps) {
                         <DropdownMenuCheckboxItem
                           key={curso}
                           className='cursor-pointer'
-                          checked={cursoFilterValue.includes(curso)}
+                          checked={cursoFilterValues.includes(curso)}
                           onSelect={(e) => e.preventDefault()}
                           onCheckedChange={(checked) => {
                             const newCursosState = !checked
-                              ? cursoFilterValue.filter(prevCurso => prevCurso !== curso)
-                              : [...cursoFilterValue, curso]
+                              ? cursoFilterValues.filter(prevCurso => prevCurso !== curso)
+                              : [...cursoFilterValues, curso]
                             table.getColumn('curso')?.setFilterValue(newCursosState.length ? newCursosState : undefined)
                           }}
                         >
@@ -78,11 +82,11 @@ function CursosFilter ({ table }: CursosFilterProps) {
                     <DropdownMenuCheckboxItem
                       className='cursor-pointer font-medium text-foreground'
                       onSelect={(e) => e.preventDefault()}
-                      checked={coursesByYear[anio].every(course => cursoFilterValue.includes(course))}
+                      checked={coursesByYear[anio].every(course => cursoFilterValues.includes(course))}
                       onCheckedChange={(checked) => {
                         const newCursosState = !checked
-                          ? cursoFilterValue.filter(curso => !coursesByYear[anio].includes(curso as CURSO))
-                          : Array.from(new Set([...cursoFilterValue, ...coursesByYear[anio]]))
+                          ? cursoFilterValues.filter(curso => !coursesByYear[anio].includes(curso as CURSO))
+                          : Array.from(new Set([...cursoFilterValues, ...coursesByYear[anio]]))
                         table.getColumn('curso')?.setFilterValue(newCursosState)
                       }}
                     >

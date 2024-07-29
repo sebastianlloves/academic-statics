@@ -12,9 +12,6 @@ interface FiltersPanelProps {
 }
 
 function FiltersPanel ({ table } : FiltersPanelProps) {
-  const filtersValues = table.getState().columnFilters
-  const cursoFilterValue = filtersValues.find(filtro => filtro.id === 'curso')
-
   const isTroncalesVisible = table.getColumn('troncales')?.getIsVisible()
   const isGeneralesVisible = table.getColumn('generales')?.getIsVisible()
   const isEnProceso2020Visible = table.getColumn('enProceso2020')?.getIsVisible()
@@ -28,8 +25,8 @@ function FiltersPanel ({ table } : FiltersPanelProps) {
         {/* {cursoFilterValue && <CursoFilterBox filter={cursoFilterValue} table={table} />} */}
         {(isTroncalesVisible || isGeneralesVisible || isEnProceso2020Visible) && (
           <>
-            <CantidadesFilter table={table} />
             <MateriasFilter table={table} />
+            <CantidadesFilter table={table} />
           </>
         )}
         {table.getColumn('promocion')?.getIsVisible() && <PromocionFilter table={table} />}

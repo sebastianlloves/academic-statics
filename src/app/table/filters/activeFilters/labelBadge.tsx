@@ -1,5 +1,4 @@
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 import { X } from 'lucide-react'
 import React from 'react'
 
@@ -12,15 +11,16 @@ function LabelBadge ({ handleClick, children }: LabelBadgeProps) {
   return (
     <Badge
       variant='default'
-      className='font-normal px-2 leading-tight rounded-full bg-primary/90 hover:bg-primary/90'
+      className='font-normal pl-2 pr-1 py-0.5 leading-tight rounded-full bg-primary/90 hover:bg-primary/90 max-w-full flex'
     >
-      <div className='flex justify-start items-center'>
+      <div className='flex h-full justify-start items-center py-0.5'>
         <div className='text-nowrap px-1.5'>{children}</div>
-        <Separator orientation='vertical' className='mx-1 h-3 bg-muted/30' />
-        <X
-          size={13} strokeWidth='1.5px' className='text-inherit cursor-pointer'
-          onClick={handleClick}
-        />
+        <div className='cursor-pointer flex h-full px-1 rounded-r-full border-l border-muted/40'>
+          <X
+            size={13} strokeWidth='1.5px' className='h-full text-inherit'
+            onClick={handleClick}
+          />
+        </div>
       </div>
     </Badge>
   )

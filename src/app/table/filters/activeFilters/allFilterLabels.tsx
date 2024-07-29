@@ -21,7 +21,14 @@ export function AllFilterLabels ({ filterValues, handleItemClick, handleBoxClick
             key={(filter.label)}
             handleClick={handleItemClick(filter)}
           >
-            <p className='font-medium'>{filter.label} <span className='text-xs font-normal text-muted/80'>{`(${filter.quantity})`}</span></p>
+            <p className='font-medium text-wrap'>
+              {filter.label}
+              {filter.quantity !== undefined && (
+                <span className='text-xs font-mono font-normal text-muted/80'>
+                  {` (${filter.quantity})`}
+                </span>
+              )}
+            </p>
           </LabelBadge>))}
       </div>
     </div>

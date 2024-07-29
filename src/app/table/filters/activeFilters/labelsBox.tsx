@@ -5,7 +5,7 @@ export interface FilterData {
   id: string,
   label: string,
   value: string[],
-  quantity: number
+  quantity?: number
 }
 
 export interface LabelsBoxProps {
