@@ -6,7 +6,7 @@ import SortingHeader from './sortingHeader'
 import SubRow from './subRow'
 import { ChevronsDownUp, ChevronsUpDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { MateriasFilterState } from './filters/filterInputs/materiasFilter'
+import { MateriasFilterState } from './filters/filterInputs/materias/materiasFilter'
 
 declare module '@tanstack/react-table' {
   interface ColumnMeta {

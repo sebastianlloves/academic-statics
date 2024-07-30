@@ -129,7 +129,11 @@ export function DataTable ({ data, loading }: DataTableProps) {
           </Table>
           <ScrollBar orientation='horizontal' />
         </ScrollArea>
-        <div className='bg-secondary text-secondary-foreground italic border py-2 z-30 text-center scroll-m-20 text-sm font-medium rounded-b-lg'>{`Mostrando ${table.getRowModel().rows.length} resultados`}</div>
+        <div className='bg-secondary h-9 flex justify-center items-center text-secondary-foreground italic border z-30 scroll-m-20 text-sm font-medium rounded-b-lg'>
+          {loading || data === false
+            ? <Skeleton className='h-2 rounded-full w-36 mx-auto' />
+            : `Mostrando ${table.getRowModel().rows.length} resultados`}
+        </div>
       </div>
     </div>
   )

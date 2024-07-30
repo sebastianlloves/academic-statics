@@ -2,7 +2,7 @@ import { ANIO, Student } from '@/types'
 import { ColumnFilter, Table } from '@tanstack/react-table'
 import { useMemo } from 'react'
 import FilterBox from './filterBox'
-import { MateriasFilterState } from '../filterInputs/materiasFilter'
+import { MateriasFilterState } from '../filterInputs/materias/materiasFilter'
 import { MATERIAS_POR_CURSO } from '@/constants'
 
 interface MateriasFilterBoxProps {

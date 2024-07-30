@@ -4,7 +4,7 @@ import { AllFilterLabels } from './allFilterLabels'
 export interface FilterData {
   id: string,
   label: string,
-  value: string[],
+  value: unknown,
   quantity?: number
 }
 
@@ -16,7 +16,7 @@ export interface LabelsBoxProps {
 }
 
 function LabelsBox ({ filterValues, handleBoxClick, handleItemClick, maxLabels }: LabelsBoxProps) {
-  return filterValues.length > 0 && (
+  return (
     <div className='w-full px-2 py-2 shadow-inner'>
       {filterValues.length <= maxLabels
         ? (

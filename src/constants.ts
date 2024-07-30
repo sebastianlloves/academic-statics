@@ -147,9 +147,16 @@ export const MATERIAS_POR_CURSO = {
 } as const
 
 export const allSubjects = (() : {[key: string]: string[]} => {
-  console.log('Función getAllSubjects')
+  console.log('allSubjects')
   return Object.fromEntries(Object.keys(MATERIAS_POR_CURSO).map(anio => {
     const subjectsByAnio = MATERIAS_POR_CURSO[Number(anio) as ANIO].map(objSubject => `${objSubject.nombre} (${anio}°)`)
     return [`${anio}° año`, subjectsByAnio]
   }))
+})()
+
+export const coursesByYear = (() => {
+  console.log('coursesByYear')
+  return Object.fromEntries(Object.keys(CURSOS)
+    .map(anio => [`${anio}° año`, CURSOS[Number(anio) as keyof(typeof CURSOS)]
+      .map(({ nombre }) => nombre)]))
 })()

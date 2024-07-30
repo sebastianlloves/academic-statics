@@ -1,18 +1,11 @@
 import { DropdownMenuCheckboxItem, DropdownMenuItem, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger } from '@/components/ui/dropdown-menu'
-import { Student } from '@/types'
-import { Table, ColumnFilter } from '@tanstack/react-table'
 import Item from '../item'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { allSubjects } from '@/constants'
-import { MateriasFilterState } from '../materiasFilter'
+import { MateriasFilterProps, MateriasFilterState } from './materiasFilter'
 
-interface MateriasFilterContentProps {
-  table: Table<Student>,
-  materiasFilter: ColumnFilter
-}
-
-function MateriasFilterContent ({ table, materiasFilter }: MateriasFilterContentProps) {
+function MateriasFilterContent ({ table, materiasFilter, facets }: MateriasFilterProps) {
   return (
     <>
       {Object.keys(allSubjects).map(anio => (
@@ -23,7 +16,7 @@ function MateriasFilterContent ({ table, materiasFilter }: MateriasFilterContent
           <DropdownMenuPortal>
             <DropdownMenuSubContent sideOffset={6}>
               {allSubjects[anio].map((subject:string) => {
-                const quantity = (materiasFilter?.value as MateriasFilterState).strictInclusion
+                const quantity = (materiasFilter?.value as MateriasFilterState)?.strictInclusion
                   ? table.getRowModel().rows.filter(row => {
                     const troncales = row.original.detalleTroncales || []
                     const generales = row.original.detalleGenerales || []
@@ -36,12 +29,12 @@ function MateriasFilterContent ({ table, materiasFilter }: MateriasFilterContent
                     onSelect={e => e.preventDefault()}
                     key={subject}
                     className='cursor-pointer'
-                    checked={materiasFilterValues.includes(subject)}
+                    checked={(materiasFilter?.value as MateriasFilterState)?.subjects.includes(subject)}
                     onCheckedChange={() => {
                       if (materiasFilter === undefined) table.getColumn('expand')?.setFilterValue({ subjects: [subject] })
                       else {
                         const filterValue = materiasFilter.value as MateriasFilterState
-                        const newSubjectsState = materiasFilterValues.includes(subject)
+                        const newSubjectsState = (materiasFilter?.value as MateriasFilterState)?.subjects.includes(subject)
                           ? filterValue.subjects.filter(prevSubject => prevSubject !== subject)
                           : [...filterValue.subjects, subject]
                         table.getColumn('expand')?.setFilterValue({ ...filterValue, subjects: newSubjectsState })
@@ -57,12 +50,12 @@ function MateriasFilterContent ({ table, materiasFilter }: MateriasFilterContent
               <DropdownMenuCheckboxItem
                 onSelect={e => e.preventDefault()}
                 className='cursor-pointer font-medium text-foreground pr-4'
-                checked={allSubjects[anio].every(subject => materiasFilterValues.includes(subject))}
+                checked={allSubjects[anio].every(subject => (materiasFilter?.value as MateriasFilterState)?.subjects.includes(subject))}
                 onCheckedChange={() => {
                   if (materiasFilter === undefined) table.getColumn('expand')?.setFilterValue({ subjects: [...allSubjects[anio]] })
                   else {
                     const filterValue = materiasFilter.value as MateriasFilterState
-                    const newSubjectState = allSubjects[anio].every(subject => materiasFilterValues.includes(subject))
+                    const newSubjectState = allSubjects[anio].every(subject => (materiasFilter?.value as MateriasFilterState)?.subjects.includes(subject))
                       ? filterValue.subjects.filter(prevSubject => !allSubjects[anio].includes(prevSubject))
                       : Array.from(new Set([...filterValue.subjects, ...allSubjects[anio]]))
                     table.getColumn('expand')?.setFilterValue({ ...filterValue, subjects: newSubjectState })
@@ -88,7 +81,7 @@ function MateriasFilterContent ({ table, materiasFilter }: MateriasFilterContent
           <Switch
             id='estrict-inclusion'
             className='w-8 h-4'
-            checked={materiasFilterValues.includes('Inclusión estricta')}
+            checked={(materiasFilter?.value as MateriasFilterState)?.subjects.includes('Inclusión estricta')}
             onCheckedChange={() => table.getColumn('expand')?.setFilterValue(() => {
               if (materiasFilter === undefined) return { strictInclusion: true, subjects: [] }
               else {
