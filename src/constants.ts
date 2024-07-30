@@ -1,3 +1,5 @@
+import { ANIO } from './types'
+
 export const ANIOS = [1, 2, 3, 4, 5, 6] as const
 export const DIVISIONES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const
 export const GENEROS = { M: 'Masculino', F: 'Femenino' } as const
@@ -143,3 +145,11 @@ export const MATERIAS_POR_CURSO = {
     { nombre: 'Prácticas Profesionalizantes', es_troncal: true, orientacion: 'Ciclo Superior' }
   ]
 } as const
+
+export const allSubjects = (() : {[key: string]: string[]} => {
+  console.log('Función getAllSubjects')
+  return Object.fromEntries(Object.keys(MATERIAS_POR_CURSO).map(anio => {
+    const subjectsByAnio = MATERIAS_POR_CURSO[Number(anio) as ANIO].map(objSubject => `${objSubject.nombre} (${anio}°)`)
+    return [`${anio}° año`, subjectsByAnio]
+  }))
+})()

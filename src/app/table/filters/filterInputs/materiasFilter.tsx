@@ -1,8 +1,8 @@
 import { DropdownMenuCheckboxItem, DropdownMenuItem, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger } from '@/components/ui/dropdown-menu'
-import { ANIO, Student } from '@/types'
+import { Student } from '@/types'
 import { Table } from '@tanstack/react-table'
 import { useMemo } from 'react'
-import { MATERIAS_POR_CURSO } from '@/constants'
+import { allSubjects } from '@/constants'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import Item from './item'
@@ -21,14 +21,6 @@ export interface MateriasFilterState {
 
 function MateriasFilter ({ table } : MateriasFilterProps) {
   const facets = table.getColumn('expand')?.getFacetedUniqueValues()
-  const allSubjects : {[key: string]: string[]} = useMemo(() => {
-    const entriesSubjectsObject = Object.keys(MATERIAS_POR_CURSO).map(anio => {
-      const subjectsByAnio = MATERIAS_POR_CURSO[Number(anio) as ANIO].map(objSubject => `${objSubject.nombre} (${anio}°)`)
-      return [`${anio}° año`, subjectsByAnio]
-    })
-    return Object.fromEntries(entriesSubjectsObject)
-  }, [])
-
   const materiasFilter = table.getState().columnFilters.find(filtro => filtro.id === 'expand')
 
   const formatedFilters = useMemo(() => {
@@ -53,11 +45,11 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
       return filter.strictInclusion ? [...formatedFilters, { id: materiasFilter.id, label: 'Inclusión estricta', value: ['Inclusión estricta'] }] : formatedFilters
     }
     return []
-  }, [allSubjects, materiasFilter, facets])
+  }, [materiasFilter, facets])
 
   const materiasFilterValues = formatedFilters.flatMap(formatedFilter => formatedFilter.value)
-  console.log(materiasFilter)
-  console.log(formatedFilters)
+  /* console.log(materiasFilter)
+  console.log(formatedFilters) */
 
   return (
     <div className='border rounded-lg w-full shadow-sm'>
