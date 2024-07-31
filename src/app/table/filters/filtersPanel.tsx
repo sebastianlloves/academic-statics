@@ -18,7 +18,7 @@ function FiltersPanel ({ table } : FiltersPanelProps) {
   const isEnProceso2020Visible = table.getColumn('enProceso2020')?.getIsVisible()
 
   return (
-    <ScrollArea className='rounded-lg border bg-background'>
+    <ScrollArea className='rounded-lg border bg-background shadow-sm'>
       <div className='flex flex-col justify-start items-start gap-y-6 w-[17rem] max-w-[17rem] py-4 px-2'>
         <div className='flex justify-start items-center gap-x-6 px-2 w-1/2'>
           <ListFilter size={16} />

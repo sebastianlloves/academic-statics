@@ -14,7 +14,7 @@ function MateriasFilterContent ({ table, materiasFilter, facets }: MateriasFilte
             {anio}
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>
-            <DropdownMenuSubContent sideOffset={6}>
+            <DropdownMenuSubContent alignOffset={-5} sideOffset={6}>
               {allSubjects[anio].map((subject:string) => {
                 const quantity = (materiasFilter?.value as MateriasFilterState)?.strictInclusion
                   ? table.getRowModel().rows.filter(row => {

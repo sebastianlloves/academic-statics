@@ -3,6 +3,7 @@ import { ColumnFilter, Table } from '@tanstack/react-table'
 import DropdownFilter from '../dropdownFilter'
 import CursosFilterContent from './cursosFilterContent'
 import CursosFilterLabels from './cursosFilterLabels'
+import FilterBox from '../filterBox'
 
 export interface CursosFilterProps {
   table: Table<Student>,
@@ -15,12 +16,12 @@ function CursosFilter ({ table }: CursosFilterProps) {
   const facets = table.getColumn('curso')?.getFacetedUniqueValues()
 
   return (
-    <div className='border border-muted rounded-lg w-full shadow-sm'>
+    <FilterBox>
       <DropdownFilter title='Cursos'>
         <CursosFilterContent table={table} cursosFilter={cursosFilter} facets={facets} />
       </DropdownFilter>
       {cursosFilter !== undefined && <CursosFilterLabels table={table} cursosFilter={cursosFilter} facets={facets} />}
-    </div>
+    </FilterBox>
   )
 }
 

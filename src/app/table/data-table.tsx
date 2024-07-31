@@ -69,19 +69,19 @@ export function DataTable ({ data, loading }: DataTableProps) {
   })
 
   return (
-    <div className='flex gap-4 p-8 rounded-lg bg-background'>
+    <div className='flex gap-6 p-8 bg-background-grey'>
       <FiltersPanel table={table} />
-      <div>
-        <ScrollArea className='border h-[80vh] min-h-[80vh] w-[70vw] rounded-t-lg border-b-0 shadow-sm bg-background'>
-          <Table className='grid w-max min-w-full bg-background'>
+      <div className='border shadow-sm rounded-lg'>
+        <ScrollArea className='h-[80vh] min-h-[80vh] w-[70vw] rounded-t-lg'>
+          <Table className='grid w-max min-w-full bg-table'>
             <TableHeader className='sticky top-0 w-full border-primary/100 border-b shadow-sm shadow-primary/40 z-20'>
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow className='bg-table hover:bg-table flex items-center py-1' key={headerGroup.id}>
+                <TableRow className='bg-table-header hover:bg-background flex items-center py-1' key={headerGroup.id}>
                   {headerGroup.headers.map(header => (
                     <TableHead
                       key={header.id}
                       align={header.column.columnDef.meta?.align || 'left'}
-                      className='text-foreground bg-table px-3'
+                      className='text-foreground px-3'
                       style={{
                         width: `${header.column.getSize()}px`,
                         position: header.column.getIsPinned() ? 'sticky' : undefined,
@@ -99,7 +99,7 @@ export function DataTable ({ data, loading }: DataTableProps) {
             <TableBody className=''>
               {table.getRowModel().rows?.length
                 ? (table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className='flex bg-background hover:bg-muted '>
+                  <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className='flex bg-table hover:bg-muted '>
                     {row.getVisibleCells().map((cell) => (
                       <TableCell
                         key={cell.id}
@@ -129,14 +129,14 @@ export function DataTable ({ data, loading }: DataTableProps) {
           </Table>
           <ScrollBar orientation='horizontal' />
         </ScrollArea>
-        <div className='bg-secondary h-9 flex justify-center items-center text-secondary-foreground italic border z-30 scroll-m-20 text-sm font-medium rounded-b-lg shadow-sm'>
+        <div className='bg-accent h-9 flex justify-center items-center text-accent-foreground italic border-t z-30 scroll-m-20 text-sm font-medium rounded-b-lg'>
           {loading || data === false
             ? <Skeleton className='h-2 rounded-full w-36 mx-auto' />
             : (
               <p>
                 Mostrando {table.getRowModel().rows.length} resultados
-                {table.getRowModel().rows.length < table.getCoreRowModel().rows.length && (
-                  <span className='text-muted-foreground font-normal text-sm'>
+                {table.getRowModel().rows.length < table.getCoreRowModel().rows.length && table.getRowModel().rows.length > 0 && (
+                  <span className='text-accent-foreground font-normal text-sm'>
                     {` (${(table.getRowModel().rows.length / table.getCoreRowModel().rows.length * 100).toFixed(1)}% del total)`}
                   </span>
                 )}

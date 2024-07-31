@@ -3,6 +3,7 @@ import { Table } from '@tanstack/react-table'
 import DropdownFilter from '../dropdownFilter'
 import PromocionFilterContent from './promocionFilterContent'
 import PromocionFilterLabels from './promocionFilterLabels'
+import FilterBox from '../filterBox'
 
 export interface PromocionFilterProps {
   table: Table<Student>
@@ -14,12 +15,12 @@ function PromocionFilter ({ table } : PromocionFilterProps) {
   console.log(promocionFilter)
 
   return (
-    <div className='border rounded-lg w-full shadow-sm'>
+    <FilterBox>
       <DropdownFilter title='Promoción'>
         <PromocionFilterContent table={table} promocionFilter={promocionFilter} facets={facets} />
       </DropdownFilter>
       {promocionFilter !== undefined && <PromocionFilterLabels table={table} promocionFilter={promocionFilter} facets={facets} />}
-    </div>
+    </FilterBox>
   )
 }
 

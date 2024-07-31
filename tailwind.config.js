@@ -21,7 +21,10 @@ module.exports = {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
+        background: {
+          DEFAULT: 'hsl(var(--background))',
+          grey: 'hsl(var(--grey-background))'
+        },
         foreground: 'hsl(var(--foreground))',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
@@ -40,7 +43,8 @@ module.exports = {
           foreground: 'hsl(var(--success-foreground))'
         },
         table: {
-          DEFAULT: 'hsl(var(--table))'
+          DEFAULT: 'hsl(var(--table-row))',
+          header: 'hsl(var(--table-header))'
         },
         muted: {
           DEFAULT: 'hsl(var(--muted))',

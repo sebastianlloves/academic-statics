@@ -16,7 +16,7 @@ function DropdownFilter ({ title, children }:DropdownFilterProps) {
           {title.toUpperCase()}<ChevronRight className='ml-auto h-4 w-4 opacity-70' />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='start' alignOffset={-1} side='right' className='p-1'>
+      <DropdownMenuContent align='start' alignOffset={-1} side='right' className='rounded-md p-1'>
         {children}
       </DropdownMenuContent>
     </DropdownMenu>

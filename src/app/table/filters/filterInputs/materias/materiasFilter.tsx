@@ -3,6 +3,7 @@ import { ColumnFilter, Table } from '@tanstack/react-table'
 import DropdownFilter from '../dropdownFilter'
 import MateriasFilterContent from './materiasFilterContent'
 import MateriasFilterLabels from './materiasFilterLabels'
+import FilterBox from '../filterBox'
 
 export interface MateriasFilterProps {
   table: Table<Student>,
@@ -21,13 +22,13 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
   const materiasFilter = table.getState().columnFilters.find(filtro => filtro.id === 'expand')
 
   return (
-    <div className='border border-muted rounded-lg w-full shadow-sm'>
+    <FilterBox>
       <DropdownFilter title='Materias'>
         <MateriasFilterContent table={table} materiasFilter={materiasFilter} facets={facets} />
       </DropdownFilter>
 
       {materiasFilter !== undefined && <MateriasFilterLabels table={table} materiasFilter={materiasFilter} facets={facets} />}
-    </div>
+    </FilterBox>
   )
 }
 

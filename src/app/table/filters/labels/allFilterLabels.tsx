@@ -22,7 +22,7 @@ export function AllFilterLabels ({ filterValues, handleItemClick, handleBoxClick
             key={(filter.label)}
             handleClick={handleItemClick(filter)}
           >
-            <p className='font-normal text-wrap tracking-wide'>
+            <p className='font-medium text-wrap tracking-wide'>
               {filter.label}
               {filter.quantity !== undefined && (
                 <span className='text-xs font-mono tracking-tight font-normal text-muted-foreground'>
