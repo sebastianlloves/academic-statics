@@ -1,7 +1,6 @@
-// import { ColumnFilter } from '@tanstack/react-table'
-import { CantidadesFilterProps } from '../cantidadesFilter'
 import { useMemo } from 'react'
 import SliderItem from './sliderItem'
+import { CantidadesFilterProps } from './cantidadesFilter'
 
 interface CantidadesFilterContentProps extends CantidadesFilterProps {
 }

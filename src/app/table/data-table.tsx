@@ -76,12 +76,12 @@ export function DataTable ({ data, loading }: DataTableProps) {
           <Table className='grid w-max min-w-full bg-background'>
             <TableHeader className='sticky top-0 w-full border-primary/100 border-b shadow-sm shadow-primary/40 z-20'>
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow className='bg-background hover:bg-background flex items-center py-1' key={headerGroup.id}>
+                <TableRow className='bg-table hover:bg-table flex items-center py-1' key={headerGroup.id}>
                   {headerGroup.headers.map(header => (
                     <TableHead
                       key={header.id}
                       align={header.column.columnDef.meta?.align || 'left'}
-                      className='text-foreground bg-background px-3'
+                      className='text-foreground bg-table px-3'
                       style={{
                         width: `${header.column.getSize()}px`,
                         position: header.column.getIsPinned() ? 'sticky' : undefined,
@@ -129,10 +129,19 @@ export function DataTable ({ data, loading }: DataTableProps) {
           </Table>
           <ScrollBar orientation='horizontal' />
         </ScrollArea>
-        <div className='bg-secondary h-9 flex justify-center items-center text-secondary-foreground italic border z-30 scroll-m-20 text-sm font-medium rounded-b-lg'>
+        <div className='bg-secondary h-9 flex justify-center items-center text-secondary-foreground italic border z-30 scroll-m-20 text-sm font-medium rounded-b-lg shadow-sm'>
           {loading || data === false
             ? <Skeleton className='h-2 rounded-full w-36 mx-auto' />
-            : `Mostrando ${table.getRowModel().rows.length} resultados`}
+            : (
+              <p>
+                Mostrando {table.getRowModel().rows.length} resultados
+                {table.getRowModel().rows.length < table.getCoreRowModel().rows.length && (
+                  <span className='text-muted-foreground font-normal text-sm'>
+                    {` (${(table.getRowModel().rows.length / table.getCoreRowModel().rows.length * 100).toFixed(1)}% del total)`}
+                  </span>
+                )}
+              </p>
+              )}
         </div>
       </div>
     </div>

@@ -17,7 +17,7 @@ export interface LabelsBoxProps {
 
 function LabelsBox ({ filterValues, handleBoxClick, handleItemClick, maxLabels }: LabelsBoxProps) {
   return (
-    <div className='w-full px-2 py-2 shadow-inner'>
+    <div className='w-full px-2 py-2 bg-table shadow-inner'>
       {filterValues.length <= maxLabels
         ? (
           <AllFilterLabels filterValues={filterValues} handleItemClick={handleItemClick} handleBoxClick={handleBoxClick} />

@@ -1,6 +1,6 @@
 import { Student } from '@/types'
 import { ColumnFilter, Table } from '@tanstack/react-table'
-import DropdownFilter from '../../dropdownFilter'
+import DropdownFilter from '../dropdownFilter'
 import MateriasFilterContent from './materiasFilterContent'
 import MateriasFilterLabels from './materiasFilterLabels'
 
@@ -21,7 +21,7 @@ function MateriasFilter ({ table } : MateriasFilterProps) {
   const materiasFilter = table.getState().columnFilters.find(filtro => filtro.id === 'expand')
 
   return (
-    <div className='border rounded-lg w-full shadow-sm'>
+    <div className='border border-muted rounded-lg w-full shadow-sm'>
       <DropdownFilter title='Materias'>
         <MateriasFilterContent table={table} materiasFilter={materiasFilter} facets={facets} />
       </DropdownFilter>

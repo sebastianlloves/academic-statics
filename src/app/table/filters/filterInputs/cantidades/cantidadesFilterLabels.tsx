@@ -1,7 +1,7 @@
 import { ColumnFilter } from '@tanstack/react-table'
-import { CantidadesFilterProps } from '../cantidadesFilter'
 import { useMemo } from 'react'
 import LabelsBox from '../../labels/labelsBox'
+import { CantidadesFilterProps } from './cantidadesFilter'
 
 interface CantidadesFilterLabelsProps extends CantidadesFilterProps {
   cantidadesFilters: ColumnFilter[]

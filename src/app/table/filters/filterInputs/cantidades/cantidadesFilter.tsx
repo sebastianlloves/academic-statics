@@ -1,8 +1,8 @@
 import { Table } from '@tanstack/react-table'
 import { Student } from '@/types'
 import DropdownFilter from '../dropdownFilter'
-import CantidadesFilterContent from './cantidades/cantidadesFilterContent'
-import CantidadesFilterLabels from './cantidades/cantidadesFilterLabels'
+import CantidadesFilterContent from './cantidadesFilterContent'
+import CantidadesFilterLabels from './cantidadesFilterLabels'
 
 export interface CantidadesFilterProps {
   table: Table<Student>
@@ -15,7 +15,7 @@ function CantidadesFilter ({ table } : CantidadesFilterProps) {
     table.getState().columnFilters.find(filtro => filtro.id === 'enProceso2020')
   ].filter(value => value !== undefined)
   return (
-    <div className='border rounded-lg w-full shadow-sm'>
+    <div className='border border-muted rounded-lg w-full shadow-sm'>
       <DropdownFilter title='Cantidades'>
         <CantidadesFilterContent table={table} />
       </DropdownFilter>

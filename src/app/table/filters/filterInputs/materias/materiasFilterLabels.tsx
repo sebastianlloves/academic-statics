@@ -26,7 +26,12 @@ function MateriasFilterLabels ({ table, materiasFilter, facets }: MateriasFilter
     }
     return []
   }, [materiasFilter]).map(obj => {
-    return { ...obj, quantity: !obj.label.includes(' año') ? (facets?.get(obj.label) || 0) : undefined }
+    return {
+      ...obj,
+      quantity: !obj.label.includes(' año') && obj.label !== 'Inclusión estricta'
+        ? (facets?.get(obj.label) || 0)
+        : undefined
+    }
   })
 
   return (
@@ -34,11 +39,11 @@ function MateriasFilterLabels ({ table, materiasFilter, facets }: MateriasFilter
       filterValues={formatedFilters}
       maxLabels={3}
       handleBoxClick={() => table.getColumn(formatedFilters[0].id)?.setFilterValue(undefined)}
-      handleItemClick={(filter) => () => table.getColumn(filter.id)?.setFilterValue((prevState: MateriasFilterState) => {
-        if (filter.label === 'Inclusión estricta') return { ...prevState, strictInclusion: false }
+      handleItemClick={(formatedFilter) => () => table.getColumn(formatedFilter.id)?.setFilterValue((prevState: MateriasFilterState) => {
+        if (formatedFilter.label === 'Inclusión estricta') return { ...prevState, strictInclusion: false }
         const newSubjectsState = prevState.subjects.filter((prevValue) => {
-          if (filter.label.includes(' año')) return !allSubjects[filter.label.split('Todas las materias de ')[1]].includes(prevValue)
-          return !filter.value.includes(prevValue)
+          if (formatedFilter.label.includes(' año')) return !allSubjects[formatedFilter.label.split('Todas las materias de ')[1]].includes(prevValue)
+          return !(formatedFilter.value as string[]).includes(prevValue)
         })
         return newSubjectsState.length ? { ...prevState, subjects: newSubjectsState } : undefined
       })}
