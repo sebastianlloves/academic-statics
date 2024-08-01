@@ -96,8 +96,8 @@ export const columns: ColumnDef<Student>[] = [
     ),
     cell: ({ table, row }) => {
       const { apellido, nombre } = row.original
-      const capitalizeApellido = apellido?.split(' ').map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ')
-      const capitalizeNombre = nombre?.split(' ').map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ')
+      const capitalizeApellido = apellido?.split(' ').map(word => word[0]?.toUpperCase() + word.substring(1).toLowerCase()).join(' ')
+      const capitalizeNombre = nombre?.split(' ').map(word => word[0]?.toUpperCase() + word.substring(1).toLowerCase()).join(' ')
       return (
         <div className='h-full self-stretch flex flex-col'>
           <div className='text-left self-stretch h-full text-nowrap'>

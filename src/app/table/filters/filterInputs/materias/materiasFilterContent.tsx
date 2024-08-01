@@ -58,7 +58,7 @@ function MateriasFilterContent ({ table, materiasFilter, facets }: MateriasFilte
                     const newSubjectState = allSubjects[anio].every(subject => (materiasFilter?.value as MateriasFilterState)?.subjects.includes(subject))
                       ? filterValue.subjects.filter(prevSubject => !allSubjects[anio].includes(prevSubject))
                       : Array.from(new Set([...filterValue.subjects, ...allSubjects[anio]]))
-                    table.getColumn('expand')?.setFilterValue({ ...filterValue, subjects: newSubjectState })
+                    table.getColumn('expand')?.setFilterValue(newSubjectState.length === 0 && !filterValue.strictInclusion ? undefined : { ...filterValue, subjects: newSubjectState })
                   }
                 }}
               >

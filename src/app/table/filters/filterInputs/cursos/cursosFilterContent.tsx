@@ -48,7 +48,7 @@ function CursosFilterContent ({ table, cursosFilter, facets }: CursosFilterProps
                         const newCursosState = !checked
                           ? cursoFilterValues.filter(curso => !coursesByYear[anio].includes(curso as CURSO))
                           : Array.from(new Set([...cursoFilterValues, ...coursesByYear[anio]]))
-                        table.getColumn('curso')?.setFilterValue(newCursosState)
+                        table.getColumn('curso')?.setFilterValue(newCursosState.length ? newCursosState : undefined)
                       }}
                     >
                       <Item value={`Todos los ${anio.split(' año')[0]}`} quantity={anioCantidad} />
