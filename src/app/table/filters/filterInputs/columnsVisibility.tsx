@@ -1,17 +1,17 @@
-import { DropdownMenuCheckboxItem } from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Student } from '@/types'
 import { Table } from '@tanstack/react-table'
 import { MateriasFilterState } from './materias/materiasFilter'
 import { useEffect } from 'react'
-import { cn } from '@/lib/utils'
-import DropdownFilter from './dropdownFilter'
+import { Button } from '@/components/ui/button'
+import { AlignHorizontalDistributeCenter } from 'lucide-react'
 
 interface ColumnsVisibilityProps {
   table: Table<Student>,
   className?: string
 }
 
-function ColumnsVisibility ({ table, className }: ColumnsVisibilityProps) {
+function ColumnsVisibility ({ table }: ColumnsVisibilityProps) {
   const columns = table.getAllColumns().filter(column => column.getCanHide() && column.id !== 'expand')
   const isTroncalesVisible = table.getColumn('troncales')?.getIsVisible()
   const isGeneralesVisible = table.getColumn('generales')?.getIsVisible()
@@ -23,8 +23,14 @@ function ColumnsVisibility ({ table, className }: ColumnsVisibilityProps) {
   }, [isTroncalesVisible, isGeneralesVisible, isEnProceso2020Visible, table])
 
   return (
-    <div className={cn(className)}>
-      <DropdownFilter title='Columnas'>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant='outline' className='w-min gap-x-3 font-medium shadow-sm py-2 tracking-wide justify-between px-3 rounded-lg'>
+          <AlignHorizontalDistributeCenter strokeWidth='1.2px' size={15} />
+          Columnas
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align='end' alignOffset={-1} side='bottom' className='rounded-md p-1'>
         {
           columns.map(column => {
             const { title } = column.columnDef.meta ?? {}
@@ -48,8 +54,8 @@ function ColumnsVisibility ({ table, className }: ColumnsVisibilityProps) {
             )
           })
         }
-      </DropdownFilter>
-    </div>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 

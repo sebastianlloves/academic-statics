@@ -12,7 +12,6 @@ export interface PromocionFilterProps {
 function PromocionFilter ({ table } : PromocionFilterProps) {
   const promocionFilter = table.getState().columnFilters.find(filtro => filtro.id === 'promocion')
   const facets = table.getColumn('promocion')?.getFacetedUniqueValues()
-  console.log(promocionFilter)
 
   return (
     <FilterBox>

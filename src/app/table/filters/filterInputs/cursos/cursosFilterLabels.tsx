@@ -6,7 +6,6 @@ import LabelsBox from '../../labels/labelsBox'
 
 function CursosFilterLabels ({ table, cursosFilter, facets }: CursosFilterProps) {
   const formatedFilters = useMemo(() => {
-    console.log('CursosFilter memo')
     if (cursosFilter !== undefined) {
       const filterLabels = (cursosFilter.value as string[]).reduce((acc, newValue) => {
         const anio = newValue.split(' ')[0]

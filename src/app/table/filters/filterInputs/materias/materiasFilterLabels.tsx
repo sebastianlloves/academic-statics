@@ -5,7 +5,6 @@ import LabelsBox from '../../labels/labelsBox'
 
 function MateriasFilterLabels ({ table, materiasFilter, facets }: MateriasFilterProps) {
   const formatedFilters = useMemo(() => {
-    console.log('MateriasFilter memo')
     if (materiasFilter !== undefined) {
       const filter = (materiasFilter.value as MateriasFilterState)
       const filterLabels = filter.subjects.reduce((acc, newValue) => {

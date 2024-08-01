@@ -17,7 +17,7 @@ function SubRow ({ triggerContent, subjects, open } : SubRowProps) {
               ? (
                 <Badge
                   variant='outline'
-                  className='text-sm text-success font-medium border-0'
+                  className='text-sm text-success bg-success/5 font-medium border-0'
                 >
                   {triggerContent}
                 </Badge>
@@ -25,19 +25,19 @@ function SubRow ({ triggerContent, subjects, open } : SubRowProps) {
               : (
                 <Badge
                   variant='outline'
-                  className='text-sm font-medium border-0'
+                  className='text-sm font-medium'
                 >
                   {triggerContent}
                 </Badge>
                 )}
           </div>
         </CollapsibleTrigger>
-        <CollapsibleContent className='mt-0 mb-2 ml-4 -z-50'>
+        <CollapsibleContent className='mt-2 mb-2 ml-4 -z-50'>
           <div className='flex flex-col items-start space-y-1.5'>
             {subjects.map(subject => (
               subject === 'No adeuda'
-                ? <Badge variant='outline' className='text-xs px-3 rounded-md font-normal text-success border-success/20' key={subject}>{subject}</Badge>
-                : <Badge variant='outline' className='text-xs px-3 rounded-md font-normal shadow-sm' key={subject}>{subject}</Badge>
+                ? <Badge variant='outline' className='text-xs px-3 rounded-md font-normal text-success border-0 bg-success/5' key={subject}>{subject}</Badge>
+                : <Badge variant='outline' className='text-xs px-3 rounded-md font-normal' key={subject}>{subject}</Badge>
             ))}
           </div>
         </CollapsibleContent>

@@ -56,7 +56,7 @@ export const columns: ColumnDef<Student>[] = [
       return strictInclusion ? subjects.every(subject => studentSubjects.includes(subject)) : subjects.some(subject => studentSubjects.includes(subject))
     },
     enableSorting: false,
-    size: 50,
+    size: 60,
     meta: {
       title: 'expandir'
     }
@@ -72,7 +72,7 @@ export const columns: ColumnDef<Student>[] = [
         <Badge variant='outline' className='text-nowrap'>{cell.getValue() as string}</Badge>
       </div>
     ),
-    size: 80,
+    size: 100,
     filterFn: (row: Row<Student>, columnID: string, filterValue: CURSO[]) => {
       if (filterValue.length === 0) return true
       return filterValue.includes(row.getValue(columnID))

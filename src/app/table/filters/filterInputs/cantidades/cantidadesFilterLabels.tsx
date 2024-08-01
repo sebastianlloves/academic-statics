@@ -9,7 +9,6 @@ interface CantidadesFilterLabelsProps extends CantidadesFilterProps {
 
 function CantidadesFilterLabels ({ table, cantidadesFilters }: CantidadesFilterLabelsProps) {
   const formatedFilters = useMemo(() => cantidadesFilters.map(filter => {
-    console.log('Cantidades Memo')
     const minMax = (filter.value as (number[] & {length: 2}))
     const subjectType = table.getColumn(filter.id)?.columnDef.meta?.title
     const label = minMax[0] === minMax[1] ? `${minMax[0]} materias ${subjectType}` : `Entre ${minMax[0]} y ${minMax[1]} materias ${subjectType}`
