@@ -70,12 +70,12 @@ export function DataTable ({ data, loading }: DataTableProps) {
   })
 
   return (
-    <div className='border'>
-      {/* <SearchBar /> */}
+    <div className='border w-full'>
+      <SearchBar table={table} />
       <div className='flex gap-6 p-8 bg-background-grey'>
         <FiltersPanel table={table} />
         <div className='border shadow-sm rounded-lg'>
-          <ScrollArea className='h-[80vh] min-h-[80vh] w-[70vw] rounded-t-lg'>
+          <ScrollArea className='h-[80vh] min-h-[80vh] w-[70vw] bg-table rounded-t-lg'>
             <Table className='grid w-max min-w-full bg-table'>
               <TableHeader className='sticky top-0 w-full border-primary/100 border-b shadow-sm shadow-primary/40 z-20'>
                 {table.getHeaderGroups().map((headerGroup) => (

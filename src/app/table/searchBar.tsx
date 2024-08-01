@@ -1,21 +1,30 @@
 import { Input } from '@/components/ui/input'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Student } from '@/types'
+import { Table } from '@tanstack/react-table'
 
-function SearchBar () {
+interface SearchBarProps {
+  table: Table<Student>
+}
+
+function SearchBar ({ table } : SearchBarProps) {
+  const filterValue = (table.getColumn('estudiante')?.getFilterValue() || table.getColumn('dni')?.getFilterValue()) as string | number | undefined
+  console.log(filterValue)
+
   return (
-    <div className='p-2 '>
-      <Select>
-        <SelectTrigger className='w-[180px]'>
-          <SelectValue>a</SelectValue>
-        </SelectTrigger>
-        <SelectContent hidden>
-          <SelectItem value='light'>Light</SelectItem>
-          <SelectItem value='dark'>Dark</SelectItem>
-          <SelectItem value='system'>System</SelectItem>
-        </SelectContent>
-      </Select>
+    <div className='w-72 px-2 flex border items-center ml-48'>
+      <Input
+        className='w-72'
+        placeholder='Buscar estudiantes por nombre o DNI'
+        value={filterValue}
+        onChange={(e) => {
+          if (e.target.value === '') {
+            table.getColumn('estudiante')?.setFilterValue(undefined)
+            table.getColumn('dni')?.setFilterValue(undefined)
+          }
+          if (Number.isNaN(parseInt(e.target.value))) table.getColumn('estudiante')?.setFilterValue(e.target.value)
+          else table.getColumn('dni')?.setFilterValue(e.target.value)
+        }}
+      />
     </div>
   )
 }

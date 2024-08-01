@@ -90,7 +90,7 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     id: 'estudiante',
-    accessorKey: 'apellido',
+    accessorFn: (row) => `${row.apellido}, ${row.nombre}`,
     header: ({ column }) => (
       <SortingHeader title='Estudiante' column={column} />
     ),
@@ -112,6 +112,7 @@ export const columns: ColumnDef<Student>[] = [
     },
     sortingFn: 'text',
     size: 180,
+    filterFn: 'includesString',
     enableHiding: false,
     sortDescFirst: true,
     meta: {
@@ -129,6 +130,7 @@ export const columns: ColumnDef<Student>[] = [
         <p className='text-xs  text-muted-foreground px-0 mx-0'>{row.original.dni}</p>
       </div>),
     size: 90,
+    filterFn: 'includesString',
     sortingFn: 'basic',
     meta: {
       title: 'DNI',
