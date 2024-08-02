@@ -6,7 +6,7 @@ interface FilterBoxProps {
 
 function FilterBox ({ children } : FilterBoxProps) {
   return (
-    <div className='border rounded-md w-full shadow-sm'>
+    <div className='border rounded-md w-full'>
       {children}
     </div>
   )
