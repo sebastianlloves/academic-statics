@@ -2,20 +2,21 @@ import { flexRender, getCoreRowModel, useReactTable, getFilteredRowModel, getSor
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { columns } from './columns'
 import { Student } from '@/types'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import FiltersPanel from './filters/filtersPanel'
 import SearchBar from './searchBar'
 import ColumnsVisibility from './filters/filterInputs/columnsVisibility'
 import TableFooter from './tableFooter'
+import { URL_TRAYECTORIA_2023, URL_TRAYECTORIA_2024 } from '@/constants'
+import useStudentsData from '@/hooks/useStudentsData'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-interface DataTableProps {
-  data: Student[] | false,
-  loading: boolean
-}
+export function DataTable () {
+  const [url, setUrl] = useState(URL_TRAYECTORIA_2024)
+  const { data, loading } = useStudentsData(url)
 
-export function DataTable ({ data, loading }: DataTableProps) {
   const columnsTable = useMemo(() => loading || data === false
     ? columns.map(column => {
       return {
@@ -66,14 +67,20 @@ export function DataTable ({ data, loading }: DataTableProps) {
     },
     initialState: {
       expanded: {},
-      columnVisibility: { promocion: false, enProceso2020: false },
+      columnVisibility: { },
       columnPinning: { left: ['expand', 'curso', 'estudiante'] }
     }
   })
 
   return (
     <div className='w-full grid grid-cols-7 gap-x-8 gap-y-4 px-8'>
-      <div className='col-span-full col-start-2 flex justify-between items-center'>
+      <Tabs value={url} onValueChange={(value) => setUrl(value)} className='shadow-sm'>
+        <TabsList className='w-full'>
+          <TabsTrigger value={URL_TRAYECTORIA_2023} className='w-full'>2023</TabsTrigger>
+          <TabsTrigger value={URL_TRAYECTORIA_2024} className='w-full'>2024</TabsTrigger>
+        </TabsList>
+      </Tabs>
+      <div className='col-span-6 col-start-2 flex justify-between items-center'>
         <SearchBar table={table} />
         <ColumnsVisibility className='bg-success text-success-foreground' table={table} />
       </div>
