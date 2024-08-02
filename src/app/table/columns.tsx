@@ -1,4 +1,4 @@
-import { ColumnDef, Row } from '@tanstack/react-table'
+import { ColumnDef, Row, RowData } from '@tanstack/react-table'
 import { type Student } from '@/types'
 import { Badge } from '@/components/ui/badge'
 import { CURSO } from '@/types'
@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { MateriasFilterState } from './filters/filterInputs/materias/materiasFilter'
 
 declare module '@tanstack/react-table' {
-  interface ColumnMeta {
+  interface ColumnMeta<TData extends RowData, TValue> {
     title?: string,
     align?: 'right'
   }
