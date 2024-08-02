@@ -13,7 +13,7 @@ import { StudentsTable } from './studentsTable'
 
 export function DataTable () {
   const [url, setUrl] = useState(URL_TRAYECTORIA_2024)
-  const { data, loading } = useStudentsData(url)
+  const { data, loading, setLoading } = useStudentsData(url)
 
   const columnsTable = useMemo(() => loading || (data === false)
     ? columns.map(column => {
@@ -22,8 +22,7 @@ export function DataTable () {
         cell: ({ column } : {column: Column<Student>}) => (
           <div className={`h-10 flex items-center ${column.columnDef.meta?.align === 'right' ? 'justify-end' : 'justify-start'}`}>
             <Skeleton className='h-2 rounded-full w-full' />
-          </div>
-        )
+          </div>)
       }
     })
     : columns,
@@ -74,7 +73,12 @@ export function DataTable () {
     <div className='w-full grid grid-cols-7 gap-x-8 gap-y-4 px-8'>
       <Tabs
         value={url}
-        onValueChange={(value) => setUrl(value)}
+        onValueChange={(value:string) => {
+          setLoading(true)
+          setUrl(value)
+          table.resetColumnFilters()
+          table.resetSorting()
+        }}
         className='shadow-sm'
       >
         <TabsList className='w-full'>

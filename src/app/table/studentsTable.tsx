@@ -11,7 +11,7 @@ interface TableProps {
 }
 
 export function StudentsTable ({ table, loading }: TableProps) {
-  console.log(table.getState().columnSizingInfo)
+  console.log(loading)
   return (
 
     <div className='col-span-6 bg-background-grey w-full border border-input/60 shadow-sm rounded-lg'>
@@ -41,7 +41,7 @@ export function StudentsTable ({ table, loading }: TableProps) {
           </TableHeader>
 
           <TableBody className=''>
-            {table.getCoreRowModel().rows?.length || loading
+            {table.getRowModel().rows?.length
               ? (table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className='flex bg-table hover:bg-muted px-2'>
                   {row.getVisibleCells().map((cell) => (
