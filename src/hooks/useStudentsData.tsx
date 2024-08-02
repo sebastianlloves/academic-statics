@@ -10,6 +10,7 @@ function useStudentsData (url : string) {
   useEffect(() => {
     setError(false)
     setLoading(true)
+    setData(false)
     // console.time('fetch + res.text()')
     // console.log('Empezó fetch')
     fetch(url)

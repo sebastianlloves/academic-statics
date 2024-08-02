@@ -36,16 +36,24 @@ export const columns: ColumnDef<Student>[] = [
         </Button>
       </div>
     ),
-    cell: ({ row }) => (
-      <div className='h-10 w-6 flex justify-center items-center'>
-        <Button variant='ghost' className='w-full h-8 px-0' onClick={() => row.toggleExpanded()}>
-          {row.getIsExpanded()
-            ? <ChevronsDownUp strokeWidth='0.9px' size={15} className='text-foreground/80' />
-            : <ChevronsUpDown strokeWidth='0.9px' size={15} className='text-foreground/80' />}
-          <span className='sr-only'>Toggle</span>
-        </Button>
-      </div>
-    ),
+    cell: ({ row }) => {
+      const hasSubjects = (row.original.cantTroncales || 0) + (row.original.cantGenerales || 0) + (row.original.materiasEnProceso2020.cantidad || 0) > 0
+      return (
+        <div className='h-10 w-6 flex justify-center items-center'>
+          <Button
+            variant='ghost'
+            className='w-full h-8 px-0'
+            onClick={() => row.toggleExpanded()}
+            disabled={!hasSubjects}
+          >
+            {row.getIsExpanded() && hasSubjects
+              ? <ChevronsDownUp strokeWidth='0.9px' size={15} className='text-foreground/80' />
+              : <ChevronsUpDown strokeWidth='0.9px' size={15} className='text-foreground/80' />}
+            <span className='sr-only'>Toggle</span>
+          </Button>
+        </div>
+      )
+    },
     filterFn: (row: Row<Student>, _columnID, filterValue: MateriasFilterState) => {
       const { subjects, includeEnProceso2020, strictInclusion } = filterValue
       if (subjects.length === 0) return true
@@ -154,7 +162,7 @@ export const columns: ColumnDef<Student>[] = [
     ),
     filterFn: 'inNumberRange',
     sortingFn: 'basic',
-    size: 240,
+    size: 190,
     meta: {
       title: 'Troncales'
     }
@@ -174,7 +182,7 @@ export const columns: ColumnDef<Student>[] = [
     ),
     filterFn: 'inNumberRange',
     sortingFn: 'basic',
-    size: 240,
+    size: 190,
     meta: {
       title: 'Generales'
     }
@@ -195,7 +203,7 @@ export const columns: ColumnDef<Student>[] = [
     filterFn: 'inNumberRange',
     sortingFn: 'basic',
     sortDescFirst: true,
-    size: 240,
+    size: 190,
     meta: {
       title: 'En Proceso (2020)'
     }
