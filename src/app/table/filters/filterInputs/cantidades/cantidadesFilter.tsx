@@ -10,11 +10,7 @@ export interface CantidadesFilterProps {
 }
 
 function CantidadesFilter ({ table } : CantidadesFilterProps) {
-  const cantidadesFilterValues = [
-    table.getState().columnFilters.find(filtro => filtro.id === 'troncales'),
-    table.getState().columnFilters.find(filtro => filtro.id === 'generales'),
-    table.getState().columnFilters.find(filtro => filtro.id === 'enProceso2020')
-  ].filter(value => value !== undefined)
+  const cantidadesFilterValues = table.getState().columnFilters.filter(filtro => filtro.id === 'troncales' || filtro.id === 'generales' || filtro.id === 'enProceso2020')
   return (
     <FilterBox>
       <DropdownFilter title='Cantidades'>
