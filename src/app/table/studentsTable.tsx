@@ -14,8 +14,8 @@ export function StudentsTable ({ table, loading }: TableProps) {
   console.log(loading)
   return (
 
-    <div className='col-span-6 bg-background-grey w-full border border-input/60 shadow-sm rounded-lg'>
-      <ScrollArea className='h-[80vh] min-h-[80vh] bg-table rounded-t-lg'>
+    <div className='h-[85vh] min-h-[85vh] flex flex-col col-span-6 bg-background-grey w-full border border-input/60 shadow-sm rounded-lg'>
+      <ScrollArea className='h-full bg-table rounded-t-lg'>
         <Table className='grid w-max min-w-full bg-table'>
           <TableHeader className='sticky top-0 w-full border-primary/100 border-b shadow-sm shadow-primary/40 z-20'>
             {table.getHeaderGroups().map((headerGroup) => (

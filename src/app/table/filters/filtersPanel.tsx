@@ -2,7 +2,7 @@ import { Student } from '@/types'
 import { Table } from '@tanstack/react-table'
 import MateriasFilter from './filterInputs/materias/materiasFilter'
 import PromocionFilter from './filterInputs/promocion/promocionFilter'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import CursosFilter from './filterInputs/cursos/cursosFilter'
 import CantidadesFilter from './filterInputs/cantidades/cantidadesFilter'
 import { ListFilter } from 'lucide-react'
@@ -17,7 +17,7 @@ function FiltersPanel ({ table } : FiltersPanelProps) {
   const isEnProceso2020Visible = table.getColumn('enProceso2020')?.getIsVisible()
 
   return (
-    <ScrollArea className='rounded-lg border bg-background shadow-sm'>
+    <ScrollArea className='h-[85vh] min-h-[85vh] rounded-lg border bg-background shadow-sm'>
       <div className='flex flex-col justify-start items-start gap-y-4 py-4 px-2'>
         <div className='flex justify-start items-center gap-x-6 px-2 w-1/2 mb-6'>
           <ListFilter size={16} />
