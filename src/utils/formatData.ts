@@ -2,8 +2,8 @@ import { ANIOS, DIVISIONES, GENEROS, MOVILIDAD_VALUES } from '@/constants'
 import { type Student } from '../types'
 
 export function formatData (text: string): Student[] {
-  const stringData = text.split('\r\n').map((row) => row.split('\t'))
-  const studentsData = stringData
+  const [, ...data] = text.split('\r\n').map((row) => row.split('\t'))
+  const studentsData = data
     .slice(1)
     .map(
       ([
