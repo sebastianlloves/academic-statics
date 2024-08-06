@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
-import { Check, CircleCheck, CircleCheckBig } from 'lucide-react'
+import { CircleCheckBig } from 'lucide-react'
 
 interface SubRowProps {
   triggerContent: number,
