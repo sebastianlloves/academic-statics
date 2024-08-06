@@ -17,7 +17,7 @@ function SubRow ({ triggerContent, subjects, open } : SubRowProps) {
           <div className='flex items-center h-10'>
             {triggerContent === 0
               ? (
-                <Badge variant='outline' className='text-xs px-3 rounded-md font-normal text-success border-0 bg-success/5 flex gap-x-2'><Check size={14} strokeWidth='1.0px' />No adeuda</Badge>
+                <Badge variant='outline' className='text-xs px-3 rounded-md font-normal text-success border-0 bg-success/[0.03] flex gap-x-2'>No adeuda<Check size={14} strokeWidth='1.0px' /></Badge>
                 )
               : (
                 <Badge
