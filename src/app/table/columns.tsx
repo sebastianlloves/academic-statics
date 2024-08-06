@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { CURSO } from '@/types'
 import SortingHeader from './sortingHeader'
 import SubRow from './subRow'
-import { BookmarkCheck, BookmarkX, ChevronsDownUp, ChevronsUpDown } from 'lucide-react'
+import { BadgeCheck, ChevronsDownUp, ChevronsUpDown, CircleAlert } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { MateriasFilterState } from './filters/filterInputs/materias/materiasFilter'
 
@@ -227,9 +227,9 @@ export const columns: ColumnDef<Student>[] = [
             : (
               <Badge
                 variant={value === 'promociona' ? 'success' : 'destructive'}
-                className='capitalize px-2 flex justify-center items-center gap-x-2'
+                className='capitalize px-3 flex justify-center items-center gap-x-2 rounded-full'
               >
-                {value === 'promociona' ? <BookmarkCheck size={16} strokeWidth='1.0px' /> : <BookmarkX size={16} strokeWidth='1.0px' />}
+                {value === 'promociona' ? <BadgeCheck size={16} strokeWidth='1.5px' /> : <CircleAlert size={16} strokeWidth='1.5px' className='text-destructive-foreground' />}
                 {value}
               </Badge>
               )}

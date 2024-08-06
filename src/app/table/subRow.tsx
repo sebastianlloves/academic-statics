@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
-import { CircleCheckBig } from 'lucide-react'
+import { Check } from 'lucide-react'
 
 interface SubRowProps {
   triggerContent: number,
@@ -17,7 +17,7 @@ function SubRow ({ triggerContent, subjects, open } : SubRowProps) {
           <div className='flex items-center h-10'>
             {triggerContent === 0
               ? (
-                <Badge variant='outline' className='text-xs px-3 rounded-md font-normal text-success border-0 bg-success/[0.03] flex gap-x-2'><CircleCheckBig size={14} strokeWidth='1.0px' />No adeuda</Badge>
+                <Badge variant='outline' className='text-xs px-3 rounded-md font-normal text-success border-0 bg-success/[0.05] flex gap-x-2'><Check size={16} strokeWidth='1.0px' />No adeuda</Badge>
                 )
               : (
                 <Badge
