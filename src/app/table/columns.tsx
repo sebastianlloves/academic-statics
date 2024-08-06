@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { CURSO } from '@/types'
 import SortingHeader from './sortingHeader'
 import SubRow from './subRow'
-import { ChevronsDownUp, ChevronsUpDown } from 'lucide-react'
+import { BookmarkCheck, BookmarkX, ChevronsDownUp, ChevronsUpDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { MateriasFilterState } from './filters/filterInputs/materias/materiasFilter'
 
@@ -222,8 +222,17 @@ export const columns: ColumnDef<Student>[] = [
       const value = cell.getValue<string>()
       return (
         <div className='h-10 flex flex-col items-start justify-center'>
-          {value === 'faltan datos' && <Badge variant='outline' className='capitalize'>{value}</Badge>}
-          {value === 'promociona' ? <Badge variant='success' className='capitalize'>{value}</Badge> : <Badge variant='destructive' className='capitalize'>{value}</Badge>}
+          {value === 'faltan datos'
+            ? <Badge variant='outline' className='capitalize'>{value}</Badge>
+            : (
+              <Badge
+                variant={value === 'promociona' ? 'success' : 'destructive'}
+                className='capitalize px-2 flex justify-center items-center gap-x-2'
+              >
+                {value === 'promociona' ? <BookmarkCheck size={16} strokeWidth='1.0px' /> : <BookmarkX size={16} strokeWidth='1.0px' />}
+                {value}
+              </Badge>
+              )}
         </div>
       )
     },
@@ -235,24 +244,3 @@ export const columns: ColumnDef<Student>[] = [
     }
   }
 ]
-
-/* function pendientesFilterFn (row: Row<Student>, _columnID: string, filterValue: materiasFilterValueState) {
-  const { cantTroncales, cantGenerales } = row.original
-  if (cantTroncales === undefined || cantGenerales === undefined) return false
-  const isInTroncalesRange = cantTroncales >= filterValue.troncalesRange[0] && cantTroncales <= filterValue.troncalesRange[1]
-  const isInGeneralesRange = cantGenerales >= filterValue.generalesRange[0] && cantGenerales <= filterValue.generalesRange[1]
-  const isValidPromotedCondition = filterValue.promotedAndRepetears === 'onlyPromoted'
-    ? cantTroncales <= 2 && cantTroncales + cantGenerales <= 4
-    : filterValue.promotedAndRepetears === 'onlyRepeaters'
-      ? cantTroncales > 2 || cantTroncales + cantGenerales > 4
-      : true
-
-  return isInTroncalesRange && isInGeneralesRange && isValidPromotedCondition
-} */
-
-/* function enProcesoFilterFn (row: Row<Student>, _columnID: string, filterValue: materiasFilterValueState) {
-  const { cantidad } = row.original.materiasEnProceso2020
-  if (cantidad === undefined) return false
-  const [min, max] = filterValue.enProceso2020Range
-  return cantidad >= min && cantidad <= max
-} */
