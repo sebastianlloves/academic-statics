@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { CURSO } from '@/types'
 import SortingHeader from './sortingHeader'
 import SubRow from './subRow'
-import { BadgeCheck, ChevronsDownUp, ChevronsUpDown, CircleAlert } from 'lucide-react'
+import { BadgeCheck, CheckCheck, ChevronsDownUp, ChevronsUpDown, CircleAlert, CircleCheckBig, Minus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { MateriasFilterState } from './filters/filterInputs/materias/materiasFilter'
 
@@ -37,7 +37,7 @@ export const columns: ColumnDef<Student>[] = [
       </div>
     ),
     cell: ({ row }) => {
-      const hasSubjects = (row.original.cantTroncales || 0) + (row.original.cantGenerales || 0) + (row.original.materiasEnProceso2020.cantidad || 0) > 0
+      const hasSubjects = (row.original.cantTroncales || 0) + (row.original.cantGenerales || 0) + (row.original.cantEnProceso2020 || 0) > 0
       return (
         <div className='h-10 w-6 flex justify-center items-center'>
           <Button
@@ -59,7 +59,7 @@ export const columns: ColumnDef<Student>[] = [
       if (subjects.length === 0) return true
       const detalleTroncales = row.original.detalleTroncales || []
       const detalleGenerales = row.original.detalleGenerales || []
-      const detalleEnProceso2020 = (includeEnProceso2020 && row.original.materiasEnProceso2020.detalle) || []
+      const detalleEnProceso2020 = (includeEnProceso2020 && row.original.detalleEnProceso2020) || []
       const studentSubjects = [...detalleTroncales, ...detalleGenerales, ...detalleEnProceso2020]
       return strictInclusion ? subjects.every(subject => studentSubjects.includes(subject)) : subjects.some(subject => studentSubjects.includes(subject))
     },
@@ -195,8 +195,8 @@ export const columns: ColumnDef<Student>[] = [
     ),
     cell: ({ table, row }) => (
       <SubRow
-        triggerContent={row.original.materiasEnProceso2020.cantidad ?? 0}
-        subjects={row.original.materiasEnProceso2020.detalle ?? []}
+        triggerContent={row.original.cantEnProceso2020 ?? 0}
+        subjects={row.original.detalleEnProceso2020 ?? []}
         open={table.getIsAllRowsExpanded() || row.getIsExpanded()}
       />
     ),
@@ -206,6 +206,42 @@ export const columns: ColumnDef<Student>[] = [
     size: 190,
     meta: {
       title: 'En Proceso (2020)'
+    }
+  },
+  {
+    id: 'repitencia',
+    accessorKey: 'repitencia',
+    header: ({ column }) => (
+      <SortingHeader title='Repitencia' column={column} />
+    ),
+    cell: ({ cell }) => {
+      const value = cell.getValue<string[]>()
+      return (
+        <div className='h-10 flex items-center justify-start gap-x-2'>
+          {value.length
+            ? value.map((repValue, index) => (
+              <Badge variant='outline' className='px-2 font-bold rounded-lg text-destructive border-destructive/40 bg-destructive/[0.03]' key={index}>{`${repValue}°`}</Badge>
+            ))
+            : (
+              <Badge variant='outline' className='px-2 border-0 text-muted-foreground'>
+                <Minus size={14} strokeWidth='1.5px' />
+              </Badge>
+              )}
+        </div>
+      )
+    },
+    filterFn: 'includesString',
+    sortingFn: (rowA, rowB, columnId) => {
+      const rep1 = rowA.getValue<string[]>(columnId)
+      const rep2 = rowB.getValue<string[]>(columnId)
+      if (rep1.length !== rep2.length) return rep1.length < rep2.length ? -1 : 1
+      if (rep1.some((repValue, index) => repValue < rep2[index])) return -1
+      if (rep1.some((repValue, index) => repValue > rep2[index])) return 1
+      return 0
+    },
+    size: 150,
+    meta: {
+      title: 'repitencia'
     }
   },
   {

@@ -5,7 +5,6 @@ export const URL_TRAYECTORIA_2023 = 'https://docs.google.com/spreadsheets/d/e/2P
 
 export const ANIOS = [1, 2, 3, 4, 5, 6] as const
 export const DIVISIONES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const
-export const GENEROS = { M: 'Masculino', F: 'Femenino' } as const
 export const MOVILIDAD_VALUES = { Adeuda: 'adeuda', 'No adeuda': 'noAdeuda', '-': false } as const
 
 export const CURSOS = {

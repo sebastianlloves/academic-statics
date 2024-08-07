@@ -1,10 +1,10 @@
 import { coursesByYear } from '@/constants'
-import { CursosFilterProps } from './cursosFilter'
 import { useMemo } from 'react'
 import { CURSO } from '@/types'
 import LabelsBox from '../../labels/labelsBox'
+import { CursosFilterContentProps } from './cursosFilterContent'
 
-function CursosFilterLabels ({ table, cursosFilter, facets }: CursosFilterProps) {
+function CursosFilterLabels ({ table, cursosFilter, facets }: CursosFilterContentProps) {
   const formatedFilters = useMemo(() => {
     if (cursosFilter !== undefined) {
       const filterLabels = (cursosFilter.value as string[]).reduce((acc, newValue) => {

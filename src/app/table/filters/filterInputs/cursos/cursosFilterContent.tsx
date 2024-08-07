@@ -3,8 +3,14 @@ import { DropdownMenuCheckboxItem, DropdownMenuPortal, DropdownMenuSeparator, Dr
 import Item from '../item'
 import { CURSO } from '@/types'
 import { CursosFilterProps } from './cursosFilter'
+import { ColumnFilter } from '@tanstack/react-table'
 
-function CursosFilterContent ({ table, cursosFilter, facets }: CursosFilterProps) {
+export interface CursosFilterContentProps extends CursosFilterProps {
+  cursosFilter?: ColumnFilter,
+  facets?: Map<string, number>
+}
+
+function CursosFilterContent ({ table, cursosFilter, facets }: CursosFilterContentProps) {
   const cursoFilterValues = (cursosFilter?.value as string[]) || []
   return (
     <>

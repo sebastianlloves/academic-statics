@@ -43,18 +43,18 @@ export function DataTable () {
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
     getFacetedUniqueValues: (table, columnId) => {
-      if (columnId === 'expand') {
+      if (columnId === 'expand' || columnId === 'repitencia') {
         return () => {
           const facetedRowModel = table.getColumn(columnId)?.getFacetedRowModel()
           if (!facetedRowModel) return new Map()
-          const facetedUniqueValues = new Map<string, number>()
-          const values = facetedRowModel.flatRows.flatMap(row => row.getValue<string[]>(columnId))
-          values.forEach(subject => {
-            if (facetedUniqueValues.has(subject)) {
-              const quantity = facetedUniqueValues.get(subject) ?? 0
-              facetedUniqueValues.set(subject, quantity + 1)
+          const facetedUniqueValues = new Map<string | number, number>()
+          const values = facetedRowModel.flatRows.flatMap(row => row.getValue<(string | number)[]>(columnId))
+          values.forEach(value => {
+            if (facetedUniqueValues.has(value)) {
+              const quantity = facetedUniqueValues.get(value) ?? 0
+              facetedUniqueValues.set(value, quantity + 1)
             } else {
-              facetedUniqueValues.set(subject, 1)
+              facetedUniqueValues.set(value, 1)
             }
           })
           return facetedUniqueValues

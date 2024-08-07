@@ -11,7 +11,6 @@ interface TableProps {
 }
 
 export function StudentsTable ({ table, loading }: TableProps) {
-  console.log(loading)
   return (
 
     <div className='h-[85vh] min-h-[85vh] flex flex-col col-span-6 bg-background-grey w-full border border-input/60 shadow-sm rounded-lg'>

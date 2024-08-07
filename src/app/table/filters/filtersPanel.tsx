@@ -6,6 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import CursosFilter from './filterInputs/cursos/cursosFilter'
 import CantidadesFilter from './filterInputs/cantidades/cantidadesFilter'
 import { ListFilter } from 'lucide-react'
+import RepitenciaFilter from './repitencia/repitenciaFilter'
 
 interface FiltersPanelProps {
   table: Table<Student>
@@ -31,6 +32,7 @@ function FiltersPanel ({ table } : FiltersPanelProps) {
             <CantidadesFilter table={table} />
           </>
         )}
+        {table.getColumn('repitencia')?.getIsVisible() && <RepitenciaFilter table={table} />}
         {table.getColumn('promocion')?.getIsVisible() && <PromocionFilter table={table} />}
       </div>
     </ScrollArea>

@@ -20,7 +20,7 @@ function MateriasFilterContent ({ table, materiasFilter, facets }: MateriasFilte
                   ? table.getRowModel().rows.filter(row => {
                     const troncales = row.original.detalleTroncales || []
                     const generales = row.original.detalleGenerales || []
-                    const enProceso2020 = (table.getColumn('enProceso2020')?.getIsVisible() && row.original.materiasEnProceso2020?.detalle) || []
+                    const enProceso2020 = (table.getColumn('enProceso2020')?.getIsVisible() && row.original.detalleEnProceso2020) || []
                     return [...troncales, ...generales, ...enProceso2020].includes(subject)
                   }).length
                   : facets?.get(subject) ?? 0
