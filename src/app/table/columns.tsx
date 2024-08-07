@@ -223,7 +223,7 @@ export const columns: ColumnDef<Student>[] = [
       return (
         <div className='h-10 flex flex-col items-start justify-center'>
           {value === 'faltan datos'
-            ? <Badge variant='outline' className='capitalize'>{value}</Badge>
+            ? <p className='capitalize text-muted'>{value}</p>
             : (
               <Badge
                 variant={value === 'promociona' ? 'success' : 'destructive'}
