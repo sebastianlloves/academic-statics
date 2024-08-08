@@ -44,7 +44,7 @@ export function formatData (text: string): Student[] {
 
 const capitalizeWords = (words: string) => words.toLowerCase().trim().split(' ').map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`).join(' ')
 
-const defineRepitencia = (repitenciaArr: string[]): Student['repitencia'] => repitenciaArr.map(value => parseInt(value.split('')[0])).filter(value => value !== undefined)?.sort()
+const defineRepitencia = (repitenciaArr: string[]): Student['repitencia'] => repitenciaArr.map(value => parseInt(value.split('')[0]) ?? -1).filter(value => value !== -1)?.sort()
 
 // const isValidMovilidadValue = (movilidadValue: string): movilidadValue is keyof typeof MOVILIDAD_VALUES => MOVILIDAD_VALUES[movilidadValue as keyof typeof MOVILIDAD_VALUES] !== undefined
 
