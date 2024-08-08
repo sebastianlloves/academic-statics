@@ -1,4 +1,3 @@
-import { MOVILIDAD_VALUES } from '@/constants'
 import { type Student } from '../types'
 
 export function formatData (text: string): Student[] {
@@ -20,8 +19,7 @@ export function formatData (text: string): Student[] {
         detalleEnProceso2020Value,
         repitencia1Value,
         repitencia2Value,
-        repitencia3Value,
-        movilidadValue
+        repitencia3Value
       ]): Student => {
         return {
           anio: parseInt(anioValue.split('')[0]) || undefined,

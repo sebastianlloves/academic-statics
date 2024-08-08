@@ -1,10 +1,10 @@
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Student } from '@/types'
 import { Table } from '@tanstack/react-table'
-import { MateriasFilterState } from './materias/materiasFilter'
 import { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { AlignHorizontalDistributeCenter } from 'lucide-react'
+import { MateriasFilterState } from './materias/materiasFilterContent'
 
 interface ColumnsVisibilityProps {
   table: Table<Student>,

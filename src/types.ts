@@ -1,4 +1,4 @@
-import { ANIOS, CURSOS, DIVISIONES, MATERIAS_POR_CURSO, MOVILIDAD_VALUES } from './constants'
+import { CURSOS, MATERIAS_POR_CURSO, MOVILIDAD_VALUES } from './constants'
 
 export type ANIO = keyof(typeof CURSOS)
 export type DIVISION = typeof CURSOS[ANIO][number]['division']
