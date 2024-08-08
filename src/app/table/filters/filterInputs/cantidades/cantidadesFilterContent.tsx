@@ -13,7 +13,7 @@ function CantidadesFilterContent ({ table } : CantidadesFilterContentProps) {
         const [accCantTroncales, accCantGenerales, accCantEnProceso2020] = prevValue
         const newCantTroncales = newValue?.original?.cantTroncales ?? 0
         const newCantGenerales = newValue?.original?.cantGenerales ?? 0
-        const newCantEnProceso2020 = newValue?.original?.materiasEnProceso2020?.cantidad ?? 0
+        const newCantEnProceso2020 = newValue?.original?.cantEnProceso2020 ?? 0
         return [
           newCantTroncales > accCantTroncales ? newCantTroncales : accCantTroncales,
           newCantGenerales > accCantGenerales ? newCantGenerales : accCantGenerales,

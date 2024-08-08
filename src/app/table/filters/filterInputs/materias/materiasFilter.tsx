@@ -11,12 +11,6 @@ export interface MateriasFilterProps {
   facets?: Map<string, number>
 }
 
-export interface MateriasFilterState {
-  includeEnProceso2020?: boolean,
-  strictInclusion?: boolean,
-  subjects: string[]
-}
-
 function MateriasFilter ({ table } : MateriasFilterProps) {
   const facets = table.getColumn('expand')?.getFacetedUniqueValues()
   const materiasFilter = table.getState().columnFilters.find(filtro => filtro.id === 'expand')

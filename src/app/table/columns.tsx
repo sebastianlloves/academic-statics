@@ -4,9 +4,10 @@ import { Badge } from '@/components/ui/badge'
 import { CURSO } from '@/types'
 import SortingHeader from './sortingHeader'
 import SubRow from './subRow'
-import { BadgeCheck, CheckCheck, ChevronsDownUp, ChevronsUpDown, CircleAlert, CircleCheckBig, Minus } from 'lucide-react'
+import { BadgeCheck, ChevronsDownUp, ChevronsUpDown, CircleAlert, Minus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { MateriasFilterState } from './filters/filterInputs/materias/materiasFilter'
+import { MateriasFilterState } from './filters/filterInputs/materias/materiasFilterContent'
+import { RepitenciaFilterState } from './filters/repitencia/repitenciaFilterContent'
 
 declare module '@tanstack/react-table' {
   interface ColumnMeta<TData extends RowData, TValue> {
@@ -189,7 +190,7 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     id: 'enProceso2020',
-    accessorKey: 'materiasEnProceso2020.cantidad',
+    accessorKey: 'cantEnProceso2020',
     header: ({ column }) => (
       <SortingHeader title='En Proceso (2020)' column={column} />
     ),
@@ -230,7 +231,13 @@ export const columns: ColumnDef<Student>[] = [
         </div>
       )
     },
-    filterFn: 'includesString',
+    filterFn: (row: Row<Student>, _columnID, filterValue: RepitenciaFilterState) => {
+      const rowRepitencia = row.original.repitencia || []
+      const [min, max] = filterValue?.quantity || [0, rowRepitencia.length]
+      const isRepAnioOk = !filterValue?.repAnios ? true : rowRepitencia.some(repValue => filterValue.repAnios?.includes(repValue))
+      const isQuantityOk = rowRepitencia.length >= min && rowRepitencia.length <= max
+      return isRepAnioOk && isQuantityOk
+    },
     sortingFn: (rowA, rowB, columnId) => {
       const rep1 = rowA.getValue<string[]>(columnId)
       const rep2 = rowB.getValue<string[]>(columnId)

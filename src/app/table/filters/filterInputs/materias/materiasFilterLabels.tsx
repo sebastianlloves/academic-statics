@@ -1,7 +1,8 @@
 import { allSubjects } from '@/constants'
 import { useMemo } from 'react'
-import { MateriasFilterProps, MateriasFilterState } from './materiasFilter'
+import { MateriasFilterProps } from './materiasFilter'
 import LabelsBox from '../../labels/labelsBox'
+import { MateriasFilterState } from './materiasFilterContent'
 
 function MateriasFilterLabels ({ table, materiasFilter, facets }: MateriasFilterProps) {
   const formatedFilters = useMemo(() => {

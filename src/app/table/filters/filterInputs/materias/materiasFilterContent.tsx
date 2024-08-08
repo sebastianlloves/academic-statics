@@ -3,7 +3,13 @@ import Item from '../item'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { allSubjects } from '@/constants'
-import { MateriasFilterProps, MateriasFilterState } from './materiasFilter'
+import { MateriasFilterProps } from './materiasFilter'
+
+export interface MateriasFilterState {
+  includeEnProceso2020?: boolean,
+  strictInclusion?: boolean,
+  subjects: string[]
+}
 
 function MateriasFilterContent ({ table, materiasFilter, facets }: MateriasFilterProps) {
   return (
@@ -34,7 +40,7 @@ function MateriasFilterContent ({ table, materiasFilter, facets }: MateriasFilte
                       if (materiasFilter === undefined) table.getColumn('expand')?.setFilterValue({ subjects: [subject] })
                       else {
                         const filterValue = materiasFilter.value as MateriasFilterState
-                        const newSubjectsState = (materiasFilter?.value as MateriasFilterState)?.subjects.includes(subject)
+                        const newSubjectsState = filterValue?.subjects.includes(subject)
                           ? filterValue.subjects.filter(prevSubject => prevSubject !== subject)
                           : [...filterValue.subjects, subject]
                         table.getColumn('expand')?.setFilterValue({ ...filterValue, subjects: newSubjectsState })
