@@ -34,9 +34,7 @@ function RepitenciaFilterLabels ({ table, facets, repitenciaFilter }: Repitencia
       maxLabels={4}
       handleBoxClick={() => formatedFilters.forEach(formatedFilter => table.getColumn(formatedFilter.id)?.setFilterValue(undefined))}
       handleItemClick={(formatedFilter) => () => {
-        /* table.getColumn(formatedFilter.id)?.setFilterValue((prevState: RepitenciaFilterState) => {
-          if(!formatedFilter.label.includes('año'))
-        }) */
+        return formatedFilter
       }}
     />
   )
