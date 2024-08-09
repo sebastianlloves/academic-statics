@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { CURSO } from '@/types'
 import SortingHeader from './sortingHeader'
 import SubRow from './subRow'
-import { BadgeCheck, ChevronsDownUp, ChevronsUpDown, CircleAlert, Minus } from 'lucide-react'
+import { BadgeCheck, ChevronsDownUp, ChevronsUpDown, CircleAlert, IterationCcw, Minus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { MateriasFilterState } from './filters/filterInputs/materias/materiasFilterContent'
 import { RepitenciaFilterState } from './filters/repitencia/repitenciaFilterContent'
@@ -221,7 +221,9 @@ export const columns: ColumnDef<Student>[] = [
         <div className='h-10 flex items-center justify-start gap-x-2'>
           {value.length
             ? value.map((repValue, index) => (
-              <Badge variant='outline' className='px-2 font-bold rounded-lg text-destructive border-destructive/40 bg-destructive/[0.03]' key={index}>{`${repValue}°`}</Badge>
+              <Badge variant='outline' className='px-1 font-bold rounded-lg text-destructive border-destructive/40 bg-destructive/[0.03] flex justify-center items-center gap-x-1.5' key={index}>
+                <IterationCcw size={13} strokeWidth='1.7px' className='text-destructive/60' />{`${repValue}°`}
+              </Badge>
             ))
             : (
               <Badge variant='outline' className='px-2 border-0 text-muted-foreground'>
