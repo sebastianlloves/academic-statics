@@ -221,8 +221,8 @@ export const columns: ColumnDef<Student>[] = [
         <div className='h-10 flex items-center justify-start gap-x-2'>
           {value.length
             ? value.map((repValue, index) => (
-              <Badge variant='outline' className='px-1 font-bold rounded-lg text-destructive border-destructive/40 bg-destructive/[0.03] flex justify-center items-center gap-x-1.5' key={index}>
-                <IterationCcw size={13} strokeWidth='1.7px' className='text-destructive/60' />{`${repValue}°`}
+              <Badge variant='outline' className='px-1.5 font-bold rounded-lg text-destructive border-destructive/40 bg-destructive/[0.03] flex justify-center items-center gap-x-1.5' key={index}>
+                <IterationCcw size={12} strokeWidth='2px' className='text-destructive/70' />{`${repValue}°`}
               </Badge>
             ))
             : (
